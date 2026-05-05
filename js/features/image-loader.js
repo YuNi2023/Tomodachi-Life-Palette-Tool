@@ -58,17 +58,7 @@ function loadImageFile(file) {
   const url = URL.createObjectURL(file);
   const img = new Image();
 
-  img.onload = () => {
-    if (img.width >= 1920 || img.height >= 1080) {
-      alert(
-        '画像が大きすぎます！\n' +
-        '軽量化のため、1920×1080未満の画像をご使用ください。\n' +
-        '※推奨: 128×128ピクセル以下のドット絵'
-      );
-      URL.revokeObjectURL(url);
-      return;
-    }
-
+img.onload = () => {
     const tmp = document.createElement('canvas');
     tmp.width  = img.width;
     tmp.height = img.height;
