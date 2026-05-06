@@ -2,6 +2,7 @@ header {
   background: linear-gradient(135deg, #FF8F4D 0%, #FF6B1A 50%, #FF8F4D 100%);
   position: relative;
   overflow: hidden;
+  z-index: 10;
 }
 header::before, header::after {
   content: '';
@@ -161,9 +162,10 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   position: fixed;
   /* top/right はJS側で動的設定 */
   min-width: 180px;
-  background: #ffffff;
-  background: var(--card, #ffffff);
+  background-color: #ffffff !important;
+  background-image: none !important;
   border-radius: var(--radius-md);
+  border: 1px solid rgba(58, 31, 10, 0.08);
   box-shadow:
     0 4px 0 rgba(58, 31, 10, 0.10),
     0 12px 32px -8px rgba(58, 31, 10, 0.30);
@@ -176,11 +178,17 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   transform: translateY(-4px) scale(0.96);
   transform-origin: top right;
   transition: opacity 0.16s, transform 0.16s;
-  z-index: 1000;
-  /* iOS Safari/Android Chromeで背景レンダリングを安定化 */
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+  z-index: 99999;
+  /* レンダリング安定化（Android Chromeでメニュー内が透けるバグ対策） */
   isolation: isolate;
+  will-change: transform, opacity;
+  -webkit-transform: translateY(-4px) scale(0.96);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.lang-switch.is-open .lang-menu {
+  -webkit-transform: translateY(0) scale(1);
 }
 
 .lang-switch.is-open .lang-menu {
