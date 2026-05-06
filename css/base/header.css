@@ -258,9 +258,92 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
     font-size: 0.74rem;
     min-height: 30px;
   }
+
+  /* ★ スマホはbottom sheet方式に切り替え（透明背景バグの根本回避） */
   .lang-menu {
-    min-width: 200px;
-    max-width: calc(100vw - 24px);
+    /* 位置：画面下にフィット */
+    position: fixed !important;
+    top: auto !important;
+    right: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    /* 大きさ */
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    max-height: 75vh;
+    /* 形状：上だけ角丸 */
+    border-radius: 20px 20px 0 0 !important;
+    border: none !important;
+    /* 余白 */
+    padding: 8px 12px calc(20px + env(safe-area-inset-bottom)) !important;
+    /* ハンドル風の余白を確保するため上に余裕 */
+    padding-top: 28px !important;
+    /* スクロール可能に */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* 影 */
+    box-shadow: 0 -8px 32px -4px rgba(58, 31, 10, 0.25) !important;
+    /* 開閉アニメーション：下からスライド */
+    transform: translateY(100%) !important;
+    -webkit-transform: translateY(100%) !important;
+    transform-origin: bottom center !important;
+    transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s !important;
+    opacity: 1;
+    /* z-indexは維持 */
+    z-index: 99999;
+  }
+
+  /* 上部のドラッグハンドル（装飾のみ） */
+  .lang-menu::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(58, 31, 10, 0.18);
+  }
+
+  .lang-switch.is-open .lang-menu,
+  .lang-menu.is-open {
+    transform: translateY(0) !important;
+    -webkit-transform: translateY(0) !important;
+    pointer-events: auto;
+  }
+
+  /* ボタンを大きくタップしやすく */
+  .lang-menu button {
+    padding: 14px 18px !important;
+    font-size: 1rem !important;
+    border-radius: var(--radius-md) !important;
+    min-height: var(--tap-min, 42px);
+  }
+  .lang-menu button.is-active::after {
+    right: 18px !important;
+    font-size: 1.1rem !important;
+  }
+
+  /* ★ バックドロップ（暗い半透明オーバーレイ） */
+  .lang-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(58, 31, 10, 0.45);
+    z-index: 99998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.24s ease-out;
+  }
+  .lang-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ボトムシート展開中はbody背景スクロールを抑制 */
+  body.lang-sheet-open {
+    overflow: hidden;
   }
 }
 

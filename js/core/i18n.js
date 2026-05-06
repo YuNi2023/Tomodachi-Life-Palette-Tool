@@ -121,7 +121,8 @@ function i18nApply() {
 
 /* ---------- 言語スイッチャー ---------- */
 function i18nUpdateSwitcher() {
-  document.querySelectorAll('.lang-switch [data-lang]').forEach(btn => {
+  // メニュー要素はbody直下にあるかもしれないので、document全体から取る
+  document.querySelectorAll('[data-lang]').forEach(btn => {
     const isActive = btn.dataset.lang === i18nCurrent;
     btn.classList.toggle('is-active', isActive);
     btn.setAttribute('aria-pressed', String(isActive));
@@ -139,8 +140,24 @@ function i18nSetupSwitcher() {
   const root = document.querySelector('.lang-switch');
   if (!root) return;
 
-  // メニュー要素を自動構築（既存の手動指定があればそれも残す）
   const menu = root.querySelector('.lang-menu');
+
+  // ★ メニューをbody直下に移動（スタッキングコンテキスト分離のため）
+  if (menu && menu.parentNode !== document.body) {
+    document.body.appendChild(menu);
+  }
+
+  // ★ スマホ用バックドロップを生成（メニューと同じくbody直下に配置）
+  let backdrop = document.querySelector('.lang-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.className = 'lang-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+  }
+  backdrop.addEventListener('click', () => closeLangMenu());
+
+  // メニュー要素を自動構築
   if (menu && menu.children.length === 0) {
     I18N_SUPPORTED.forEach(code => {
       const btn = document.createElement('button');
@@ -155,15 +172,16 @@ function i18nSetupSwitcher() {
   }
 
   // 言語ボタンクリック
-  root.addEventListener('click', (e) => {
-    const btn = e.target.closest('[data-lang]');
-    if (!btn) return;
-    const lang = btn.dataset.lang;
-    try { localStorage.setItem(I18N_STORAGE, lang); } catch (_) {}
-    i18nLoad(lang);
-    // メニューを閉じる
-    closeLangMenu();
-  });
+  if (menu) {
+    menu.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-lang]');
+      if (!btn) return;
+      const lang = btn.dataset.lang;
+      try { localStorage.setItem(I18N_STORAGE, lang); } catch (_) {}
+      i18nLoad(lang);
+      closeLangMenu();
+    });
+  }
 
   // トグルボタン
   const toggle = root.querySelector('.lang-toggle');
@@ -171,23 +189,31 @@ function i18nSetupSwitcher() {
     toggle.addEventListener('click', (e) => {
       e.stopPropagation();
       const willOpen = !root.classList.contains('is-open');
-      if (willOpen) positionLangMenu();
-      const isOpen = root.classList.toggle('is-open');
-      toggle.setAttribute('aria-expanded', String(isOpen));
+      if (willOpen) openLangMenu();
+      else          closeLangMenu();
     });
   }
 
-  // ウィンドウリサイズやスクロール時に位置を追従
+  // ウィンドウリサイズ・スクロール時に位置を追従（PCドロップダウン用、スマホは固定なので不要）
   window.addEventListener('scroll', () => {
-    if (root.classList.contains('is-open')) positionLangMenu();
+    if (root.classList.contains('is-open') && !isMobileLayout()) positionLangMenu();
   }, { passive: true });
   window.addEventListener('resize', () => {
-    if (root.classList.contains('is-open')) positionLangMenu();
+    if (root.classList.contains('is-open')) {
+      if (isMobileLayout()) {
+        // モバイルではfixed bottomなので位置調整不要、ただしPC↔スマホの境界をまたいだ場合は閉じる
+      } else {
+        positionLangMenu();
+      }
+    }
   });
 
-  // 外側クリックで閉じる
+  // 外側クリックで閉じる（メニュー内クリックは除外）
   document.addEventListener('click', (e) => {
-    if (!root.contains(e.target)) closeLangMenu();
+    if (root.contains(e.target)) return;
+    if (menu && menu.contains(e.target)) return;
+    if (backdrop && backdrop.contains(e.target)) return; // バックドロップは独自クリックハンドラ
+    closeLangMenu();
   });
 
   // Escapeで閉じる
@@ -195,17 +221,34 @@ function i18nSetupSwitcher() {
     if (e.key === 'Escape') closeLangMenu();
   });
 
+  function isMobileLayout() {
+    return window.matchMedia('(max-width: 600px)').matches;
+  }
+
+  function openLangMenu() {
+    if (!isMobileLayout()) {
+      positionLangMenu();  // PC: ドロップダウン位置を計算
+    }
+    root.classList.add('is-open');
+    if (menu) menu.classList.add('is-open');
+    if (backdrop) backdrop.classList.add('is-open');
+    if (isMobileLayout()) document.body.classList.add('lang-sheet-open');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+  }
+
   function positionLangMenu() {
     if (!toggle || !menu) return;
     const r = toggle.getBoundingClientRect();
     menu.style.top = (r.bottom + 8) + 'px';
-    // 右端から最低12pxの余白を確保（スマホ端でメニューが画面外に出ないように）
     const rightFromWindow = Math.max(12, window.innerWidth - r.right);
     menu.style.right = rightFromWindow + 'px';
   }
 
   function closeLangMenu() {
     root.classList.remove('is-open');
+    if (menu) menu.classList.remove('is-open');
+    if (backdrop) backdrop.classList.remove('is-open');
+    document.body.classList.remove('lang-sheet-open');
     if (toggle) toggle.setAttribute('aria-expanded', 'false');
   }
 }
