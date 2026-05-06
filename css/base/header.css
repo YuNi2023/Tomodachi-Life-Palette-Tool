@@ -2,7 +2,6 @@ header {
   background: linear-gradient(135deg, #FF8F4D 0%, #FF6B1A 50%, #FF8F4D 100%);
   position: relative;
   overflow: hidden;
-  z-index: 10;
 }
 header::before, header::after {
   content: '';
@@ -187,14 +186,12 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   backface-visibility: hidden;
 }
 
-.lang-switch.is-open .lang-menu {
-  -webkit-transform: translateY(0) scale(1);
-}
-
-.lang-switch.is-open .lang-menu {
+.lang-switch.is-open .lang-menu,
+.lang-menu.is-open {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0) scale(1);
+  -webkit-transform: translateY(0) scale(1);
 }
 
 .lang-menu button {
