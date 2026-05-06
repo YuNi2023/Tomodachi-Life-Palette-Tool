@@ -161,7 +161,8 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   position: fixed;
   /* top/right はJS側で動的設定 */
   min-width: 180px;
-  background: var(--card);
+  background: #ffffff;
+  background: var(--card, #ffffff);
   border-radius: var(--radius-md);
   box-shadow:
     0 4px 0 rgba(58, 31, 10, 0.10),
@@ -176,6 +177,10 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   transform-origin: top right;
   transition: opacity 0.16s, transform 0.16s;
   z-index: 1000;
+  /* iOS Safari/Android Chromeで背景レンダリングを安定化 */
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  isolation: isolate;
 }
 
 .lang-switch.is-open .lang-menu {
@@ -241,18 +246,27 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
 
 @media (max-width: 600px) {
   .header-tools { width: 100%; justify-content: flex-end; gap: var(--gap-sm); }
-  .lang-toggle {
+  .lang-switch .lang-toggle {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 0 rgba(58, 31, 10, 0.18);
     padding: 6px 10px 6px 9px;
     font-size: 0.74rem;
     min-height: 30px;
   }
   .lang-menu {
-    min-width: 170px;
-    right: 0;
+    min-width: 200px;
+    max-width: calc(100vw - 24px);
   }
 }
 
 @media (max-width: 380px) {
   .lang-current { display: none; } /* 極小画面ではアイコン+▾だけに */
-  .lang-toggle { padding: 6px 10px; }
+  .lang-switch .lang-toggle {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 0 rgba(58, 31, 10, 0.18);
+    padding: 7px 11px;
+    min-width: 42px;
+    min-height: 36px;
+  }
+  .lang-icon { width: 18px; height: 18px; }
 }

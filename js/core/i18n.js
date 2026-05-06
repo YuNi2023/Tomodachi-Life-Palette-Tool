@@ -198,8 +198,10 @@ function i18nSetupSwitcher() {
   function positionLangMenu() {
     if (!toggle || !menu) return;
     const r = toggle.getBoundingClientRect();
-    menu.style.top   = (r.bottom + 8) + 'px';
-    menu.style.right = (window.innerWidth - r.right) + 'px';
+    menu.style.top = (r.bottom + 8) + 'px';
+    // 右端から最低12pxの余白を確保（スマホ端でメニューが画面外に出ないように）
+    const rightFromWindow = Math.max(12, window.innerWidth - r.right);
+    menu.style.right = rightFromWindow + 'px';
   }
 
   function closeLangMenu() {
