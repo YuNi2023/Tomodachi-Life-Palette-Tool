@@ -1,5 +1,4 @@
 
-
 var cropSrcCanvas = null;
 var cropDispW = 0;
 var cropDispH = 0;
@@ -222,9 +221,6 @@ function resizeCropBox(handle, startBox, dx, dy, sw, sh) {
   const oldB = oldY + oldS;
 
   let newX = oldX, newY = oldY, newS = oldS;
-
-
-
 
   let signX, signY, anchorX, anchorY;
   switch (handle) {

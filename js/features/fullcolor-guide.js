@@ -1,5 +1,4 @@
 
-
 function hueToPresses(h) {
   const anchors = [
     { h: 360, p: 0   },
@@ -143,7 +142,7 @@ function copyGuideSteps() {
 function flashCopyBtn(ok) {
   const btn = document.getElementById('copy-steps-btn');
   if (!btn) return;
-  // 元のラベルは翻訳キー由来なので毎回 t() で取り直す
+
   const original = t('fullcolor.copySteps');
   btn.textContent = ok ? t('fullcolor.copyOk') : t('fullcolor.copyFail');
   btn.classList.add('flash');

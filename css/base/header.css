@@ -87,7 +87,6 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   .header-logo { width: 48px; height: 48px; border-radius: 12px; }
 }
 
-/* ============ 言語スイッチャー（歯車アイコン＋ドロップダウン） ============ */
 .header-tools {
   display: flex;
   align-items: center;
@@ -101,7 +100,6 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   display: inline-block;
 }
 
-/* トグルボタン本体 */
 .lang-toggle {
   display: inline-flex;
   align-items: center;
@@ -156,10 +154,9 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   transform: rotate(180deg);
 }
 
-/* ドロップダウンメニュー（fixed配置 = headerのoverflow:hiddenを回避） */
 .lang-menu {
   position: fixed;
-  /* top/right はJS側で動的設定 */
+
   min-width: 180px;
   background-color: #ffffff !important;
   background-image: none !important;
@@ -178,7 +175,7 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   transform-origin: top right;
   transition: opacity 0.16s, transform 0.16s;
   z-index: 99999;
-  /* レンダリング安定化（Android Chromeでメニュー内が透けるバグ対策） */
+
   isolation: isolate;
   will-change: transform, opacity;
   -webkit-transform: translateY(-4px) scale(0.96);
@@ -211,7 +208,6 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
   white-space: nowrap;
 }
 
-/* 韓・繁中・欧文系は専用フォントスタックでバランス調整 */
 .lang-menu button[lang="ko"] { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', var(--font-jp); }
 .lang-menu button[lang="zh-TW"] { font-family: 'PingFang TC', 'Microsoft JhengHei', var(--font-jp); }
 .lang-menu button[lang="en"],
@@ -259,42 +255,40 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
     min-height: 30px;
   }
 
-  /* ★ スマホはbottom sheet方式に切り替え（透明背景バグの根本回避） */
   .lang-menu {
-    /* 位置：画面下にフィット */
+
     position: fixed !important;
     top: auto !important;
     right: 0 !important;
     left: 0 !important;
     bottom: 0 !important;
-    /* 大きさ */
+
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
     max-height: 75vh;
-    /* 形状：上だけ角丸 */
+
     border-radius: 20px 20px 0 0 !important;
     border: none !important;
-    /* 余白 */
+
     padding: 8px 12px calc(20px + env(safe-area-inset-bottom)) !important;
-    /* ハンドル風の余白を確保するため上に余裕 */
+
     padding-top: 28px !important;
-    /* スクロール可能に */
+
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    /* 影 */
+
     box-shadow: 0 -8px 32px -4px rgba(58, 31, 10, 0.25) !important;
-    /* 開閉アニメーション：下からスライド */
+
     transform: translateY(100%) !important;
     -webkit-transform: translateY(100%) !important;
     transform-origin: bottom center !important;
     transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s !important;
     opacity: 1;
-    /* z-indexは維持 */
+
     z-index: 99999;
   }
 
-  /* 上部のドラッグハンドル（装飾のみ） */
   .lang-menu::before {
     content: '';
     position: absolute;
@@ -314,7 +308,6 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
     pointer-events: auto;
   }
 
-  /* ボタンを大きくタップしやすく */
   .lang-menu button {
     padding: 14px 18px !important;
     font-size: 1rem !important;
@@ -326,7 +319,6 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
     font-size: 1.1rem !important;
   }
 
-  /* ★ バックドロップ（暗い半透明オーバーレイ） */
   .lang-backdrop {
     position: fixed;
     inset: 0;
@@ -341,14 +333,13 @@ header::after { width: 100px; height: 100px; bottom: -30px; left: 12%; backgroun
     pointer-events: auto;
   }
 
-  /* ボトムシート展開中はbody背景スクロールを抑制 */
   body.lang-sheet-open {
     overflow: hidden;
   }
 }
 
 @media (max-width: 380px) {
-  .lang-current { display: none; } /* 極小画面ではアイコン+▾だけに */
+  .lang-current { display: none; }
   .lang-switch .lang-toggle {
     background: rgba(255, 255, 255, 0.95);
     box-shadow: 0 2px 0 rgba(58, 31, 10, 0.18);

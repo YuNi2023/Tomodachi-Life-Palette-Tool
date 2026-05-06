@@ -1,5 +1,4 @@
 
-
 function attachUploadHandlers() {
 
   dropZone.addEventListener('click', () => fileInput.click());

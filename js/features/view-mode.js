@@ -1,5 +1,4 @@
 
-
 let _palRgbCache = null;
 function getPaletteRgb() {
   if (!_palRgbCache) {
