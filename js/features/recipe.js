@@ -70,7 +70,7 @@ function rebuildRecipe() {
   wrap.classList.remove('hidden');
   const total = recipe[0].total;
   const checkedCount = recipe.filter(it => recipeCheckState[it.idx]).length;
-  summaryEl.innerHTML = `合計 ${recipe.length} 色 / ${total} セル <span class="recipe-progress">${checkedCount}/${recipe.length} 完了</span>`;
+  summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
 
   listEl.innerHTML = '';
   recipe.forEach(item => {
@@ -80,19 +80,19 @@ function rebuildRecipe() {
     row.className = 'recipe-row' + (checked ? ' checked' : '');
     row.dataset.idx = item.idx;
     row.innerHTML = `
-      <button class="recipe-check" data-idx="${item.idx}" aria-label="完了チェック">
+      <button class="recipe-check" data-idx="${item.idx}" aria-label="${t('recipe.checkAria')}">
         <span class="recipe-check-mark"></span>
       </button>
       <div class="recipe-swatch" style="background:${p.h}"></div>
       <div class="recipe-info">
-        <div class="recipe-pos">${p.row + 1}行目 ${p.col + 1}列目</div>
+        <div class="recipe-pos">${t('color.rowCol', { row: p.row + 1, col: p.col + 1 })}</div>
         <div class="recipe-hex">${p.h.toUpperCase()}</div>
       </div>
       <div class="recipe-count">
         <div class="recipe-num">${item.count}<span class="recipe-unit">cells</span></div>
         <div class="recipe-pct">${(item.pct * 100).toFixed(1)}%</div>
       </div>
-      <button class="recipe-blink" data-idx="${item.idx}" aria-label="セルを点滅" title="セルを点滅">
+      <button class="recipe-blink" data-idx="${item.idx}" aria-label="${t('recipe.blinkAria')}" title="${t('recipe.blinkTitle')}">
         <span class="recipe-blink-icon"></span>
       </button>
     `;
@@ -134,7 +134,7 @@ function toggleRecipeCheck(idx) {
   const summaryEl = document.getElementById('recipe-summary');
   if (summaryEl && recipe.length) {
     const total = recipe[0].total;
-    summaryEl.innerHTML = `合計 ${recipe.length} 色 / ${total} セル <span class="recipe-progress">${checkedCount}/${recipe.length} 完了</span>`;
+    summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
   }
 }
 

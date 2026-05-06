@@ -36,7 +36,7 @@ function removeFavorite(hex) {
 
 function clearFavorites() {
   if (!favorites.length) return;
-  if (!confirm('お気に入り色をすべて削除しますか？')) return;
+  if (!confirm(t('favorites.confirmClear'))) return;
   favorites = [];
   saveFavorites();
   renderFavorites();
@@ -66,8 +66,8 @@ function renderFavorites() {
     cell.className = 'fav-cell';
     cell.title = f.hex;
     cell.innerHTML = `
-      <button class="fav-swatch" style="background:${f.hex}" data-hex="${f.hex}" aria-label="${f.hex}を再選択"></button>
-      <button class="fav-remove" data-hex="${f.hex}" aria-label="削除">×</button>
+      <button class="fav-swatch" style="background:${f.hex}" data-hex="${f.hex}" aria-label="${t('favorites.reselectAria', { hex: f.hex })}"></button>
+      <button class="fav-remove" data-hex="${f.hex}" aria-label="${t('favorites.removeAria')}">×</button>
       <span class="fav-hex">${f.hex}</span>
     `;
     cell.querySelector('.fav-swatch').addEventListener('click', () => {
@@ -94,7 +94,7 @@ function attachFavorites() {
       if (!hexEl) return;
       const hex = hexEl.textContent.trim();
       if (!/^#[0-9a-fA-F]{6}$/.test(hex)) {
-        alert('まず色を選択してください');
+        alert(t('fullcolor.selectFirst'));
         return;
       }
       addFavorite(hex);

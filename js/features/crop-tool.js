@@ -123,7 +123,11 @@ function getHandlePositions(bx, by, bs) {
 function updateCropInfo() {
   const el = document.getElementById('crop-info');
   if (!el) return;
-  el.textContent = `元画像 ${cropSrcCanvas.width}×${cropSrcCanvas.height}px → 切り出し ${cropBox.size}×${cropBox.size}px`;
+  el.textContent = t('crop.sizeInfo', {
+    sw: cropSrcCanvas.width,
+    sh: cropSrcCanvas.height,
+    cs: cropBox.size
+  });
 }
 
 function getCanvasPos(e) {

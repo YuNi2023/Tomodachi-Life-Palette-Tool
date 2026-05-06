@@ -106,21 +106,21 @@ function setLastGuideValues(values) {
 
 function copyGuideSteps() {
   if (!lastGuideValues) {
-    alert('まず色を選択してください');
+    alert(t('fullcolor.selectFirst'));
     return;
   }
   const v = lastGuideValues;
   const lines = [
-    `すぽいと帳 / 色: ${v.hex}`,
-    `HSV: ${v.h}°, ${v.s}%, ${v.v}%`,
+    `${t('fullcolor.clipTitle')}: ${v.hex}`,
+    `${t('fullcolor.clipHsv')}: ${v.h}°, ${v.s}%, ${v.v}%`,
     ``,
-    `■ ゲーム内手順`,
-    `1. 「フルカラー」タブを選択`,
-    `2. カラー正方形を一番左上（白）に戻す`,
-    `3. そこから右へ約 ${v.satPresses} 回、下へ約 ${v.valPresses} 回`,
-    `4. 色相スライダーを一番左（ZL）まで戻す`,
-    `5. そこから右（ZR）へ約 ${v.huePresses} 回`,
-    `   （一番右から左ZLなら約 ${200 - v.huePresses} 回でもOK）`,
+    t('fullcolor.clipHeader'),
+    t('fullcolor.clipStep1'),
+    t('fullcolor.clipStep2'),
+    t('fullcolor.clipStep3', { sat: v.satPresses, val: v.valPresses }),
+    t('fullcolor.clipStep4'),
+    t('fullcolor.clipStep5', { hue: v.huePresses }),
+    t('fullcolor.clipStep5b', { hueRev: 200 - v.huePresses }),
   ].join('\n');
 
   navigator.clipboard?.writeText(lines).then(() => {
@@ -143,9 +143,9 @@ function copyGuideSteps() {
 function flashCopyBtn(ok) {
   const btn = document.getElementById('copy-steps-btn');
   if (!btn) return;
-  const original = btn.dataset.label || btn.textContent;
-  btn.dataset.label = original;
-  btn.textContent = ok ? 'コピーしました' : 'コピー失敗';
+  // 元のラベルは翻訳キー由来なので毎回 t() で取り直す
+  const original = t('fullcolor.copySteps');
+  btn.textContent = ok ? t('fullcolor.copyOk') : t('fullcolor.copyFail');
   btn.classList.add('flash');
   setTimeout(() => {
     btn.textContent = original;

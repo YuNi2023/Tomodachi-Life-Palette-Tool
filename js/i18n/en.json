@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "title": "Spoito-cho | Palette tool for Tomodachi Life",
+    "description": "A color matching tool for the paint feature of Tomodachi Life. Pick colors from any image and see the in-game palette and step-by-step instructions."
+  },
+  "header": {
+    "title": "Spoito-cho",
+    "subtitle": "For Tomodachi Life paint mode",
+    "madeBy": "made by yu"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "upload": {
+    "drop": "Drop an image or click",
+    "noteHtml": "Pixel art, photos, screenshots — anything works.<br>Non-square images can be cropped to 1:1 on the next screen.",
+    "demo": "Try with demo image",
+    "guide": "How to use"
+  },
+  "crop": {
+    "label": "CROP",
+    "title": "Crop image to a square",
+    "descHtml": "Drag corner □ handles to resize, drag inside to reposition.<br>The in-game paint area is square, so pick a 1:1 region you want to use.",
+    "flipH": "Flip horizontal",
+    "flipV": "Flip vertical",
+    "rotate": "Rotate 90°",
+    "confirm": "Confirm crop",
+    "skip": "Skip cropping",
+    "reset": "Reset to center",
+    "sizeInfo": "Source {sw}×{sh}px → crop {cs}×{cs}px",
+    "loadFail": "Failed to load image.",
+    "demoFail": "Failed to generate demo image"
+  },
+  "viewer": {
+    "labelEn": "image viewer",
+    "labelJa": "Viewer",
+    "select": "Select",
+    "move": "Pan",
+    "ruler": "Ruler",
+    "help": "Help"
+  },
+  "view": {
+    "original": "Original",
+    "converted": "Game palette",
+    "gridSize": "Grid size",
+    "ditherLabel": "Option",
+    "dither": "Dither (error diffusion)",
+    "ditherHint": "Recommended ON for photos and gradients",
+    "savePng": "Save pixel art",
+    "saveNumbered": "Save paint-by-number",
+    "recrop": "Re-crop",
+    "reload": "Load another image",
+    "exportFail": "Failed to generate image.\n\nSee the browser DevTools console (F12) for details.",
+    "stampPaintReady": "  [in-game paint size]",
+    "stampCropped": "  [cropped]",
+    "numberedHeader": "Paint-by-number (palette #1–84)",
+    "imgInfoConverted": "Converted {cw}×{ch} (source {sw}×{sh}px)",
+    "imgInfoOriginal": "{w}×{h}px / {total} pixels",
+    "pbnConfirm": "Generate a paint-by-number PNG of {w}×{h}.\nThe file will be large (around 5–15 MB) and may take tens of seconds to create.\nContinue?",
+    "numberedHeader2": "Paint-by-number (palette #1–84)",
+    "numberedSize": "{w}×{h}  /  {n} colors"
+  },
+  "color": {
+    "labelEn": "color information",
+    "labelJa": "Color info",
+    "hex": "HEX",
+    "confirm": "Apply",
+    "hintHtml": "Click a pixel in the image on the left,<br>or enter a HEX code above.",
+    "selected": "Selected color",
+    "favorite": "Add to favorites",
+    "hexInputPos": "HEX input",
+    "convertedPrefix": "Converted ",
+    "rowCol": "row {row}, col {col}",
+    "distHint": "  (lower = closer)"
+  },
+  "palette": {
+    "fullColor": "Full color",
+    "nearest": "Nearest palette color",
+    "title": "Palette (84 colors)",
+    "hint": "The outlined cell is the closest match. Hover/tap a swatch to highlight matching cells in the image.",
+    "tabPalette": "Palette",
+    "tabFullColor": "Full color"
+  },
+  "fullcolor": {
+    "guide": "Full-color guide",
+    "section1": "01 Color square (saturation × brightness)",
+    "satLeft": "← White/gray (left)",
+    "satRight": "Vivid (right) →",
+    "valTop": "↑ Light (top)",
+    "valBottom": "↓ Dark (bottom)",
+    "section2": "02 Hue slider (ZL ⇔ ZR)",
+    "section3": "03 In-game steps to pick this color",
+    "copySteps": "Copy steps",
+    "copyOk": "Copied",
+    "copyFail": "Copy failed",
+    "selectFirst": "Please select a color first",
+    "clipTitle": "Spoito-cho / color",
+    "clipHsv": "HSV",
+    "clipHeader": "■ In-game steps",
+    "clipStep1": "1. Select the \"Full color\" tab",
+    "clipStep2": "2. Return the color square to the top-left (white)",
+    "clipStep3": "3. From there, right about {sat} times, down about {val} times",
+    "clipStep4": "4. Return the hue slider to the far left (ZL)",
+    "clipStep5": "5. From there, press right (ZR) about {hue} times",
+    "clipStep5b": "   (or from the far right, ZL about {hueRev} times)"
+  },
+  "recipe": {
+    "title": "Color recipe",
+    "hint": "Hover/tap a row to highlight matching cells in the image.",
+    "summaryHtml": "{colors} colors / {cells} cells <span class=\"recipe-progress\">{done}/{colors} done</span>",
+    "checkAria": "Mark as done",
+    "blinkAria": "Blink cells",
+    "blinkTitle": "Blink cells"
+  },
+  "favorites": {
+    "title": "Favorite colors",
+    "clear": "Clear all",
+    "hint": "Use \"Add to favorites\" to save the selected color",
+    "confirmClear": "Remove all favorite colors?",
+    "removeAria": "Remove",
+    "reselectAria": "Reselect {hex}"
+  },
+  "notice": {
+    "label": "NOTICE",
+    "title": "Before you use",
+    "noUploadHead": "Images are never uploaded",
+    "noUploadBody": "All processing happens inside your browser.",
+    "rightsHead": "You own the artwork you create",
+    "rightsBody": "Distribute and publish freely.",
+    "freeHead": "Free to use, share, and modify",
+    "freeBodyHtml": "See the <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a> license for details.",
+    "contact": "Contact",
+    "contactBodyHtml": "Reach out via <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> or <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>."
+  },
+  "guide": {
+    "title": "How to use",
+    "closeAria": "Close",
+    "h01": "01 / Load an image",
+    "p01Html": "Drop an image into the frame, or tap the frame to choose a file. No image at hand? Start from <strong>Try with demo image</strong>.",
+    "h02": "02 / Crop to 1:1 (if not square)",
+    "li02_1": "Resize with the corner □ handles (aspect ratio locked at 1:1)",
+    "li02_2": "Drag inside the frame to reposition",
+    "li02_3Html": "<strong>Confirm crop</strong>: crop the selection and proceed to the main screen",
+    "li02_4Html": "<strong>Skip cropping</strong>: use the original image as-is",
+    "li02_5Html": "<strong>Reset to center</strong>: return the selection to the largest possible square",
+    "li02_6Html": "After cropping, you can re-select anytime via <strong>Re-crop</strong> on the main screen",
+    "h03": "03 / Switch between Original / Converted",
+    "li03_1Html": "<strong>Original</strong>: shows the uploaded/cropped image as-is",
+    "li03_2Html": "<strong>Game palette</strong>: a preview repainted with the in-game 84 colors (grid sizes 16–64, dither ON/OFF)",
+    "h04": "04 / Pick a pixel color",
+    "li04_1": "Stay in select mode and tap/click a pixel in the image",
+    "li04_2": "HEX / RGB / HSV and the nearest palette color appear on the right",
+    "h05": "05 / Color recipe & highlight",
+    "p05": "When viewing converted, the color recipe shows below. Hover/tap a recipe row or palette swatch to highlight matching cells in the image.",
+    "h06": "06 / Direct HEX input",
+    "p06Html": "Paste a code into the <strong>HEX</strong> field (top right) and press Apply to see HSV steps without clicking the image. Short forms like <code>#fab</code> also work.",
+    "h07": "07 / Palette / Full color switch",
+    "li07_1Html": "<strong>Palette</strong>: shows the nearest of the in-game 84 colors",
+    "li07_2Html": "<strong>Full color</strong>: shows the hue slider and approximate operation counts for saturation × brightness",
+    "h08": "08 / Display helpers",
+    "li08_1Html": "<strong>Pan mode</strong>: drag to scroll when zoomed in",
+    "li08_2Html": "<strong>Ruler</strong>: shows center lines and X/Y coordinate numbers",
+    "li08_3Html": "<strong>+ / −</strong>: zoom levels (1× / 2× / 4× / 8× / 12× / 16×)"
+  },
+  "fullcolorGuide": {
+    "satXLabel": "Saturation (X): from far left to right, about",
+    "satXTimes": "times",
+    "satXReverseLabel": "(from far right to left, about",
+    "satXReverseTimes": "times)",
+    "valYLabel": "Brightness (Y): from top to bottom, about",
+    "valYTimes": "times",
+    "valYReverseLabel": "(from bottom to top, about",
+    "valYReverseTimes": "times)",
+    "guideNote": "Operation counts are estimates based on a 100-step scale.",
+    "hueZL0": "ZL (red 0°)",
+    "hueZR360": "ZR (red 360°)",
+    "hueLabel": "Hue:",
+    "huePressZRLabel": "→ press ZR from far left, about",
+    "huePressZRTimes": "times",
+    "huePressZLLabel": "(or press ZL from far right, about",
+    "huePressZLTimes": "times)"
+  },
+  "canvasHint": "Click / tap a pixel to pick a color",
+  "imgInfo": {
+    "size": "SIZE"
+  },
+  "aria": {
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in"
+  }
+}

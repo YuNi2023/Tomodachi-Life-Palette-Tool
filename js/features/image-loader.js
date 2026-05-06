@@ -78,7 +78,7 @@ img.onload = () => {
   };
 
   img.onerror = () => {
-    alert('画像の読み込みに失敗しました。');
+    alert(t('crop.loadFail'));
     URL.revokeObjectURL(url);
   };
 
@@ -187,7 +187,7 @@ function loadDemoImage() {
   const canvas = generateDemoCanvas();
   canvas.toBlob(blob => {
     if (!blob) {
-      alert('デモ画像の生成に失敗しました');
+      alert(t('crop.demoFail'));
       return;
     }
     loadImageFile(blob);

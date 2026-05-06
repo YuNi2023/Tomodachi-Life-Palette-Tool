@@ -366,16 +366,20 @@ function setViewMode(mode) {
 function updateImgInfo() {
   if (!imgData) return;
   if (viewMode === 'converted' && convertedData) {
-    imgInfoEl.textContent =
-      `変換後 ${convertedData.width}×${convertedData.height} ` +
-      `（元 ${imgData.width}×${imgData.height}px）`;
+    imgInfoEl.textContent = t('view.imgInfoConverted', {
+      cw: convertedData.width, ch: convertedData.height,
+      sw: imgData.width,        sh: imgData.height
+    });
   } else {
-    let txt = `${imgData.width}×${imgData.height}px / ${imgData.width * imgData.height} ピクセル`;
+    let txt = t('view.imgInfoOriginal', {
+      w: imgData.width, h: imgData.height,
+      total: imgData.width * imgData.height
+    });
     if (imgData.width === 16 && imgData.height === 16) {
-      txt += '  [ゲーム内ペイント対応サイズ]';
+      txt += t('view.stampPaintReady');
     }
     if (imgData.cropped) {
-      txt += '  [クロップ済み]';
+      txt += t('view.stampCropped');
     }
     imgInfoEl.textContent = txt;
   }
@@ -429,7 +433,7 @@ function downloadConvertedImage() {
     .then(blob => {
       if (!blob) {
         console.error('composeBrandedImage が null を返しました');
-        alert('画像の生成に失敗しました\n\n詳細はブラウザの開発者ツール（F12）のコンソールをご確認ください。');
+        alert(t('view.exportFail'));
         return;
       }
       const url = URL.createObjectURL(blob);
@@ -447,7 +451,7 @@ function downloadConvertedImage() {
     })
     .catch(err => {
       console.error('ドット絵生成エラー:', err);
-      alert('画像の生成に失敗しました\n\n詳細はブラウザの開発者ツール（F12）のコンソールをご確認ください。');
+      alert(t('view.exportFail'));
     });
 }
 
@@ -566,11 +570,10 @@ function downloadPaintByNumbersImage() {
 
   const maxSide = Math.max(convertedData.width, convertedData.height);
   if (maxSide >= 192) {
-    const ok = confirm(
-      `${convertedData.width}×${convertedData.height} の番号塗り絵PNGを生成します。\n` +
-      `ファイルが大きく（5〜15MB目安）、生成に数十秒かかる場合があります。\n` +
-      `続行しますか？`
-    );
+    const ok = confirm(t('view.pbnConfirm', {
+      w: convertedData.width,
+      h: convertedData.height
+    }));
     if (!ok) return;
   }
 
@@ -578,7 +581,7 @@ function downloadPaintByNumbersImage() {
     .then(blob => {
       if (!blob) {
         console.error('composePaintByNumbers が null を返しました');
-        alert('画像の生成に失敗しました\n\n詳細はブラウザの開発者ツール（F12）のコンソールをご確認ください。');
+        alert(t('view.exportFail'));
         return;
       }
       const url = URL.createObjectURL(blob);
@@ -595,7 +598,7 @@ function downloadPaintByNumbersImage() {
     })
     .catch(err => {
       console.error('番号塗り絵生成エラー:', err);
-      alert('画像の生成に失敗しました\n\n詳細はブラウザの開発者ツール（F12）のコンソールをご確認ください。');
+      alert(t('view.exportFail'));
     });
 }
 
@@ -655,9 +658,9 @@ function composePaintByNumbers(d) {
       ctx.font = `800 ${Math.round(chromeUnit * 0.5)}px "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif`;
       ctx.textBaseline = 'middle';
       ctx.textAlign = 'left';
-      ctx.fillText('番号塗り絵（パレット番号 1〜84）', padX, headerH / 2);
+      ctx.fillText(t('view.numberedHeader2'), padX, headerH / 2);
 
-      const sizeText = `${w}×${h}  /  ${usedList.length}色`;
+      const sizeText = t('view.numberedSize', { w, h, n: usedList.length });
       ctx.font = `700 ${Math.round(chromeUnit * 0.34)}px "JetBrains Mono", monospace`;
       ctx.fillStyle = '#9C7553';
       ctx.textAlign = 'right';
@@ -764,7 +767,7 @@ function composePaintByNumbers(d) {
         const numW = ctx.measureText(numStr).width;
         ctx.fillStyle = '#3A1F0A';
         ctx.font = `700 ${Math.round(chromeUnit * 0.28)}px "M PLUS Rounded 1c", "Hiragino Sans", sans-serif`;
-        ctx.fillText(`${p.row + 1}行 ${p.col + 1}列`, x + swSize + 8 + numW + 8, y);
+        ctx.fillText(t('color.rowCol', { row: p.row + 1, col: p.col + 1 }), x + swSize + 8 + numW + 8, y);
       });
 
       const bandY = offsetY + imgH + legendH;

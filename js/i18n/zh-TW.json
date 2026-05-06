@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "title": "Spoito-cho ｜ 朋友收藏集 新生活 調色板工具",
+    "description": "適用於朋友收藏集 新生活繪畫功能的色彩匹配工具。從圖片中提取顏色並顯示遊戲內調色板及操作步驟。"
+  },
+  "header": {
+    "title": "Spoito-cho",
+    "subtitle": "朋友收藏集 新生活 專用",
+    "madeBy": "made by yu"
+  },
+  "lang": {
+    "label": "語言"
+  },
+  "upload": {
+    "drop": "拖放圖片或點擊",
+    "noteHtml": "像素畫、照片、截圖等都可以讀取。<br>非正方形圖片可在下個畫面裁切為 1:1。",
+    "demo": "用範例圖片試試",
+    "guide": "查看使用方法"
+  },
+  "crop": {
+    "label": "CROP",
+    "title": "將圖片裁切為正方形",
+    "descHtml": "拖曳角落 □ 控制點調整大小,內側拖曳調整位置。<br>遊戲內繪畫區域為正方形,請以 1:1 選擇要使用的範圍。",
+    "flipH": "左右翻轉",
+    "flipV": "上下翻轉",
+    "rotate": "旋轉 90°",
+    "confirm": "以此範圍確定",
+    "skip": "不裁切直接使用",
+    "reset": "置中重設",
+    "sizeInfo": "原圖 {sw}×{sh}px → 裁切 {cs}×{cs}px",
+    "loadFail": "圖片讀取失敗。",
+    "demoFail": "範例圖片產生失敗"
+  },
+  "viewer": {
+    "labelEn": "image viewer",
+    "labelJa": "圖片檢視器",
+    "select": "選取",
+    "move": "移動",
+    "ruler": "尺規",
+    "help": "使用方法"
+  },
+  "view": {
+    "original": "原圖",
+    "converted": "遊戲調色板轉換",
+    "gridSize": "格線大小",
+    "ditherLabel": "選項",
+    "dither": "抖色(誤差擴散)",
+    "ditherHint": "照片或漸層建議開啟",
+    "savePng": "儲存像素圖",
+    "saveNumbered": "儲存編號著色圖",
+    "recrop": "重新裁切",
+    "reload": "載入其他圖片",
+    "exportFail": "圖片產生失敗\n\n詳細資訊請查看瀏覽器開發者工具(F12)的主控台。",
+    "stampPaintReady": "  [遊戲內繪畫適用尺寸]",
+    "stampCropped": "  [已裁切]",
+    "numberedHeader": "編號著色圖(調色板編號 1〜84)",
+    "imgInfoConverted": "轉換後 {cw}×{ch} (原 {sw}×{sh}px)",
+    "imgInfoOriginal": "{w}×{h}px / {total} 像素",
+    "pbnConfirm": "將產生 {w}×{h} 的編號著色 PNG。\n檔案較大(約 5〜15MB),產生可能需要數十秒。\n要繼續嗎?",
+    "numberedHeader2": "編號著色圖(調色板編號 1〜84)",
+    "numberedSize": "{w}×{h}  /  {n}色"
+  },
+  "color": {
+    "labelEn": "color information",
+    "labelJa": "色彩資訊",
+    "hex": "HEX",
+    "confirm": "確認",
+    "hintHtml": "點擊左側圖片的像素<br>或在上方輸入 HEX 代碼",
+    "selected": "選擇的顏色",
+    "favorite": "加入最愛",
+    "hexInputPos": "HEX 輸入",
+    "convertedPrefix": "轉換後 ",
+    "rowCol": "第{row}列 第{col}行",
+    "distHint": "  (越低越接近)"
+  },
+  "palette": {
+    "fullColor": "全彩",
+    "nearest": "最接近的調色板顏色",
+    "title": "調色板 84色",
+    "hint": "有外框的是最接近的顏色。將滑鼠移至/點擊顏色,圖片中對應的格子會反白顯示。",
+    "tabPalette": "調色板",
+    "tabFullColor": "全彩"
+  },
+  "fullcolor": {
+    "guide": "全彩指南",
+    "section1": "01 色彩正方形(飽和度×明度)",
+    "satLeft": "← 白/灰(左)",
+    "satRight": "鮮豔(右) →",
+    "valTop": "↑ 明亮(上)",
+    "valBottom": "↓ 暗(下)",
+    "section2": "02 色相滑桿(ZL ⇔ ZR)",
+    "section3": "03 在遊戲內選擇此顏色的步驟",
+    "copySteps": "複製步驟",
+    "copyOk": "已複製",
+    "copyFail": "複製失敗",
+    "selectFirst": "請先選擇顏色",
+    "clipTitle": "Spoito-cho / 顏色",
+    "clipHsv": "HSV",
+    "clipHeader": "■ 遊戲內步驟",
+    "clipStep1": "1. 選擇「全彩」分頁",
+    "clipStep2": "2. 將色彩正方形回到最左上(白色)",
+    "clipStep3": "3. 從那裡向右約 {sat} 次,向下約 {val} 次",
+    "clipStep4": "4. 將色相滑桿回到最左(ZL)",
+    "clipStep5": "5. 從那裡向右(ZR)約 {hue} 次",
+    "clipStep5b": "   (從最右側按 ZL 約 {hueRev} 次也可以)"
+  },
+  "recipe": {
+    "title": "使用色彩配方",
+    "hint": "將滑鼠移至/點擊行,圖片中對應的格子會反白顯示。",
+    "summaryHtml": "共 {colors} 色 / {cells} 格 <span class=\"recipe-progress\">{done}/{colors} 完成</span>",
+    "checkAria": "完成標記",
+    "blinkAria": "閃爍格子",
+    "blinkTitle": "閃爍格子"
+  },
+  "favorites": {
+    "title": "最愛顏色",
+    "clear": "全部刪除",
+    "hint": "用「加入最愛」儲存目前選擇的顏色",
+    "confirmClear": "要刪除所有最愛顏色嗎?",
+    "removeAria": "刪除",
+    "reselectAria": "重新選擇 {hex}"
+  },
+  "guide": {
+    "title": "使用方法",
+    "closeAria": "關閉",
+    "h01": "01 / 載入圖片",
+    "p01Html": "拖放圖片到框架內,或點擊框架選擇檔案。沒有圖片的話,可從 <strong>用範例圖片試試</strong> 開始。",
+    "h02": "02 / 裁切為 1:1 (非正方形時)",
+    "li02_1": "用角落 □ 控制點調整大小(長寬比固定 1:1)",
+    "li02_2": "拖曳框架內側調整位置",
+    "li02_3Html": "<strong>以此範圍確定</strong>: 裁切選取範圍並進入主畫面",
+    "li02_4Html": "<strong>不裁切直接使用</strong>: 以原圖進入主畫面",
+    "li02_5Html": "<strong>置中重設</strong>: 將選取框回到最大正方形",
+    "li02_6Html": "裁切後,主畫面的 <strong>重新裁切</strong> 可隨時重新選擇",
+    "h03": "03 / 切換原圖 / 轉換",
+    "li03_1Html": "<strong>原圖</strong>: 直接顯示上傳/裁切過的圖片",
+    "li03_2Html": "<strong>遊戲調色板轉換</strong>: 用遊戲內 84 色重繪的預覽(格線 16〜64 可選,抖色 ON/OFF 可切換)",
+    "h04": "04 / 取得像素顏色",
+    "li04_1": "在選取模式下點擊/觸碰圖片中的像素",
+    "li04_2": "右側會顯示 HEX / RGB / HSV 與最接近的調色板顏色",
+    "h05": "05 / 使用色彩配方·反白",
+    "p05": "轉換檢視時,下方會顯示使用色彩配方。將滑鼠移至/點擊配方行或調色板格子,圖片中對應的格子會浮現。",
+    "h06": "06 / HEX 直接輸入",
+    "p06Html": "在右上的 <strong>HEX</strong> 欄貼上代碼按「確認」,即使不點圖也能顯示 HSV 步驟。也支援 <code>#fab</code> 等簡寫。",
+    "h07": "07 / 調色板 / 全彩切換",
+    "li07_1Html": "<strong>調色板</strong>: 顯示遊戲內 84 色中最接近的顏色",
+    "li07_2Html": "<strong>全彩</strong>: 顯示色相滑桿和飽和度×明度的操作次數預估",
+    "h08": "08 / 顯示輔助功能",
+    "li08_1Html": "<strong>移動模式</strong>: 放大顯示時拖曳捲動",
+    "li08_2Html": "<strong>尺規</strong>: 顯示圖片中心線和 X/Y 座標編號",
+    "li08_3Html": "<strong>＋ / −</strong>: 顯示倍率(1× / 2× / 4× / 8× / 12× / 16×)"
+  },
+  "fullcolorGuide": {
+    "satXLabel": "飽和度(X): 從最左到右",
+    "satXTimes": "次",
+    "satXReverseLabel": "(從最右到左",
+    "satXReverseTimes": "次)",
+    "valYLabel": "明度(Y): 從最上到下",
+    "valYTimes": "次",
+    "valYReverseLabel": "(從最下到上",
+    "valYReverseTimes": "次)",
+    "guideNote": "操作次數為以 100 次為基準的預測值。",
+    "hueZL0": "ZL(紅 0°)",
+    "hueZR360": "ZR(紅 360°)",
+    "hueLabel": "色相:",
+    "huePressZRLabel": "→ 從最左按 ZR 約",
+    "huePressZRTimes": "次",
+    "huePressZLLabel": "(從最右按 ZL 的話約",
+    "huePressZLTimes": "次)"
+  },
+  "canvasHint": "點擊 / 觸碰像素以取得顏色",
+  "imgInfo": {
+    "size": "SIZE"
+  },
+  "aria": {
+    "zoomOut": "縮小",
+    "zoomIn": "放大"
+  },
+  "notice": {
+    "label": "NOTICE",
+    "title": "使用須知",
+    "noUploadHead": "圖片不會上傳到伺服器",
+    "noUploadBody": "所有處理都在瀏覽器內完成。",
+    "rightsHead": "作品權利歸使用者所有",
+    "rightsBody": "用本工具製作的作品可自由散佈·公開。",
+    "freeHead": "工具可自由使用·介紹·改良",
+    "freeBodyHtml": "詳情請查看 <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a> 的授權條款。",
+    "contact": "聯絡方式",
+    "contactBodyHtml": "請透過 <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> 或 <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a> 聯絡。"
+  }
+}

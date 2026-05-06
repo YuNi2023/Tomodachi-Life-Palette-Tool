@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "title": "Spoito-cho | Outil de palette pour Tomodachi Life",
+    "description": "Outil de correspondance des couleurs pour le mode peinture de Tomodachi Life. Extrayez les couleurs d'une image et obtenez la palette du jeu et les étapes à suivre."
+  },
+  "header": {
+    "title": "Spoito-cho",
+    "subtitle": "Pour le mode peinture de Tomodachi Life",
+    "madeBy": "made by yu"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "upload": {
+    "drop": "Déposez une image ou cliquez",
+    "noteHtml": "Pixel art, photos, captures d'écran — tout est accepté.<br>Les images non carrées peuvent être recadrées en 1:1 à l'écran suivant.",
+    "demo": "Essayer avec une image démo",
+    "guide": "Mode d'emploi"
+  },
+  "crop": {
+    "label": "CROP",
+    "title": "Recadrer l'image en carré",
+    "descHtml": "Faites glisser les poignées □ pour redimensionner, glissez à l'intérieur pour repositionner.<br>La zone de peinture du jeu est carrée — choisissez une région 1:1.",
+    "flipH": "Miroir horizontal",
+    "flipV": "Miroir vertical",
+    "rotate": "Rotation 90°",
+    "confirm": "Valider le recadrage",
+    "skip": "Sans recadrer",
+    "reset": "Recentrer",
+    "sizeInfo": "Source {sw}×{sh}px → recadrage {cs}×{cs}px",
+    "loadFail": "Échec du chargement de l'image.",
+    "demoFail": "Échec de la génération de l'image démo"
+  },
+  "viewer": {
+    "labelEn": "image viewer",
+    "labelJa": "Visionneuse",
+    "select": "Sélection",
+    "move": "Déplacer",
+    "ruler": "Règle",
+    "help": "Aide"
+  },
+  "view": {
+    "original": "Original",
+    "converted": "Palette du jeu",
+    "gridSize": "Taille de grille",
+    "ditherLabel": "Option",
+    "dither": "Tramage (diffusion d'erreur)",
+    "ditherHint": "Recommandé pour photos et dégradés",
+    "savePng": "Enregistrer le pixel art",
+    "saveNumbered": "Enregistrer la version à colorier",
+    "recrop": "Recadrer à nouveau",
+    "reload": "Charger une autre image",
+    "exportFail": "Échec de la génération de l'image.\n\nVoir la console des outils de développement (F12) pour plus de détails.",
+    "stampPaintReady": "  [taille compatible peinture]",
+    "stampCropped": "  [recadré]",
+    "numberedHeader": "À colorier (palette n°1–84)",
+    "imgInfoConverted": "Converti {cw}×{ch} (source {sw}×{sh}px)",
+    "imgInfoOriginal": "{w}×{h}px / {total} pixels",
+    "pbnConfirm": "Générer un PNG à colorier de {w}×{h}.\nLe fichier sera volumineux (environ 5 à 15 Mo) et la génération peut prendre plusieurs dizaines de secondes.\nContinuer ?",
+    "numberedHeader2": "À colorier (palette n°1–84)",
+    "numberedSize": "{w}×{h}  /  {n} couleurs"
+  },
+  "color": {
+    "labelEn": "color information",
+    "labelJa": "Infos couleur",
+    "hex": "HEX",
+    "confirm": "Valider",
+    "hintHtml": "Cliquez un pixel sur l'image à gauche,<br>ou saisissez un code HEX ci-dessus.",
+    "selected": "Couleur sélectionnée",
+    "favorite": "Ajouter aux favoris",
+    "hexInputPos": "Saisie HEX",
+    "convertedPrefix": "Convertie ",
+    "rowCol": "ligne {row}, col. {col}",
+    "distHint": "  (plus bas = plus proche)"
+  },
+  "palette": {
+    "fullColor": "Couleur réelle",
+    "nearest": "Couleur de palette la plus proche",
+    "title": "Palette (84 couleurs)",
+    "hint": "La case encadrée est la plus proche. Survolez/touchez une couleur pour mettre en évidence les pixels correspondants.",
+    "tabPalette": "Palette",
+    "tabFullColor": "Couleur réelle"
+  },
+  "fullcolor": {
+    "guide": "Guide couleur réelle",
+    "section1": "01 Carré de couleur (saturation × luminosité)",
+    "satLeft": "← Blanc/gris (gauche)",
+    "satRight": "Vif (droite) →",
+    "valTop": "↑ Clair (haut)",
+    "valBottom": "↓ Sombre (bas)",
+    "section2": "02 Curseur de teinte (ZL ⇔ ZR)",
+    "section3": "03 Étapes pour choisir cette couleur en jeu",
+    "copySteps": "Copier les étapes",
+    "copyOk": "Copié",
+    "copyFail": "Échec de la copie",
+    "selectFirst": "Veuillez d'abord sélectionner une couleur",
+    "clipTitle": "Spoito-cho / couleur",
+    "clipHsv": "HSV",
+    "clipHeader": "■ Étapes en jeu",
+    "clipStep1": "1. Sélectionnez l'onglet « Couleur réelle »",
+    "clipStep2": "2. Ramenez le carré de couleur en haut à gauche (blanc)",
+    "clipStep3": "3. De là, vers la droite environ {sat} fois, vers le bas environ {val} fois",
+    "clipStep4": "4. Ramenez le curseur de teinte à l'extrême gauche (ZL)",
+    "clipStep5": "5. De là, appuyez à droite (ZR) environ {hue} fois",
+    "clipStep5b": "   (ou depuis l'extrême droite, ZL environ {hueRev} fois)"
+  },
+  "recipe": {
+    "title": "Recette des couleurs",
+    "hint": "Survolez/touchez une ligne pour mettre en évidence les pixels correspondants.",
+    "summaryHtml": "Total : {colors} couleurs / {cells} cellules <span class=\"recipe-progress\">{done}/{colors} terminé</span>",
+    "checkAria": "Marquer terminé",
+    "blinkAria": "Faire clignoter",
+    "blinkTitle": "Faire clignoter"
+  },
+  "favorites": {
+    "title": "Couleurs favorites",
+    "clear": "Tout effacer",
+    "hint": "Utilisez « Ajouter aux favoris » pour mémoriser la couleur sélectionnée",
+    "confirmClear": "Supprimer toutes les couleurs favorites ?",
+    "removeAria": "Supprimer",
+    "reselectAria": "Resélectionner {hex}"
+  },
+  "notice": {
+    "label": "NOTICE",
+    "title": "Avant utilisation",
+    "noUploadHead": "Les images ne sont jamais envoyées",
+    "noUploadBody": "Tout le traitement se fait dans votre navigateur.",
+    "rightsHead": "Les œuvres vous appartiennent",
+    "rightsBody": "Distribuez et publiez librement.",
+    "freeHead": "Libre d'usage, de partage et de modification",
+    "freeBodyHtml": "Voir la licence sur <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a> pour plus de détails.",
+    "contact": "Contact",
+    "contactBodyHtml": "Contactez via <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> ou <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>."
+  },
+  "guide": {
+    "title": "Mode d'emploi",
+    "closeAria": "Fermer",
+    "h01": "01 / Charger une image",
+    "p01Html": "Déposez une image dans le cadre, ou touchez le cadre pour choisir un fichier. Pas d'image sous la main ? Démarrez avec <strong>Essayer avec une image démo</strong>.",
+    "h02": "02 / Recadrer en 1:1 (si non carrée)",
+    "li02_1": "Redimensionnez avec les poignées □ aux coins (rapport 1:1 verrouillé)",
+    "li02_2": "Faites glisser à l'intérieur du cadre pour repositionner",
+    "li02_3Html": "<strong>Valider le recadrage</strong> : recadre la sélection et passe à l'écran principal",
+    "li02_4Html": "<strong>Sans recadrer</strong> : utilise l'image originale telle quelle",
+    "li02_5Html": "<strong>Recentrer</strong> : ramène la sélection au plus grand carré possible",
+    "li02_6Html": "Après recadrage, vous pouvez re-sélectionner à tout moment via <strong>Recadrer à nouveau</strong>",
+    "h03": "03 / Basculer entre Original / Converti",
+    "li03_1Html": "<strong>Original</strong> : affiche l'image téléversée/recadrée telle quelle",
+    "li03_2Html": "<strong>Palette du jeu</strong> : aperçu repeint avec les 84 couleurs du jeu (grilles 16–64, tramage ON/OFF)",
+    "h04": "04 / Extraire la couleur d'un pixel",
+    "li04_1": "Restez en mode sélection et touchez/cliquez un pixel de l'image",
+    "li04_2": "HEX / RGB / HSV et la couleur de palette la plus proche s'affichent à droite",
+    "h05": "05 / Recette des couleurs & mise en évidence",
+    "p05": "En vue convertie, la recette des couleurs s'affiche en bas. Survolez/touchez une ligne de recette ou une case de palette pour mettre en évidence les pixels correspondants.",
+    "h06": "06 / Saisie HEX directe",
+    "p06Html": "Collez un code dans le champ <strong>HEX</strong> (en haut à droite) et appuyez sur Valider pour voir les étapes HSV sans cliquer l'image. Les formes courtes comme <code>#fab</code> fonctionnent aussi.",
+    "h07": "07 / Palette / Couleur réelle",
+    "li07_1Html": "<strong>Palette</strong> : affiche la plus proche des 84 couleurs du jeu",
+    "li07_2Html": "<strong>Couleur réelle</strong> : affiche le curseur de teinte et le nombre d'opérations approximatif pour saturation × luminosité",
+    "h08": "08 / Aides à l'affichage",
+    "li08_1Html": "<strong>Mode déplacement</strong> : faites glisser pour défiler lors d'un zoom",
+    "li08_2Html": "<strong>Règle</strong> : affiche les axes centraux et les numéros de coordonnées X/Y",
+    "li08_3Html": "<strong>+ / −</strong> : niveaux de zoom (1× / 2× / 4× / 8× / 12× / 16×)"
+  },
+  "fullcolorGuide": {
+    "satXLabel": "Saturation (X) : de l'extrême gauche à droite, environ",
+    "satXTimes": "fois",
+    "satXReverseLabel": "(de l'extrême droite à gauche, environ",
+    "satXReverseTimes": "fois)",
+    "valYLabel": "Luminosité (Y) : du haut vers le bas, environ",
+    "valYTimes": "fois",
+    "valYReverseLabel": "(du bas vers le haut, environ",
+    "valYReverseTimes": "fois)",
+    "guideNote": "Le nombre d'opérations est une estimation basée sur une échelle de 100.",
+    "hueZL0": "ZL (rouge 0°)",
+    "hueZR360": "ZR (rouge 360°)",
+    "hueLabel": "Teinte :",
+    "huePressZRLabel": "→ appuyez ZR depuis l'extrême gauche, environ",
+    "huePressZRTimes": "fois",
+    "huePressZLLabel": "(ou appuyez ZL depuis l'extrême droite, environ",
+    "huePressZLTimes": "fois)"
+  },
+  "canvasHint": "Cliquez / touchez un pixel pour extraire une couleur",
+  "imgInfo": {
+    "size": "SIZE"
+  },
+  "aria": {
+    "zoomOut": "Dézoomer",
+    "zoomIn": "Zoomer"
+  }
+}
