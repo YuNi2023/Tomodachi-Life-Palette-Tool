@@ -2,14 +2,14 @@
 function hueToPresses(h) {
   const anchors = [
     { h: 360, p: 0   },
-    { h: 300, p: 26  },
-    { h: 240, p: 63  },
-    { h: 180, p: 100 },
-    { h: 120, p: 137 },
-    { h: 60,  p: 174 },
-    { h: 0,   p: 200 }
+    { h: 300, p: 13  },
+    { h: 240, p: 32  },
+    { h: 180, p: 50  },
+    { h: 120, p: 68  },
+    { h: 60,  p: 87  },
+    { h: 0,   p: 100 }
   ];
-  if (h === 0) return 200;
+  if (h === 0) return 100;
   for (let i = 0; i < anchors.length - 1; i++) {
     const a1 = anchors[i];
     const a2 = anchors[i + 1];
@@ -25,12 +25,12 @@ function updateFullColorGuide(hsv, r, g, b) {
   const { h, s, v } = hsv;
 
   const huePresses = hueToPresses(h);
-  const huePct = (huePresses / 200) * 100;
+  const huePct = huePresses;
 
   document.getElementById('hue-indicator').style.left = huePct + '%';
   document.getElementById('hue-num').textContent = h;
   document.getElementById('hue-presses-r').textContent = huePresses;
-  document.getElementById('hue-presses-l').textContent = (200 - huePresses);
+  document.getElementById('hue-presses-l').textContent = (100 - huePresses);
 
   drawSvSquare(h);
   const svCanvas = document.getElementById('sv-canvas');
@@ -55,7 +55,7 @@ function updateFullColorGuide(hsv, r, g, b) {
       <li>正方形を一番左上（白）に戻す</li>
       <li>そこから右へ <strong>約 ${satPresses} 回</strong>、下へ <strong>約 ${valPresses} 回</strong> 動かす</li>
       <li>色相スライダーを一番左（ZL）まで戻す</li>
-      <li>そこから右（ZR）へ <strong>約 ${huePresses} 回</strong> 動かす<br>（一番右から左（ZL）へ ${200 - huePresses} 回でもOK）</li>
+      <li>そこから右（ZR）へ <strong>約 ${huePresses} 回</strong> 動かす<br>（一番右から左（ZL）へ ${100 - huePresses} 回でもOK）</li>
     </ol>
   `;
 
@@ -119,7 +119,7 @@ function copyGuideSteps() {
     t('fullcolor.clipStep3', { sat: v.satPresses, val: v.valPresses }),
     t('fullcolor.clipStep4'),
     t('fullcolor.clipStep5', { hue: v.huePresses }),
-    t('fullcolor.clipStep5b', { hueRev: 200 - v.huePresses }),
+    t('fullcolor.clipStep5b', { hueRev: 100 - v.huePresses }),
   ].join('\n');
 
   navigator.clipboard?.writeText(lines).then(() => {
