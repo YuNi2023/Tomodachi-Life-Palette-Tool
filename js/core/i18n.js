@@ -1,5 +1,5 @@
 
-const I18N_SUPPORTED = ['ja', 'en', 'ko', 'fr', 'es', 'zh-TW', 'de', 'it', 'nl', 'pt-BR'];
+const I18N_SUPPORTED = ['ja', 'en', 'ko', 'fr', 'es', 'zh-TW', 'zh-CN', 'de', 'it', 'nl', 'pt-BR', 'ru'];
 const I18N_FALLBACK  = 'ja';
 const I18N_STORAGE   = 'spoito_lang';
 
@@ -10,10 +10,12 @@ const I18N_NATIVE_NAMES = {
   fr: 'Français',
   es: 'Español',
   'zh-TW': '繁體中文',
+  'zh-CN': '简体中文',
   de: 'Deutsch',
   it: 'Italiano',
   nl: 'Nederlands',
-  'pt-BR': 'Português (BR)'
+  'pt-BR': 'Português (BR)',
+  ru: 'Русский'
 };
 
 let i18nDict = {};
@@ -37,6 +39,7 @@ function i18nDetect() {
 
   const REGION_MAP = {
     'zh-hant': 'zh-TW', 'zh-tw': 'zh-TW', 'zh-hk': 'zh-TW', 'zh-mo': 'zh-TW',
+    'zh-hans': 'zh-CN', 'zh-cn': 'zh-CN', 'zh-sg': 'zh-CN', 'zh-my': 'zh-CN',
     'pt-br':   'pt-BR'
   };
 

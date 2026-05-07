@@ -1,6 +1,6 @@
 # すぽいと帳
 
-🌍 日本語 / English / 한국어 / Français / Español / 繁體中文 / Deutsch / Italiano / Nederlands / Português (BR)
+🌍 日本語 / English / 한국어 / Français / Español / 繁體中文 / 简体中文 / Deutsch / Italiano / Nederlands / Português (BR) / Русский
 
 トモダチコレクション わくわく生活のペイント機能で使える色合わせツール。
 
@@ -17,19 +17,20 @@
 - パレット/レシピのhoverハイライト連動
 - HEXコード直接入力
 - ドット絵PNGダウンロード（ロゴ・タイトル帯付き）
-- 10言語対応（ブラウザ言語による自動判定 + 手動切替可能）
+- 12言語対応（ブラウザ言語による自動判定 + 手動切替可能）
 
 ## 多言語対応
 
-10言語に対応しています。ヘッダー右上の歯車アイコンから切替できます。
+12言語に対応しています。ヘッダー右上の歯車アイコンから切替できます。
 
 | | |
 |---|---|
 | 日本語 | English |
 | 한국어 | Français |
 | Español | 繁體中文 |
-| Deutsch | Italiano |
-| Nederlands | Português (BR) |
+| 简体中文 | Deutsch |
+| Italiano | Nederlands |
+| Português (BR) | Русский |
 
 初回アクセス時はブラウザの言語設定から自動判定されます。選択した言語はブラウザに保存され、次回以降も維持されます。
 
