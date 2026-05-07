@@ -57,6 +57,10 @@ function renderPixelCanvas() {
 
   if (rulerEnabled) drawRuler(ctx, w, h);
 
+  if (cellNumbersEnabled && viewMode === 'converted' && src.paletteMap) {
+    drawCellNumbers(ctx, src);
+  }
+
   zoomLabel.textContent = zoom + '×';
 
   if (hoverPaletteIdx >= 0) {
@@ -154,4 +158,42 @@ function toggleRuler() {
   const btn = document.getElementById('ruler-btn');
   btn.classList.toggle('active', rulerEnabled);
   renderPixelCanvas();
+}
+
+function drawCellNumbers(ctx, src) {
+  if (zoom < 4) return;
+  const w = src.width, h = src.height;
+  const map = src.paletteMap;
+  if (!map) return;
+
+  ctx.save();
+  const fs = Math.max(7, Math.min(Math.floor(zoom * 0.5), 14));
+  ctx.font = `800 ${fs}px "JetBrains Mono", monospace`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.lineWidth = Math.max(1.5, zoom * 0.08);
+
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const idx = map[y * w + x];
+      if (idx < 0) continue;
+      const p = PALETTE[idx];
+      const num = p.row * 12 + p.col + 1;
+
+      const cx = x * zoom + zoom / 2;
+      const cy = y * zoom + zoom / 2;
+
+      const r = parseInt(p.h.slice(1, 3), 16);
+      const g = parseInt(p.h.slice(3, 5), 16);
+      const b = parseInt(p.h.slice(5, 7), 16);
+      const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      const text = String(num);
+
+      ctx.strokeStyle = luma < 140 ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.7)';
+      ctx.strokeText(text, cx, cy);
+      ctx.fillStyle = luma < 140 ? '#FFFFFF' : '#1A0F05';
+      ctx.fillText(text, cx, cy);
+    }
+  }
+  ctx.restore();
 }

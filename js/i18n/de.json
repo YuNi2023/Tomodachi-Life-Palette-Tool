@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} Pixel",
     "pbnConfirm": "Erstelle ein Malen-nach-Zahlen-PNG mit {w}×{h}.\nDie Datei wird groß (ca. 10–40 MB) und das Erzeugen dauert mehrere Sekunden.\nFortfahren?",
     "numberedHeader2": "Malen nach Zahlen (Palette Nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} Farben"
+    "numberedSize": "{w}×{h}  /  {n} Farben",
+    "showCellNumbers": "Nummern auf Bild anzeigen"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "Palette (84 Farben)",
     "hint": "Die umrandete Zelle ist die nächste Farbe. Hover/tippe ein Farbfeld, um passende Zellen im Bild hervorzuheben.",
     "tabPalette": "Palette",
-    "tabFullColor": "Vollfarbe"
+    "tabFullColor": "Vollfarbe",
+    "showNumbers": "Nummern anzeigen"
   },
   "fullcolor": {
     "guide": "Vollfarb-Leitfaden",
@@ -159,9 +161,9 @@
     "valYTimes": "mal",
     "valYReverseLabel": "(von unten nach oben ca.",
     "valYReverseTimes": "mal)",
-    "guideNote": "Anzahl der Operationen ist eine Schätzung basierend auf 100er-Skala.",
-    "hueZL0": "ZL (Rot 0°)",
-    "hueZR360": "ZR (Rot 360°)",
+    "guideNote": "Die Tippanzahl ist ein Schätzwert. Es kann zu kleinen Abweichungen vom tatsächlichen Spiel kommen — nähern Sie sich dem Wert und nehmen Sie dann Feineinstellungen vor.",
+    "hueZL0": "ZL (Rot 360°)",
+    "hueZR360": "ZR (Rot 0°)",
     "hueLabel": "Farbton:",
     "huePressZRLabel": "→ ZR von ganz links ca.",
     "huePressZRTimes": "mal drücken",

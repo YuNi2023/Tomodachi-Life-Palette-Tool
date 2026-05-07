@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 像素",
     "pbnConfirm": "将产生 {w}×{h} 的编号着色 PNG。\n文件较大(约 10〜40MB),产生可能需要数十秒。\n要继续吗?",
     "numberedHeader2": "编号着色图(调色板编号 1〜84)",
-    "numberedSize": "{w}×{h}  /  {n}色"
+    "numberedSize": "{w}×{h}  /  {n}色",
+    "showCellNumbers": "在图像上显示编号"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "调色板 84色",
     "hint": "有外框的是最接近的颜色。将鼠标移至/点击颜色,图片中对应的格子会反白显示。",
     "tabPalette": "调色板",
-    "tabFullColor": "全彩"
+    "tabFullColor": "全彩",
+    "showNumbers": "显示编号"
   },
   "fullcolor": {
     "guide": "全彩指南",
@@ -159,9 +161,9 @@
     "valYTimes": "次",
     "valYReverseLabel": "(从最下到上",
     "valYReverseTimes": "次)",
-    "guideNote": "操作次数为以 100 次为基准的预测值。",
-    "hueZL0": "ZL(红 0°)",
-    "hueZR360": "ZR(红 360°)",
+    "guideNote": "操作次数为预测值。与实机可能有些许误差,请先大致对准后再进行微调。",
+    "hueZL0": "ZL（红 360°）",
+    "hueZR360": "ZR（红 0°）",
     "hueLabel": "色相:",
     "huePressZRLabel": "→ 从最左按 ZR 约",
     "huePressZRTimes": "次",

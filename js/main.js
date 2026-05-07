@@ -41,6 +41,8 @@ async function init() {
   attachResizeHandler();
 
   buildPaletteGrid();
+  attachPaletteNumberToggle();
+  attachCellNumberToggle();
 
   window.addEventListener('i18nchange', refreshDynamicLabels);
 }

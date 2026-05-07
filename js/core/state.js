@@ -8,6 +8,7 @@ var viewMode = 'original';
 var currentMode = 'palette';
 var closestIdx = -1;
 var rulerEnabled = false;
+var cellNumbersEnabled = false;
 var lastSelPx = -1;
 var lastSelPy = -1;
 var interactionMode = 'select';

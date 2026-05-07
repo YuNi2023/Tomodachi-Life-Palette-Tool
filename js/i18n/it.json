@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixel",
     "pbnConfirm": "Genera un PNG da colorare di {w}×{h}.\nIl file sarà grande (10–40 MB circa) e la generazione può richiedere decine di secondi.\nContinuare?",
     "numberedHeader2": "Da colorare (palette n. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} colori"
+    "numberedSize": "{w}×{h}  /  {n} colori",
+    "showCellNumbers": "Mostra numeri sull'immagine"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "Palette (84 colori)",
     "hint": "La cella con bordo è la più vicina. Passa il mouse/tocca un colore per evidenziare le celle corrispondenti.",
     "tabPalette": "Palette",
-    "tabFullColor": "Colore pieno"
+    "tabFullColor": "Colore pieno",
+    "showNumbers": "Mostra numeri"
   },
   "fullcolor": {
     "guide": "Guida colore pieno",
@@ -159,9 +161,9 @@
     "valYTimes": "volte",
     "valYReverseLabel": "(dal basso all'alto circa",
     "valYReverseTimes": "volte)",
-    "guideNote": "Il numero di operazioni è una stima basata su scala 100.",
-    "hueZL0": "ZL (rosso 0°)",
-    "hueZR360": "ZR (rosso 360°)",
+    "guideNote": "Il numero di tocchi è una stima. Potrebbero esserci piccole differenze rispetto al gioco reale — avvicinati al valore e poi regola con precisione.",
+    "hueZL0": "ZL (rosso 360°)",
+    "hueZR360": "ZR (rosso 0°)",
     "hueLabel": "Tonalità:",
     "huePressZRLabel": "→ premi ZR dall'estrema sinistra circa",
     "huePressZRTimes": "volte",

@@ -240,6 +240,10 @@
                 <input type="checkbox" id="dither-toggle">
                 <span data-i18n="view.dither">ディザ（誤差拡散）</span>
               </label>
+              <label class="cv-toggle">
+                <input type="checkbox" id="cell-number-toggle">
+                <span data-i18n="view.showCellNumbers">画像にも番号を表示</span>
+              </label>
               <span class="cv-hint" data-i18n="view.ditherHint">写真やグラデーションは ON 推奨</span>
             </div>
           </div>
@@ -320,7 +324,13 @@
                 </div>
               </div>
               <div class="info-block">
-                <div class="info-label" data-i18n="palette.title">パレット 84色</div>
+                <div class="info-label palette-header">
+                  <span data-i18n="palette.title">パレット 84色</span>
+                  <label class="palette-toggle">
+                    <input type="checkbox" id="palette-show-numbers">
+                    <span data-i18n="palette.showNumbers">番号を表示</span>
+                  </label>
+                </div>
                 <div id="palette-grid" class="palette-grid"></div>
                 <p class="palette-note" data-i18n="palette.hint">枠付きが最も近い色。色にhover/タップで該当セルが画像内でハイライト表示されます。</p>
               </div>

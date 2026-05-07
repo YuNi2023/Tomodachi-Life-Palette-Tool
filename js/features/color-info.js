@@ -55,10 +55,35 @@ function buildPaletteGrid() {
     cell.style.background = p.h;
     cell.title = `${p.h}\n${t('color.rowCol', { row: p.row + 1, col: p.col + 1 })}`;
     cell.dataset.idx = i;
+
+    const num = document.createElement('span');
+    num.className = 'palette-cell-num';
+    num.textContent = (p.row * 12 + p.col + 1);
+    const r = parseInt(p.h.slice(1, 3), 16);
+    const g = parseInt(p.h.slice(3, 5), 16);
+    const b = parseInt(p.h.slice(5, 7), 16);
+    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    num.style.color = luma < 140 ? '#FFFFFF' : '#1A0F05';
+    cell.appendChild(num);
+
     grid.appendChild(cell);
   });
 
   attachPaletteHover();
+}
+
+function attachPaletteNumberToggle() {
+  const toggle = document.getElementById('palette-show-numbers');
+  const grid = document.getElementById('palette-grid');
+  if (!toggle || !grid) return;
+  const KEY = 'spoito_palette_show_numbers';
+  const saved = localStorage.getItem(KEY) === '1';
+  toggle.checked = saved;
+  grid.classList.toggle('show-numbers', saved);
+  toggle.addEventListener('change', () => {
+    grid.classList.toggle('show-numbers', toggle.checked);
+    localStorage.setItem(KEY, toggle.checked ? '1' : '0');
+  });
 }
 
 function updatePaletteHighlight(bestIdx, bestDist) {

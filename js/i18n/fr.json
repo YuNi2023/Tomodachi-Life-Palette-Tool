@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Générer un PNG à colorier de {w}×{h}.\nLe fichier sera volumineux (environ 10 à 40 Mo) et la génération peut prendre plusieurs dizaines de secondes.\nContinuer ?",
     "numberedHeader2": "À colorier (palette n°1–84)",
-    "numberedSize": "{w}×{h}  /  {n} couleurs"
+    "numberedSize": "{w}×{h}  /  {n} couleurs",
+    "showCellNumbers": "Afficher numéros sur l'image"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "Palette (84 couleurs)",
     "hint": "La case encadrée est la plus proche. Survolez/touchez une couleur pour mettre en évidence les pixels correspondants.",
     "tabPalette": "Palette",
-    "tabFullColor": "Couleur réelle"
+    "tabFullColor": "Couleur réelle",
+    "showNumbers": "Afficher numéros"
   },
   "fullcolor": {
     "guide": "Guide couleur réelle",
@@ -171,9 +173,9 @@
     "valYTimes": "fois",
     "valYReverseLabel": "(du bas vers le haut, environ",
     "valYReverseTimes": "fois)",
-    "guideNote": "Le nombre d'opérations est une estimation basée sur une échelle de 100.",
-    "hueZL0": "ZL (rouge 0°)",
-    "hueZR360": "ZR (rouge 360°)",
+    "guideNote": "Le nombre d'appuis est une estimation. Un léger écart avec le jeu réel est possible, utilisez-le comme indication approximative puis ajustez finement.",
+    "hueZL0": "ZL (rouge 360°)",
+    "hueZR360": "ZR (rouge 0°)",
     "hueLabel": "Teinte :",
     "huePressZRLabel": "→ appuyez ZR depuis l'extrême gauche, environ",
     "huePressZRTimes": "fois",

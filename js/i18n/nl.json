@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Genereer een inkleur-PNG van {w}×{h}.\nHet bestand wordt groot (ca. 10–40 MB) en het kan tientallen seconden duren.\nDoorgaan?",
     "numberedHeader2": "Inkleurversie (palet nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} kleuren"
+    "numberedSize": "{w}×{h}  /  {n} kleuren",
+    "showCellNumbers": "Nummers op afbeelding tonen"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "Palet (84 kleuren)",
     "hint": "De omlijnde cel is de dichtstbijzijnde. Beweeg/tik op een staal om overeenkomende cellen te markeren.",
     "tabPalette": "Palet",
-    "tabFullColor": "Volledige kleur"
+    "tabFullColor": "Volledige kleur",
+    "showNumbers": "Nummers tonen"
   },
   "fullcolor": {
     "guide": "Volledige-kleurgids",
@@ -159,9 +161,9 @@
     "valYTimes": "keer",
     "valYReverseLabel": "(van beneden naar boven ca.",
     "valYReverseTimes": "keer)",
-    "guideNote": "Aantal handelingen is een schatting op een schaal van 100.",
-    "hueZL0": "ZL (rood 0°)",
-    "hueZR360": "ZR (rood 360°)",
+    "guideNote": "Het aantal tikken is een schatting. Er kan een klein verschil zijn met het echte spel — gebruik het als richtlijn en stel dan fijn af.",
+    "hueZL0": "ZL (rood 360°)",
+    "hueZR360": "ZR (rood 0°)",
     "hueLabel": "Tint:",
     "huePressZRLabel": "→ druk ZR vanaf uiterst links ca.",
     "huePressZRTimes": "keer",

@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 픽셀",
     "pbnConfirm": "{w}×{h}의 번호 색칠 PNG를 생성합니다.\n파일이 크고 (10~40MB 기준) 생성에 수십 초가 걸릴 수 있습니다.\n계속하시겠습니까?",
     "numberedHeader2": "번호 색칠 (팔레트 번호 1~84)",
-    "numberedSize": "{w}×{h}  /  {n}색"
+    "numberedSize": "{w}×{h}  /  {n}색",
+    "showCellNumbers": "이미지에도 번호 표시"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "팔레트 84색",
     "hint": "테두리가 있는 셀이 가장 가까운 색입니다. 색에 호버/탭하면 이미지 내 해당 셀이 강조됩니다.",
     "tabPalette": "팔레트",
-    "tabFullColor": "풀 컬러"
+    "tabFullColor": "풀 컬러",
+    "showNumbers": "번호 표시"
   },
   "fullcolor": {
     "guide": "풀 컬러 가이드",
@@ -171,9 +173,9 @@
     "valYTimes": "회",
     "valYReverseLabel": "(맨 아래에서 위로",
     "valYReverseTimes": "회)",
-    "guideNote": "조작 횟수는 100회 기준 예측값입니다.",
-    "hueZL0": "ZL (빨강 0°)",
-    "hueZR360": "ZR (빨강 360°)",
+    "guideNote": "조작 횟수는 예측값입니다. 실제 기기와 다소 오차가 있을 수 있으니, 대략 맞춘 후 세밀하게 조정해 주세요.",
+    "hueZL0": "ZL（빨강 360°）",
+    "hueZR360": "ZR（빨강 0°）",
     "hueLabel": "색상:",
     "huePressZRLabel": "→ 맨 왼쪽에서 ZR을",
     "huePressZRTimes": "회 누름",

@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Gerar um PNG para colorir de {w}×{h}.\nO arquivo será grande (10–40 MB aprox.) e a geração pode levar dezenas de segundos.\nContinuar?",
     "numberedHeader2": "Para colorir (paleta nº 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} cores"
+    "numberedSize": "{w}×{h}  /  {n} cores",
+    "showCellNumbers": "Mostrar números na imagem"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "Paleta (84 cores)",
     "hint": "A célula com borda é a mais próxima. Passe o mouse/toque em uma cor para destacar células correspondentes.",
     "tabPalette": "Paleta",
-    "tabFullColor": "Cor completa"
+    "tabFullColor": "Cor completa",
+    "showNumbers": "Mostrar números"
   },
   "fullcolor": {
     "guide": "Guia de cor completa",
@@ -159,9 +161,9 @@
     "valYTimes": "vezes",
     "valYReverseLabel": "(de baixo para cima cerca de",
     "valYReverseTimes": "vezes)",
-    "guideNote": "Número de operações é estimativa baseada em escala de 100.",
-    "hueZL0": "ZL (vermelho 0°)",
-    "hueZR360": "ZR (vermelho 360°)",
+    "guideNote": "O número de toques é uma estimativa. Pode haver alguma diferença com o jogo real — use como guia aproximado e faça ajustes finos.",
+    "hueZL0": "ZL (vermelho 360°)",
+    "hueZR360": "ZR (vermelho 0°)",
     "hueLabel": "Matiz:",
     "huePressZRLabel": "→ pressione ZR da extrema esquerda cerca de",
     "huePressZRTimes": "vezes",

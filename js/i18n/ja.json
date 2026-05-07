@@ -58,7 +58,8 @@
     "imgInfoOriginal": "{w}×{h}px / {total} ピクセル",
     "pbnConfirm": "{w}×{h} の番号塗り絵PNGを生成します。\nファイルが大きく（10〜40MB目安）、生成に数十秒かかる場合があります。\n続行しますか？",
     "numberedHeader2": "番号塗り絵（パレット番号 1〜84）",
-    "numberedSize": "{w}×{h}  /  {n}色"
+    "numberedSize": "{w}×{h}  /  {n}色",
+    "showCellNumbers": "画像にも番号を表示"
   },
   "color": {
     "labelEn": "color information",
@@ -79,7 +80,8 @@
     "title": "パレット 84色",
     "hint": "枠付きが最も近い色。色にhover/タップで該当セルが画像内でハイライト表示されます。",
     "tabPalette": "カラーパレット",
-    "tabFullColor": "フルカラー"
+    "tabFullColor": "フルカラー",
+    "showNumbers": "番号を表示"
   },
   "fullcolor": {
     "guide": "フルカラー ガイド",
@@ -159,9 +161,9 @@
     "valYTimes": "回",
     "valYReverseLabel": "（一番下から上へ",
     "valYReverseTimes": "回）",
-    "guideNote": "操作回数は100回基準の予測値です。",
-    "hueZL0": "ZL（赤 0°）",
-    "hueZR360": "ZR（赤 360°）",
+    "guideNote": "操作回数は予測値です。実機の挙動とは多少誤差があるため、近づけてから細かく微調整してください。",
+    "hueZL0": "ZL（赤 360°）",
+    "hueZR360": "ZR（赤 0°）",
     "hueLabel": "色相:",
     "huePressZRLabel": "→ 一番左からZRを",
     "huePressZRTimes": "回 押す",
