@@ -121,6 +121,8 @@
   background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
   max-height: 60vh;
   min-height: 320px;
   display: flex;
@@ -138,6 +140,7 @@
   display: block;
   border-radius: 4px;
   box-shadow: 0 0 0 3px #fff, 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  touch-action: manipulation;
 }
 #overlay-canvas {
   position: absolute;
@@ -168,7 +171,26 @@
 .image-actions .btn { flex: 1 1 0; min-width: 140px; }
 
 @media (max-width: 600px) {
-  .canvas-wrapper { padding: var(--gap-sm); min-height: 260px; max-height: 56vh; }
+  .canvas-wrapper {
+    padding: var(--gap-sm);
+    min-height: 260px;
+    max-height: 56vh;
+    display: block;
+    text-align: center;
+    line-height: 0;
+  }
+  .canvas-wrapper::before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+  }
+  .canvas-wrapper #pixel-canvas {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+  }
   .img-info-bar { font-size: 0.76rem; padding: 8px var(--gap-md); }
   .canvas-hint { padding: 8px var(--gap-md); font-size: 0.76rem; }
   .image-actions { padding: var(--gap-sm) var(--gap-md); }

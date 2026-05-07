@@ -10,11 +10,27 @@
 .palette-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--gap-sm);
 }
+.palette-header::before {
+  display: none;
+}
+.palette-header-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.palette-header-title::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
 .palette-toggle {
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: 6px;

@@ -161,7 +161,7 @@ function toggleRuler() {
 }
 
 function drawCellNumbers(ctx, src) {
-  if (zoom < 8) return;
+  if (zoom < 12) return;
   const w = src.width, h = src.height;
   const map = src.paletteMap;
   if (!map) return;
@@ -169,6 +169,16 @@ function drawCellNumbers(ctx, src) {
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+
+  const fs1 = Math.max(9, Math.round(zoom * 0.62));
+  const fs2 = Math.max(8, Math.round(zoom * 0.5));
+  const lw1 = Math.max(2, Math.round(fs1 * 0.2));
+  const lw2 = Math.max(2, Math.round(fs2 * 0.2));
+  const font1 = `800 ${fs1}px "JetBrains Mono", "Courier New", monospace`;
+  const font2 = `800 ${fs2}px "JetBrains Mono", "Courier New", monospace`;
+
+  let curDigits = 0;
+  let curWhite = null;
 
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
@@ -179,26 +189,32 @@ function drawCellNumbers(ctx, src) {
       const text = String(num);
       const digits = text.length;
 
-      const cx = x * zoom + zoom / 2;
-      const cy = y * zoom + zoom / 2;
-
-      const targetWidth = zoom * 0.55;
-      const widthBased = targetWidth / (digits * 0.6);
-      const heightBased = zoom * 0.45;
-      const fs = Math.max(6, Math.min(widthBased, heightBased));
-
-      ctx.font = `800 ${fs}px "JetBrains Mono", monospace`;
-      ctx.lineWidth = Math.max(1.2, fs * 0.18);
+      if (digits !== curDigits) {
+        curDigits = digits;
+        if (digits === 1) {
+          ctx.font = font1;
+          ctx.lineWidth = lw1;
+        } else {
+          ctx.font = font2;
+          ctx.lineWidth = lw2;
+        }
+      }
 
       const r = parseInt(p.h.slice(1, 3), 16);
       const g = parseInt(p.h.slice(3, 5), 16);
       const b = parseInt(p.h.slice(5, 7), 16);
 
       const useWhite = pickTextColor(r, g, b);
+      if (useWhite !== curWhite) {
+        curWhite = useWhite;
+        ctx.strokeStyle = useWhite ? 'rgba(0,0,0,0.92)' : 'rgba(255,255,255,0.98)';
+        ctx.fillStyle = useWhite ? '#FFFFFF' : '#000000';
+      }
 
-      ctx.strokeStyle = useWhite ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.95)';
+      const cx = x * zoom + (zoom >> 1);
+      const cy = y * zoom + (zoom >> 1);
+
       ctx.strokeText(text, cx, cy);
-      ctx.fillStyle = useWhite ? '#FFFFFF' : '#000000';
       ctx.fillText(text, cx, cy);
     }
   }
