@@ -21,6 +21,12 @@ let i18nCurrent = I18N_FALLBACK;
 
 function i18nDetect() {
   try {
+    const url = new URL(window.location.href);
+    const urlLang = url.searchParams.get('lang');
+    if (urlLang && I18N_SUPPORTED.includes(urlLang)) return urlLang;
+  } catch (_) {  }
+
+  try {
     const saved = localStorage.getItem(I18N_STORAGE);
     if (saved && I18N_SUPPORTED.includes(saved)) return saved;
   } catch (_) {  }
@@ -101,6 +107,23 @@ function i18nApply() {
 
   const titleVal = t('meta.title');
   if (titleVal !== 'meta.title') document.title = titleVal;
+
+  const descVal = t('meta.description');
+  if (descVal !== 'meta.description') {
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', descVal);
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', descVal);
+    const twDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twDesc) twDesc.setAttribute('content', descVal);
+  }
+
+  if (titleVal !== 'meta.title') {
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', titleVal);
+    const twTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twTitle) twTitle.setAttribute('content', titleVal);
+  }
 }
 
 function i18nUpdateSwitcher() {
