@@ -124,8 +124,8 @@
   max-height: 60vh;
   min-height: 320px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: safe center;
+  justify-content: safe center;
   padding: var(--gap-lg);
   cursor: crosshair;
 }
