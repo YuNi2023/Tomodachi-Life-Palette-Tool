@@ -45,6 +45,17 @@ function selectColor(r, g, b, px, py) {
   colorInfo.classList.remove('hidden');
 }
 
+function _pickTextColorForBg(r, g, b) {
+  const toLin = v => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const L = 0.2126 * toLin(r) + 0.7152 * toLin(g) + 0.0722 * toLin(b);
+  const cWhite = 1.05 / (L + 0.05);
+  const cBlack = (L + 0.05) / 0.05;
+  return cWhite >= cBlack;
+}
+
 function buildPaletteGrid() {
   const grid = document.getElementById('palette-grid');
   if (!grid) return;
@@ -62,8 +73,11 @@ function buildPaletteGrid() {
     const r = parseInt(p.h.slice(1, 3), 16);
     const g = parseInt(p.h.slice(3, 5), 16);
     const b = parseInt(p.h.slice(5, 7), 16);
-    const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-    num.style.color = luma < 140 ? '#FFFFFF' : '#1A0F05';
+    const useWhite = _pickTextColorForBg(r, g, b);
+    num.style.color = useWhite ? '#FFFFFF' : '#000000';
+    num.style.textShadow = useWhite
+      ? '0 1px 2px rgba(0,0,0,0.6), 0 0 1px rgba(0,0,0,0.5)'
+      : '0 1px 2px rgba(255,255,255,0.6), 0 0 1px rgba(255,255,255,0.5)';
     cell.appendChild(num);
 
     grid.appendChild(cell);

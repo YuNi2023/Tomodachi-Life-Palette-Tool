@@ -161,17 +161,14 @@ function toggleRuler() {
 }
 
 function drawCellNumbers(ctx, src) {
-  if (zoom < 4) return;
+  if (zoom < 8) return;
   const w = src.width, h = src.height;
   const map = src.paletteMap;
   if (!map) return;
 
   ctx.save();
-  const fs = Math.max(7, Math.min(Math.floor(zoom * 0.5), 14));
-  ctx.font = `800 ${fs}px "JetBrains Mono", monospace`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.lineWidth = Math.max(1.5, zoom * 0.08);
 
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
@@ -179,21 +176,42 @@ function drawCellNumbers(ctx, src) {
       if (idx < 0) continue;
       const p = PALETTE[idx];
       const num = p.row * 12 + p.col + 1;
+      const text = String(num);
+      const digits = text.length;
 
       const cx = x * zoom + zoom / 2;
       const cy = y * zoom + zoom / 2;
 
+      const targetWidth = zoom * 0.55;
+      const widthBased = targetWidth / (digits * 0.6);
+      const heightBased = zoom * 0.45;
+      const fs = Math.max(6, Math.min(widthBased, heightBased));
+
+      ctx.font = `800 ${fs}px "JetBrains Mono", monospace`;
+      ctx.lineWidth = Math.max(1.2, fs * 0.18);
+
       const r = parseInt(p.h.slice(1, 3), 16);
       const g = parseInt(p.h.slice(3, 5), 16);
       const b = parseInt(p.h.slice(5, 7), 16);
-      const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      const text = String(num);
 
-      ctx.strokeStyle = luma < 140 ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.7)';
+      const useWhite = pickTextColor(r, g, b);
+
+      ctx.strokeStyle = useWhite ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.95)';
       ctx.strokeText(text, cx, cy);
-      ctx.fillStyle = luma < 140 ? '#FFFFFF' : '#1A0F05';
+      ctx.fillStyle = useWhite ? '#FFFFFF' : '#000000';
       ctx.fillText(text, cx, cy);
     }
   }
   ctx.restore();
+}
+
+function pickTextColor(r, g, b) {
+  const srgb = [r, g, b].map(v => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  });
+  const L = 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+  const contrastWhite = (1.0 + 0.05) / (L + 0.05);
+  const contrastBlack = (L + 0.05) / 0.05;
+  return contrastWhite >= contrastBlack;
 }
