@@ -56,7 +56,7 @@
     "numberedHeader": "番号塗り絵（パレット番号 1〜84）",
     "imgInfoConverted": "変換後 {cw}×{ch} （元 {sw}×{sh}px）",
     "imgInfoOriginal": "{w}×{h}px / {total} ピクセル",
-    "pbnConfirm": "{w}×{h} の番号塗り絵PNGを生成します。\nファイルが大きく（5〜15MB目安）、生成に数十秒かかる場合があります。\n続行しますか？",
+    "pbnConfirm": "{w}×{h} の番号塗り絵PNGを生成します。\nファイルが大きく（10〜40MB目安）、生成に数十秒かかる場合があります。\n続行しますか？",
     "numberedHeader2": "番号塗り絵（パレット番号 1〜84）",
     "numberedSize": "{w}×{h}  /  {n}色"
   },

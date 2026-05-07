@@ -56,7 +56,7 @@
     "numberedHeader": "Paint-by-number (palette #1–84)",
     "imgInfoConverted": "Converted {cw}×{ch} (source {sw}×{sh}px)",
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
-    "pbnConfirm": "Generate a paint-by-number PNG of {w}×{h}.\nThe file will be large (around 5–15 MB) and may take tens of seconds to create.\nContinue?",
+    "pbnConfirm": "Generate a paint-by-number PNG of {w}×{h}.\nThe file will be large (around 10–40 MB) and may take tens of seconds to create.\nContinue?",
     "numberedHeader2": "Paint-by-number (palette #1–84)",
     "numberedSize": "{w}×{h}  /  {n} colors"
   },

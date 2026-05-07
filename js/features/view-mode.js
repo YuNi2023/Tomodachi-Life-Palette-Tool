@@ -568,7 +568,7 @@ function downloadPaintByNumbersImage() {
   if (viewMode !== 'converted' || !convertedData) return;
 
   const maxSide = Math.max(convertedData.width, convertedData.height);
-  if (maxSide >= 192) {
+  if (maxSide >= 128) {
     const ok = confirm(t('view.pbnConfirm', {
       w: convertedData.width,
       h: convertedData.height
@@ -622,10 +622,9 @@ function composePaintByNumbers(d) {
       const maxSide = Math.max(w, h);
       let cellPx;
       if (maxSide <= 32)       cellPx = 48;
-      else if (maxSide <= 64)  cellPx = 36;
-      else if (maxSide <= 128) cellPx = 24;
-      else if (maxSide <= 192) cellPx = 18;
-      else                     cellPx = 14;
+      else if (maxSide <= 64)  cellPx = 40;
+      else if (maxSide <= 128) cellPx = 32;
+      else                     cellPx = 28;
 
       const imgW = w * cellPx;
       const imgH = h * cellPx;

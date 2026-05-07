@@ -56,7 +56,7 @@
     "numberedHeader": "Da colorare (palette n. 1–84)",
     "imgInfoConverted": "Convertito {cw}×{ch} (origine {sw}×{sh}px)",
     "imgInfoOriginal": "{w}×{h}px / {total} pixel",
-    "pbnConfirm": "Genera un PNG da colorare di {w}×{h}.\nIl file sarà grande (5–15 MB circa) e la generazione può richiedere decine di secondi.\nContinuare?",
+    "pbnConfirm": "Genera un PNG da colorare di {w}×{h}.\nIl file sarà grande (10–40 MB circa) e la generazione può richiedere decine di secondi.\nContinuare?",
     "numberedHeader2": "Da colorare (palette n. 1–84)",
     "numberedSize": "{w}×{h}  /  {n} colori"
   },
