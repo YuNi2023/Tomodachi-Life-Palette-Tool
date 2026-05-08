@@ -137,7 +137,6 @@ function drawRuler(ctx, w, h) {
 
 function drawSelectionOverlay(px, py) {
   const ctx = overlayCanvas.getContext('2d');
-
   if (hoverPaletteIdx >= 0) return;
 
   ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
@@ -148,17 +147,9 @@ function drawSelectionOverlay(px, py) {
   const cellH = zoom;
 
   ctx.save();
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-  ctx.lineWidth = Math.max(3, zoom * 0.18);
-  ctx.setLineDash([Math.max(6, zoom * 0.4), Math.max(4, zoom * 0.3)]);
-  ctx.beginPath();
-  ctx.moveTo(0, cellY + cellH / 2);
-  ctx.lineTo(overlayCanvas.width, cellY + cellH / 2);
-  ctx.moveTo(cellX + cellW / 2, 0);
-  ctx.lineTo(cellX + cellW / 2, overlayCanvas.height);
-  ctx.stroke();
-  ctx.strokeStyle = 'rgba(232, 90, 12, 0.95)';
-  ctx.lineWidth = Math.max(2, zoom * 0.12);
+  ctx.strokeStyle = 'rgba(232, 90, 12, 0.7)';
+  ctx.lineWidth = Math.max(1, Math.round(zoom * 0.08));
+  ctx.setLineDash([Math.max(4, zoom * 0.3), Math.max(3, zoom * 0.2)]);
   ctx.beginPath();
   ctx.moveTo(0, cellY + cellH / 2);
   ctx.lineTo(overlayCanvas.width, cellY + cellH / 2);
@@ -169,21 +160,32 @@ function drawSelectionOverlay(px, py) {
   ctx.restore();
 
   ctx.save();
-  const ringPad = Math.max(4, zoom * 0.35);
+  const ringPad = Math.max(3, Math.round(zoom * 0.25));
+  const lwOuter = Math.max(3, Math.round(zoom * 0.18));
+  const lwInner = Math.max(2, Math.round(zoom * 0.12));
+
   ctx.strokeStyle = '#FFFFFF';
-  ctx.lineWidth = Math.max(4, zoom * 0.32);
-  ctx.strokeRect(cellX - ringPad, cellY - ringPad, cellW + ringPad * 2, cellH + ringPad * 2);
+  ctx.lineWidth = lwOuter + lwInner;
+  ctx.strokeRect(
+    cellX - ringPad,
+    cellY - ringPad,
+    cellW + ringPad * 2,
+    cellH + ringPad * 2
+  );
+
   ctx.strokeStyle = '#E85A0C';
-  ctx.lineWidth = Math.max(2.5, zoom * 0.22);
-  ctx.strokeRect(cellX - ringPad, cellY - ringPad, cellW + ringPad * 2, cellH + ringPad * 2);
+  ctx.lineWidth = lwInner;
+  ctx.strokeRect(
+    cellX - ringPad,
+    cellY - ringPad,
+    cellW + ringPad * 2,
+    cellH + ringPad * 2
+  );
   ctx.restore();
 
   ctx.save();
-  ctx.strokeStyle = '#000000';
-  ctx.lineWidth = Math.max(1, zoom * 0.06);
-  ctx.strokeRect(cellX, cellY, cellW, cellH);
-  ctx.strokeStyle = '#FFFFFF';
-  ctx.lineWidth = Math.max(0.5, zoom * 0.04);
+  ctx.strokeStyle = 'rgba(0, 0, 0, 0.7)';
+  ctx.lineWidth = 1;
   ctx.strokeRect(cellX + 0.5, cellY + 0.5, cellW - 1, cellH - 1);
   ctx.restore();
 }

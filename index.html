@@ -48,11 +48,12 @@
   <meta property="og:locale:alternate" content="ru_RU">
 
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@yu_">
+  <meta name="twitter:creator" content="@yu_">
   <meta name="twitter:title" content="すぽいと帳 ｜ トモダチコレクション わくわく生活用">
   <meta name="twitter:description" content="トモダチコレクション わくわく生活のペイント機能で使える色合わせツール。10言語対応。">
   <meta name="twitter:image" content="https://yu08083.github.io/Tomodachi-Life-Palette-Tool/assets/ogp.png">
-  <meta name="twitter:image:alt" content="すぽいと帳 - Spoito-cho">
-  <meta name="twitter:creator" content="@yu_">
+  <meta name="twitter:image:alt" content="すぽいと帳 - Spoito-cho - Palette tool for Tomodachi Life">
 
   <script type="application/ld+json">
   {
@@ -249,8 +250,10 @@
           </div>
 
           <div class="canvas-wrapper" id="canvas-wrapper">
-            <canvas id="pixel-canvas"></canvas>
-            <canvas id="overlay-canvas" style="pointer-events:none"></canvas>
+            <div class="canvas-stage" id="canvas-stage">
+              <canvas id="pixel-canvas"></canvas>
+              <canvas id="overlay-canvas" style="pointer-events:none"></canvas>
+            </div>
           </div>
 
           <div class="canvas-hint" data-i18n="canvasHint">

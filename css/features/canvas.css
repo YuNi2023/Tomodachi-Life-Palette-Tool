@@ -134,6 +134,13 @@
 .canvas-wrapper.move-mode { cursor: grab; }
 .canvas-wrapper.move-mode:active { cursor: grabbing; }
 
+.canvas-stage {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
 #pixel-canvas {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -143,6 +150,10 @@
 }
 #overlay-canvas {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -185,7 +196,7 @@
     height: 100%;
     vertical-align: middle;
   }
-  .canvas-wrapper #pixel-canvas {
+  .canvas-wrapper .canvas-stage {
     display: inline-block;
     vertical-align: middle;
     line-height: normal;
