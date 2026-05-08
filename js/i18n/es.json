@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Suelta una imagen o haz clic",
-    "noteHtml": "Pixel art, fotos, capturas — todo vale.<br>Las imágenes no cuadradas pueden recortarse a 1:1 en la siguiente pantalla.",
+    "noteHtml": "Pixel art, fotos, capturas de pantalla — todo funciona.<br>Las imágenes no cuadradas se pueden recortar a 1:1 en la siguiente pantalla.<br>También acepta archivos <code>.spoito.json</code> guardados desde otro dispositivo.",
     "demo": "Probar con imagen de demo",
     "guide": "Cómo usar"
   },

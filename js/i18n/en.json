@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Drop an image or click",
-    "noteHtml": "Pixel art, photos, screenshots — anything works.<br>Non-square images can be cropped to 1:1 on the next screen.",
+    "noteHtml": "Pixel art, photos, screenshots — anything works.<br>Non-square images can be cropped to 1:1 on the next screen.<br>Also accepts <code>.spoito.json</code> files saved from another device.",
     "demo": "Try with demo image",
     "guide": "How to use"
   },

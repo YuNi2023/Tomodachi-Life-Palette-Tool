@@ -155,13 +155,15 @@
           <span class="format-tag">JPG</span>
           <span class="format-tag">GIF</span>
           <span class="format-tag">WEBP</span>
+          <span class="format-tag format-tag-special">.spoito</span>
         </div>
         <div class="drop-divider"></div>
         <p class="drop-note" data-i18n-html="upload.noteHtml">
           ドット絵・写真・スクリーンショットなど何でも読み込めます。<br>
-          正方形でない画像は次の画面で1:1に切り出せます。
+          正方形でない画像は次の画面で1:1に切り出せます。<br>
+          別端末で保存した <code>.spoito.json</code> も読み込めます。
         </p>
-        <input type="file" id="file-input" accept="image/*" hidden>
+        <input type="file" id="file-input" accept="image/*,.json,application/json" hidden>
       </div>
       <div class="top-buttons">
         <button class="btn accent" id="demo-btn" data-i18n="upload.demo">デモ画像で試す</button>

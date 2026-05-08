@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Trascina un'immagine o clicca",
-    "noteHtml": "Pixel art, foto, screenshot — tutto va bene.<br>Le immagini non quadrate possono essere ritagliate a 1:1 nella schermata successiva.",
+    "noteHtml": "Pixel art, foto, screenshot — qualsiasi cosa va bene.<br>Le immagini non quadrate possono essere ritagliate a 1:1 nella schermata successiva.<br>Accetta anche file <code>.spoito.json</code> salvati da un altro dispositivo.",
     "demo": "Prova con immagine demo",
     "guide": "Come usare"
   },

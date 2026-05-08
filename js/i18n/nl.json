@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Sleep een afbeelding of klik",
-    "noteHtml": "Pixelart, foto's, screenshots — alles werkt.<br>Niet-vierkante afbeeldingen kunnen op het volgende scherm naar 1:1 worden bijgesneden.",
+    "noteHtml": "Pixel art, foto's, screenshots — alles werkt.<br>Niet-vierkante afbeeldingen kunnen op het volgende scherm naar 1:1 worden bijgesneden.<br>Accepteert ook <code>.spoito.json</code>-bestanden die op een ander apparaat zijn opgeslagen.",
     "demo": "Probeer met demo-afbeelding",
     "guide": "Hoe te gebruiken"
   },

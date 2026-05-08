@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Bild ablegen oder klicken",
-    "noteHtml": "Pixel-Art, Fotos, Screenshots — alles funktioniert.<br>Nicht-quadratische Bilder können auf dem nächsten Bildschirm auf 1:1 zugeschnitten werden.",
+    "noteHtml": "Pixel-Art, Fotos, Screenshots — alles funktioniert.<br>Nicht-quadratische Bilder können im nächsten Bildschirm auf 1:1 zugeschnitten werden.<br>Akzeptiert auch <code>.spoito.json</code>-Dateien, die auf einem anderen Gerät gespeichert wurden.",
     "demo": "Mit Demobild ausprobieren",
     "guide": "Anleitung"
   },

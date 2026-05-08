@@ -13,7 +13,7 @@
   },
   "upload": {
     "drop": "Déposez une image ou cliquez",
-    "noteHtml": "Pixel art, photos, captures d'écran — tout est accepté.<br>Les images non carrées peuvent être recadrées en 1:1 à l'écran suivant.",
+    "noteHtml": "Pixel art, photos, captures d'écran — tout fonctionne.<br>Les images non carrées peuvent être recadrées en 1:1 à l'écran suivant.<br>Accepte aussi les fichiers <code>.spoito.json</code> enregistrés depuis un autre appareil.",
     "demo": "Essayer avec une image démo",
     "guide": "Mode d'emploi"
   },

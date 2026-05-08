@@ -132,6 +132,11 @@
   color: var(--orange-d);
   letter-spacing: 0.06em;
 }
+.format-tag-special {
+  background: var(--orange);
+  color: #fff;
+  letter-spacing: 0.04em;
+}
 
 .drop-divider {
   height: 2px;
