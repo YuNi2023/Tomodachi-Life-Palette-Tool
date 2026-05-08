@@ -141,12 +141,51 @@ function drawSelectionOverlay(px, py) {
   if (hoverPaletteIdx >= 0) return;
 
   ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+  const cellX = px * zoom;
+  const cellY = py * zoom;
+  const cellW = zoom;
+  const cellH = zoom;
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.lineWidth = Math.max(3, zoom * 0.18);
+  ctx.setLineDash([Math.max(6, zoom * 0.4), Math.max(4, zoom * 0.3)]);
+  ctx.beginPath();
+  ctx.moveTo(0, cellY + cellH / 2);
+  ctx.lineTo(overlayCanvas.width, cellY + cellH / 2);
+  ctx.moveTo(cellX + cellW / 2, 0);
+  ctx.lineTo(cellX + cellW / 2, overlayCanvas.height);
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(232, 90, 12, 0.95)';
+  ctx.lineWidth = Math.max(2, zoom * 0.12);
+  ctx.beginPath();
+  ctx.moveTo(0, cellY + cellH / 2);
+  ctx.lineTo(overlayCanvas.width, cellY + cellH / 2);
+  ctx.moveTo(cellX + cellW / 2, 0);
+  ctx.lineTo(cellX + cellW / 2, overlayCanvas.height);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  ctx.save();
+  const ringPad = Math.max(4, zoom * 0.35);
+  ctx.strokeStyle = '#FFFFFF';
+  ctx.lineWidth = Math.max(4, zoom * 0.32);
+  ctx.strokeRect(cellX - ringPad, cellY - ringPad, cellW + ringPad * 2, cellH + ringPad * 2);
   ctx.strokeStyle = '#E85A0C';
-  ctx.lineWidth = Math.max(2, zoom * 0.3);
-  ctx.strokeRect(px * zoom, py * zoom, zoom, zoom);
-  ctx.strokeStyle = 'rgba(0,0,0,0.6)';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(px * zoom - 1, py * zoom - 1, zoom + 2, zoom + 2);
+  ctx.lineWidth = Math.max(2.5, zoom * 0.22);
+  ctx.strokeRect(cellX - ringPad, cellY - ringPad, cellW + ringPad * 2, cellH + ringPad * 2);
+  ctx.restore();
+
+  ctx.save();
+  ctx.strokeStyle = '#000000';
+  ctx.lineWidth = Math.max(1, zoom * 0.06);
+  ctx.strokeRect(cellX, cellY, cellW, cellH);
+  ctx.strokeStyle = '#FFFFFF';
+  ctx.lineWidth = Math.max(0.5, zoom * 0.04);
+  ctx.strokeRect(cellX + 0.5, cellY + 0.5, cellW - 1, cellH - 1);
+  ctx.restore();
 }
 
 function toggleRuler() {

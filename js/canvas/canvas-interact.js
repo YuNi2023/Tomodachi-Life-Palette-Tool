@@ -5,21 +5,27 @@ function pickPixelFromCoords(clientX, clientY) {
   if (!src) return;
   const rect = pixelCanvas.getBoundingClientRect();
 
-  const scaleX = pixelCanvas.width  / rect.width;
-  const scaleY = pixelCanvas.height / rect.height;
-  const cx = (clientX - rect.left) * scaleX;
-  const cy = (clientY - rect.top)  * scaleY;
+  if (rect.width <= 0 || rect.height <= 0) return;
 
-  const px = Math.floor(cx / zoom);
-  const py = Math.floor(cy / zoom);
-  if (px < 0 || py < 0 || px >= src.width || py >= src.height) return;
+  const ratioX = pixelCanvas.width  / rect.width;
+  const ratioY = pixelCanvas.height / rect.height;
+  const dxCss = clientX - rect.left;
+  const dyCss = clientY - rect.top;
+  const cx = dxCss * ratioX;
+  const cy = dyCss * ratioY;
+
+  let px = Math.floor(cx / zoom);
+  let py = Math.floor(cy / zoom);
+
+  if (px < 0) px = 0;
+  if (py < 0) py = 0;
+  if (px >= src.width)  px = src.width  - 1;
+  if (py >= src.height) py = src.height - 1;
 
   const idx = (py * src.width + px) * 4;
   const r = src.data[idx];
   const g = src.data[idx + 1];
   const b = src.data[idx + 2];
-  const a = src.data[idx + 3];
-  if (a < 10) return;
 
   selectColor(r, g, b, px, py);
 }
@@ -42,9 +48,8 @@ function handleCanvasTouchStart(e) {
 }
 
 function attachCanvasInteractions() {
-  const wrapper = document.getElementById('canvas-wrapper');
-  wrapper.addEventListener('click', handleCanvasClick);
-  wrapper.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
+  pixelCanvas.addEventListener('click', handleCanvasClick);
+  pixelCanvas.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
 }
 
 function canApplyZoom(nextZoom) {
