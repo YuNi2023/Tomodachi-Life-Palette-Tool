@@ -137,6 +137,26 @@ function finalizeImageLoad(canvas, isCropped) {
   setTimeout(() => {
     mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 50);
+
+  if (typeof historyAdd === 'function' && !window._historyRestoreInProgress) {
+    historyAdd(canvas, w, h);
+  }
+}
+
+function loadImageFromImg(img) {
+  window._historyRestoreInProgress = true;
+  const tmp = document.createElement('canvas');
+  tmp.width  = img.naturalWidth || img.width;
+  tmp.height = img.naturalHeight || img.height;
+  const ctx = tmp.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  rawSourceCanvas = tmp;
+  if (tmp.width === tmp.height) {
+    finalizeImageLoad(tmp, false);
+  } else {
+    openCropTool(tmp);
+  }
+  setTimeout(() => { window._historyRestoreInProgress = false; }, 100);
 }
 
 function generateDemoCanvas() {

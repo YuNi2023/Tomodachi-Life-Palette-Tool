@@ -188,5 +188,17 @@
     "freeBodyHtml": "Zie de <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a>-licentie voor details.",
     "contact": "Contact",
     "contactBodyHtml": "Contact via <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> of <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>."
+  },
+  "history": {
+    "title": "Recente afbeeldingen",
+    "empty": "Nog geen geschiedenis",
+    "use": "Gebruiken",
+    "remove": "Verwijderen",
+    "clear": "Alles wissen",
+    "confirmClear": "Alle afbeeldingsgeschiedenis wissen?",
+    "savedAgo": "{n}d geleden",
+    "today": "Vandaag",
+    "yesterday": "Gisteren",
+    "storageFail": "Kan afbeelding niet opslaan in geschiedenis (opslag vol)"
   }
 }

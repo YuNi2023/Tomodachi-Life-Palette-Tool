@@ -188,5 +188,17 @@
   "aria": {
     "zoomOut": "Zoom out",
     "zoomIn": "Zoom in"
+  },
+  "history": {
+    "title": "Recent images",
+    "empty": "No history yet",
+    "use": "Use",
+    "remove": "Remove",
+    "clear": "Clear all history",
+    "confirmClear": "Clear all image history?",
+    "savedAgo": "{n}d ago",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "storageFail": "Failed to save image to history (storage full)"
   }
 }

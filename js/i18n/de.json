@@ -188,5 +188,17 @@
     "freeBodyHtml": "Details siehe <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a>-Lizenz.",
     "contact": "Kontakt",
     "contactBodyHtml": "Erreichbar über <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> oder <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>."
+  },
+  "history": {
+    "title": "Letzte Bilder",
+    "empty": "Noch kein Verlauf",
+    "use": "Verwenden",
+    "remove": "Entfernen",
+    "clear": "Verlauf löschen",
+    "confirmClear": "Bildverlauf vollständig löschen?",
+    "savedAgo": "vor {n} T.",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "storageFail": "Bild konnte nicht im Verlauf gespeichert werden (Speicher voll)"
   }
 }

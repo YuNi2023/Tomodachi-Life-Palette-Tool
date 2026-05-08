@@ -188,5 +188,17 @@
     "freeBodyHtml": "詳情請查看 <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a> 的授權條款。",
     "contact": "聯絡方式",
     "contactBodyHtml": "請透過 <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> 或 <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a> 聯絡。"
+  },
+  "history": {
+    "title": "最近使用的圖片",
+    "empty": "尚無歷史記錄",
+    "use": "使用",
+    "remove": "刪除",
+    "clear": "清除所有歷史",
+    "confirmClear": "要清除所有圖片歷史記錄嗎?",
+    "savedAgo": "{n}天前",
+    "today": "今天",
+    "yesterday": "昨天",
+    "storageFail": "無法將圖片儲存至歷史記錄(容量不足)"
   }
 }

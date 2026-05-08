@@ -107,6 +107,7 @@
   <link rel="stylesheet" href="./css/features/fullcolor.css">
   <link rel="stylesheet" href="./css/features/recipe.css">
   <link rel="stylesheet" href="./css/features/favorites.css">
+  <link rel="stylesheet" href="./css/features/history.css">
   <link rel="stylesheet" href="./css/features/notice.css">
   <link rel="stylesheet" href="./css/layout/mobile.css">
 </head>
@@ -163,7 +164,17 @@
       </div>
       <div class="top-buttons">
         <button class="btn accent" id="demo-btn" data-i18n="upload.demo">デモ画像で試す</button>
+        <button class="btn ghost" onclick="openModal('modal-history')" data-i18n="history.title" id="history-open-btn">最近使った画像</button>
         <button class="btn ghost" onclick="openModal('modal-guide')" data-i18n="upload.guide">使い方を見る</button>
+      </div>
+
+      <div id="history-section" class="history-section history-empty-state">
+        <div class="history-header">
+          <h2 class="history-title" data-i18n="history.title">最近使った画像</h2>
+          <button type="button" id="history-clear-btn" class="history-clear-btn hidden" data-i18n="history.clear">履歴をすべて削除</button>
+        </div>
+        <p id="history-empty" class="history-empty" data-i18n="history.empty">履歴はまだありません</p>
+        <div id="history-list" class="history-list"></div>
       </div>
     </section>
 
@@ -522,6 +533,20 @@
     </div>
   </div>
 
+  <div class="modal hidden" id="modal-history">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('modal-history')" aria-label="閉じる">×</button>
+      <div class="modal-body">
+        <div class="history-modal-header">
+          <h2 data-i18n="history.title">最近使った画像</h2>
+          <button type="button" id="history-clear-btn-modal" class="history-clear-btn hidden" data-i18n="history.clear">履歴をすべて削除</button>
+        </div>
+        <p id="history-empty-modal" class="history-empty" data-i18n="history.empty">履歴はまだありません</p>
+        <div id="history-list-modal" class="history-list"></div>
+      </div>
+    </div>
+  </div>
+
   <img id="branding-logo" src="./assets/favicon.png" alt="" style="display:none" aria-hidden="true">
 
   <script src="./js/core/i18n.js"></script>
@@ -537,6 +562,7 @@
   <script src="./js/features/crop-tool.js"></script>
   <script src="./js/features/image-loader.js"></script>
   <script src="./js/features/favorites.js"></script>
+  <script src="./js/features/history.js"></script>
   <script src="./js/ui.js"></script>
   <script src="./js/main.js"></script>
 

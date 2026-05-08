@@ -188,5 +188,17 @@
     "freeBodyHtml": "Подробности см. в лицензии на <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool\" target=\"_blank\" rel=\"noopener\">GitHub</a>.",
     "contact": "Контакты",
     "contactBodyHtml": "Свяжитесь через <a href=\"https://x.com/yu_\" target=\"_blank\" rel=\"noopener\">X (@yu_)</a> или <a href=\"https://github.com/Yu08083/Tomodachi-Life-Palette-Tool/issues\" target=\"_blank\" rel=\"noopener\">GitHub Issues</a>."
+  },
+  "history": {
+    "title": "Недавние изображения",
+    "empty": "Пока нет истории",
+    "use": "Использовать",
+    "remove": "Удалить",
+    "clear": "Очистить историю",
+    "confirmClear": "Очистить весь журнал изображений?",
+    "savedAgo": "{n} д. назад",
+    "today": "Сегодня",
+    "yesterday": "Вчера",
+    "storageFail": "Не удалось сохранить изображение в журнал (нет места)"
   }
 }

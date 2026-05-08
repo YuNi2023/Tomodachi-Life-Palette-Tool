@@ -188,5 +188,17 @@
   "aria": {
     "zoomOut": "Dézoomer",
     "zoomIn": "Zoomer"
+  },
+  "history": {
+    "title": "Images récentes",
+    "empty": "Aucun historique pour le moment",
+    "use": "Utiliser",
+    "remove": "Supprimer",
+    "clear": "Tout effacer",
+    "confirmClear": "Effacer tout l'historique d'images ?",
+    "savedAgo": "Il y a {n}j",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "storageFail": "Échec de sauvegarde dans l'historique (stockage plein)"
   }
 }
