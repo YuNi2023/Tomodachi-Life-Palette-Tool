@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Generate a paint-by-number PNG of {w}×{h}.\nThe file will be large (around 10–40 MB) and may take tens of seconds to create.\nContinue?",
     "numberedHeader2": "Paint-by-number (palette #1–84)",
-    "numberedSize": "{w}×{h}  /  {n} colors",
-    "showCellNumbers": "Show numbers on image"
+    "numberedSize": "{w}×{h}  /  {n} colors"
   },
   "color": {
     "labelEn": "color information",

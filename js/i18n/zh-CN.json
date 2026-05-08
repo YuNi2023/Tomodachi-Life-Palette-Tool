@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 像素",
     "pbnConfirm": "将产生 {w}×{h} 的编号着色 PNG。\n文件较大(约 10〜40MB),产生可能需要数十秒。\n要继续吗?",
     "numberedHeader2": "编号着色图(调色板编号 1〜84)",
-    "numberedSize": "{w}×{h}  /  {n}色",
-    "showCellNumbers": "在图像上显示编号"
+    "numberedSize": "{w}×{h}  /  {n}色"
   },
   "color": {
     "labelEn": "color information",

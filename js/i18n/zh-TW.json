@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 像素",
     "pbnConfirm": "將產生 {w}×{h} 的編號著色 PNG。\n檔案較大(約 10〜40MB),產生可能需要數十秒。\n要繼續嗎?",
     "numberedHeader2": "編號著色圖(調色板編號 1〜84)",
-    "numberedSize": "{w}×{h}  /  {n}色",
-    "showCellNumbers": "在圖像上顯示編號"
+    "numberedSize": "{w}×{h}  /  {n}色"
   },
   "color": {
     "labelEn": "color information",

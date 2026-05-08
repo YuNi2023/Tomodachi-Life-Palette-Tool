@@ -42,7 +42,6 @@ async function init() {
 
   buildPaletteGrid();
   attachPaletteNumberToggle();
-  attachCellNumberToggle();
 
   window.addEventListener('i18nchange', refreshDynamicLabels);
 }

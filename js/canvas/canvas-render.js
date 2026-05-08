@@ -57,10 +57,6 @@ function renderPixelCanvas() {
 
   if (rulerEnabled) drawRuler(ctx, w, h);
 
-  if (cellNumbersEnabled && viewMode === 'converted' && src.paletteMap) {
-    drawCellNumbers(ctx, src);
-  }
-
   zoomLabel.textContent = zoom + '×';
 
   if (hoverPaletteIdx >= 0) {
@@ -158,76 +154,4 @@ function toggleRuler() {
   const btn = document.getElementById('ruler-btn');
   btn.classList.toggle('active', rulerEnabled);
   renderPixelCanvas();
-}
-
-function drawCellNumbers(ctx, src) {
-  if (zoom < 12) return;
-  const w = src.width, h = src.height;
-  const map = src.paletteMap;
-  if (!map) return;
-
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-
-  const fs1 = Math.max(9, Math.round(zoom * 0.62));
-  const fs2 = Math.max(8, Math.round(zoom * 0.5));
-  const lw1 = Math.max(2, Math.round(fs1 * 0.2));
-  const lw2 = Math.max(2, Math.round(fs2 * 0.2));
-  const font1 = `800 ${fs1}px "JetBrains Mono", "Courier New", monospace`;
-  const font2 = `800 ${fs2}px "JetBrains Mono", "Courier New", monospace`;
-
-  let curDigits = 0;
-  let curWhite = null;
-
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const idx = map[y * w + x];
-      if (idx < 0) continue;
-      const p = PALETTE[idx];
-      const num = p.row * 12 + p.col + 1;
-      const text = String(num);
-      const digits = text.length;
-
-      if (digits !== curDigits) {
-        curDigits = digits;
-        if (digits === 1) {
-          ctx.font = font1;
-          ctx.lineWidth = lw1;
-        } else {
-          ctx.font = font2;
-          ctx.lineWidth = lw2;
-        }
-      }
-
-      const r = parseInt(p.h.slice(1, 3), 16);
-      const g = parseInt(p.h.slice(3, 5), 16);
-      const b = parseInt(p.h.slice(5, 7), 16);
-
-      const useWhite = pickTextColor(r, g, b);
-      if (useWhite !== curWhite) {
-        curWhite = useWhite;
-        ctx.strokeStyle = useWhite ? 'rgba(0,0,0,0.92)' : 'rgba(255,255,255,0.98)';
-        ctx.fillStyle = useWhite ? '#FFFFFF' : '#000000';
-      }
-
-      const cx = x * zoom + (zoom >> 1);
-      const cy = y * zoom + (zoom >> 1);
-
-      ctx.strokeText(text, cx, cy);
-      ctx.fillText(text, cx, cy);
-    }
-  }
-  ctx.restore();
-}
-
-function pickTextColor(r, g, b) {
-  const srgb = [r, g, b].map(v => {
-    const s = v / 255;
-    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
-  });
-  const L = 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
-  const contrastWhite = (1.0 + 0.05) / (L + 0.05);
-  const contrastBlack = (L + 0.05) / 0.05;
-  return contrastWhite >= contrastBlack;
 }

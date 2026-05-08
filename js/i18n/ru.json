@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} пикселей",
     "pbnConfirm": "Создаётся PNG-раскраска по номерам {w}×{h}.\nФайл будет большим (около 10–40 МБ), создание может занять несколько десятков секунд.\nПродолжить?",
     "numberedHeader2": "Раскраска по номерам (номера палитры 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} цветов",
-    "showCellNumbers": "Номера на изображении"
+    "numberedSize": "{w}×{h}  /  {n} цветов"
   },
   "color": {
     "labelEn": "color information",

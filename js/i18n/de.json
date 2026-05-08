@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} Pixel",
     "pbnConfirm": "Erstelle ein Malen-nach-Zahlen-PNG mit {w}×{h}.\nDie Datei wird groß (ca. 10–40 MB) und das Erzeugen dauert mehrere Sekunden.\nFortfahren?",
     "numberedHeader2": "Malen nach Zahlen (Palette Nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} Farben",
-    "showCellNumbers": "Nummern auf Bild anzeigen"
+    "numberedSize": "{w}×{h}  /  {n} Farben"
   },
   "color": {
     "labelEn": "color information",

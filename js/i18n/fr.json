@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Générer un PNG à colorier de {w}×{h}.\nLe fichier sera volumineux (environ 10 à 40 Mo) et la génération peut prendre plusieurs dizaines de secondes.\nContinuer ?",
     "numberedHeader2": "À colorier (palette n°1–84)",
-    "numberedSize": "{w}×{h}  /  {n} couleurs",
-    "showCellNumbers": "Afficher numéros sur l'image"
+    "numberedSize": "{w}×{h}  /  {n} couleurs"
   },
   "color": {
     "labelEn": "color information",

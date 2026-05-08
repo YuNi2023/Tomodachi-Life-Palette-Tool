@@ -422,19 +422,6 @@ function attachConvertControls() {
   }
 }
 
-function attachCellNumberToggle() {
-  const el = document.getElementById('cell-number-toggle');
-  if (!el) return;
-  const KEY = 'spoito_cell_numbers';
-  cellNumbersEnabled = localStorage.getItem(KEY) === '1';
-  el.checked = cellNumbersEnabled;
-  el.addEventListener('change', () => {
-    cellNumbersEnabled = el.checked;
-    localStorage.setItem(KEY, cellNumbersEnabled ? '1' : '0');
-    if (typeof renderPixelCanvas === 'function') renderPixelCanvas();
-  });
-}
-
 function downloadConvertedImage() {
   if (viewMode !== 'converted' || !convertedData) return;
 

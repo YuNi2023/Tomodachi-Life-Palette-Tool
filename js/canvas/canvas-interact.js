@@ -4,8 +4,11 @@ function pickPixelFromCoords(clientX, clientY) {
   const src = getActiveData();
   if (!src) return;
   const rect = pixelCanvas.getBoundingClientRect();
-  const cx = clientX - rect.left;
-  const cy = clientY - rect.top;
+
+  const scaleX = pixelCanvas.width  / rect.width;
+  const scaleY = pixelCanvas.height / rect.height;
+  const cx = (clientX - rect.left) * scaleX;
+  const cy = (clientY - rect.top)  * scaleY;
 
   const px = Math.floor(cx / zoom);
   const py = Math.floor(cy / zoom);
@@ -21,8 +24,11 @@ function pickPixelFromCoords(clientX, clientY) {
   selectColor(r, g, b, px, py);
 }
 
+let _lastTouchPickAt = 0;
+
 function handleCanvasClick(e) {
   if (interactionMode !== 'select') return;
+  if (Date.now() - _lastTouchPickAt < 500) return;
   pickPixelFromCoords(e.clientX, e.clientY);
 }
 
@@ -30,13 +36,15 @@ function handleCanvasTouchStart(e) {
   if (interactionMode !== 'select') return;
   if (!e.touches || e.touches.length !== 1) return;
   e.preventDefault();
+  _lastTouchPickAt = Date.now();
   const t = e.touches[0];
   pickPixelFromCoords(t.clientX, t.clientY);
 }
 
 function attachCanvasInteractions() {
-  pixelCanvas.addEventListener('click', handleCanvasClick);
-  pixelCanvas.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
+  const wrapper = document.getElementById('canvas-wrapper');
+  wrapper.addEventListener('click', handleCanvasClick);
+  wrapper.addEventListener('touchstart', handleCanvasTouchStart, { passive: false });
 }
 
 function canApplyZoom(nextZoom) {

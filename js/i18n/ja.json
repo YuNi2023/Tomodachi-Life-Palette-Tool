@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} ピクセル",
     "pbnConfirm": "{w}×{h} の番号塗り絵PNGを生成します。\nファイルが大きく（10〜40MB目安）、生成に数十秒かかる場合があります。\n続行しますか？",
     "numberedHeader2": "番号塗り絵（パレット番号 1〜84）",
-    "numberedSize": "{w}×{h}  /  {n}色",
-    "showCellNumbers": "画像にも番号を表示"
+    "numberedSize": "{w}×{h}  /  {n}色"
   },
   "color": {
     "labelEn": "color information",

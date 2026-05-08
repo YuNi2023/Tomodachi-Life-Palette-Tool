@@ -58,8 +58,7 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Genereer een inkleur-PNG van {w}×{h}.\nHet bestand wordt groot (ca. 10–40 MB) en het kan tientallen seconden duren.\nDoorgaan?",
     "numberedHeader2": "Inkleurversie (palet nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} kleuren",
-    "showCellNumbers": "Nummers op afbeelding tonen"
+    "numberedSize": "{w}×{h}  /  {n} kleuren"
   },
   "color": {
     "labelEn": "color information",
