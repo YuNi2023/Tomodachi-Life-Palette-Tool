@@ -208,6 +208,7 @@
     "copy": "Copy link",
     "native": "Share with other apps",
     "copied": "Copied!",
-    "tweetText": "Color picker for Tomodachi Life paint mode - 84-color palette support"
+    "tweetText": "A color picker for the\nTomodachi Life paint mode!\n\n・ Pick colors from any image\n・ Find best match in the 84 in-game colors\n・ Step-by-step operation guide",
+    "tweetTagline": "12 languages"
   }
 }
