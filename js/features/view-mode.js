@@ -285,6 +285,43 @@ function getActiveData() {
   return (viewMode === 'converted' && convertedData) ? convertedData : imgData;
 }
 
+function brushPxLabel(g) {
+  const TABLE = {
+    8:   '32px',
+    9:   '27px',
+    13:  '19px',
+    16:  '16px',
+    20:  '13px',
+    32:  '8px',
+    37:  '7px',
+    64:  '4px',
+    85:  '3px',
+    256: '1px',
+  };
+  if (TABLE[g]) return TABLE[g];
+  const px = 256 / g;
+  if (Number.isInteger(px)) return px + 'px';
+  return px.toFixed(1) + 'px';
+}
+
+function updateBrushStatus() {
+  const el = document.getElementById('brush-status');
+  if (!el) return;
+  const px = brushPxLabel(gridSize);
+  let w, h;
+  if (convertedData) {
+    w = convertedData.width;
+    h = convertedData.height;
+  } else if (imgData) {
+    const aspect = imgData.width / imgData.height;
+    if (aspect >= 1) { w = gridSize; h = Math.max(1, Math.round(gridSize / aspect)); }
+    else             { h = gridSize; w = Math.max(1, Math.round(gridSize * aspect)); }
+  } else {
+    w = gridSize; h = gridSize;
+  }
+  el.textContent = t('view.brushStatus', { px, w, h });
+}
+
 function rebuildConvertedData() {
   if (!imgData) return;
   convertedData = convertImage(
@@ -310,6 +347,7 @@ function rebuildConvertedData() {
   }
 
   rebuildRecipe();
+  updateBrushStatus();
 }
 
 function fitZoomToConverted() {
@@ -360,6 +398,7 @@ function setViewMode(mode) {
 
   renderPixelCanvas();
   rebuildRecipe();
+  updateBrushStatus();
 }
 
 function updateImgInfo() {
@@ -390,16 +429,28 @@ function attachConvertControls() {
 
   _loadLogoSafe('./assets/favicon.png');
 
-  document.querySelectorAll('.grid-size-btn').forEach(btn => {
+  document.querySelectorAll('.brush-pill').forEach(btn => {
     btn.addEventListener('click', () => {
       const newSize = parseInt(btn.dataset.size, 10);
       if (newSize === gridSize) return;
       gridSize = newSize;
-      document.querySelectorAll('.grid-size-btn').forEach(b => {
+      document.querySelectorAll('.brush-pill').forEach(b => {
         b.classList.toggle('active', parseInt(b.dataset.size, 10) === gridSize);
       });
       rebuildConvertedData();
       updateImgInfo();
+    });
+  });
+
+  document.querySelectorAll('.brush-mode-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const mode = tab.dataset.mode;
+      document.querySelectorAll('.brush-mode-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.mode === mode);
+      });
+      document.querySelectorAll('.brush-row').forEach(grp => {
+        grp.classList.toggle('hidden', grp.dataset.mode !== mode);
+      });
     });
   });
 

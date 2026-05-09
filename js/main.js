@@ -11,6 +11,10 @@ function refreshDynamicLabels() {
     try { updateImgInfo(); } catch (_) {}
   }
 
+  if (typeof updateBrushStatus === 'function') {
+    try { updateBrushStatus(); } catch (_) {}
+  }
+
   if (typeof rebuildRecipe === 'function' && typeof viewMode !== 'undefined' && viewMode === 'converted') {
     try { rebuildRecipe(); } catch (_) {}
   }
@@ -45,6 +49,8 @@ async function init() {
   attachHistoryControls();
   attachShareControls();
   attachShareWorkControls();
+
+  initGrid();
 
   window.addEventListener('i18nchange', refreshDynamicLabels);
 }

@@ -8,6 +8,7 @@ var viewMode = 'original';
 var currentMode = 'palette';
 var closestIdx = -1;
 var rulerEnabled = false;
+var gridEnabled = false;
 var lastSelPx = -1;
 var lastSelPy = -1;
 var interactionMode = 'select';
@@ -19,6 +20,23 @@ var hoverPaletteIdx = -1;
 
 const ZOOM_STEPS = [1, 2, 4, 8, 12, 16];
 const MAX_CANVAS_SIDE = 4096;
+
+const GRID_STORAGE_KEY = 'spoito_grid_enabled';
+
+var cropBox = { x: 0, y: 0, w: 0, h: 0 };
+var cropAspectId = '1:1';
+
+const CROP_ASPECT_PRESETS = {
+  '1:1':  { id: '1:1',  w: 256, h: 256, labelKey: 'crop.aspect11'   },
+  'book': { id: 'book', w: 180, h: 256, labelKey: 'crop.aspectBook' },
+  'tv':   { id: 'tv',   w: 256, h: 131, labelKey: 'crop.aspectTV'   },
+  'game': { id: 'game', w: 256, h: 144, labelKey: 'crop.aspectGame' },
+  'wall': { id: 'wall', w: 172, h: 256, labelKey: 'crop.aspectWall' },
+};
+
+function getCurrentCropAspect() {
+  return CROP_ASPECT_PRESETS[cropAspectId] || CROP_ASPECT_PRESETS['1:1'];
+}
 
 var dropZone, fileInput, uploadSec, mainContent;
 var pixelCanvas, overlayCanvas;

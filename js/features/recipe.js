@@ -166,8 +166,8 @@ function blinkPaletteCells(palIdx) {
 
 function drawHighlightWithBlink(palIdx, elapsedMs) {
   if (!overlayCanvas || !convertedData) return;
+  clearOverlayWithGrid();
   const ctx = overlayCanvas.getContext('2d');
-  ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
   const phase = (elapsedMs % 600) / 600;
   const pulse = 0.3 + 0.7 * Math.abs(Math.sin(phase * Math.PI));
@@ -221,8 +221,8 @@ function drawHighlight(palIdx) {
 
   if (recipeBlinkActive) recipeBlinkActive = false;
 
+  clearOverlayWithGrid();
   const ctx = overlayCanvas.getContext('2d');
-  ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
   if (palIdx < 0 || viewMode !== 'converted' || !convertedData) {
     if (lastSelPx >= 0) drawSelectionOverlay(lastSelPx, lastSelPy);

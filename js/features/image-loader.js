@@ -143,9 +143,8 @@ function finalizeImageLoad(canvas, isCropped) {
   mainContent.classList.remove('hidden');
 
   const recropBtn = document.getElementById('recrop-btn');
-  if (recropBtn && rawSourceCanvas) {
-    const showRecrop = (rawSourceCanvas.width !== rawSourceCanvas.height);
-    recropBtn.classList.toggle('hidden', !showRecrop);
+  if (recropBtn) {
+    recropBtn.classList.toggle('hidden', !rawSourceCanvas);
   }
 
   setTimeout(() => {

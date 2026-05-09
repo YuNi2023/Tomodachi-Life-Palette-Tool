@@ -35,7 +35,9 @@ function selectColor(r, g, b, px, py) {
 
     lastSelPx = -1;
     lastSelPy = -1;
-    if (overlayCanvas) {
+    if (typeof clearOverlayWithGrid === 'function') {
+      clearOverlayWithGrid();
+    } else if (overlayCanvas) {
       const ctx = overlayCanvas.getContext('2d');
       ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
     }

@@ -186,11 +186,21 @@
       <div class="crop-panel">
         <div class="crop-header">
           <span class="label" data-i18n="crop.label">CROP</span>
-          <h2 data-i18n="crop.title">画像を正方形に切り出す</h2>
+          <h2 data-i18n="crop.title">画像を切り出す</h2>
           <p data-i18n-html="crop.descHtml">角の□ハンドルでサイズ変更、内側ドラッグで位置調整。<br>
-             ゲーム内ペイント領域は正方形なので、使いたい範囲を1:1で選んでください。</p>
+             下のアスペクト比から、ゲーム内で使う用途に合わせて選んでください。</p>
         </div>
         <div class="crop-info-bar" id="crop-info">---</div>
+        <div class="crop-aspect-bar">
+          <span class="crop-aspect-label" data-i18n="crop.aspectLabel">アスペクト</span>
+          <div class="crop-aspect-buttons">
+            <button class="crop-aspect-btn active" data-aspect="1:1"  data-i18n="crop.aspect11">1:1 (256×256)</button>
+            <button class="crop-aspect-btn"        data-aspect="book" data-i18n="crop.aspectBook">本 180×256</button>
+            <button class="crop-aspect-btn"        data-aspect="tv"   data-i18n="crop.aspectTV">TV 256×131</button>
+            <button class="crop-aspect-btn"        data-aspect="game" data-i18n="crop.aspectGame">ゲーム 256×144</button>
+            <button class="crop-aspect-btn"        data-aspect="wall" data-i18n="crop.aspectWall">壁紙 172×256</button>
+          </div>
+        </div>
         <div class="crop-transform-bar">
           <button class="btn small ghost" id="crop-flip-h-btn" data-i18n="crop.flipH">左右反転</button>
           <button class="btn small ghost" id="crop-flip-v-btn" data-i18n="crop.flipV">上下反転</button>
@@ -222,6 +232,7 @@
                 <button id="mode-move-btn"   class="mode-btn"        onclick="setInteractionMode('move')"   data-i18n="viewer.move">移動</button>
               </div>
               <button id="ruler-btn" class="tool-btn" onclick="toggleRuler()" data-i18n="viewer.ruler">ルーラー</button>
+              <button id="grid-btn"  class="tool-btn" onclick="toggleGrid()"  data-i18n="viewer.grid">グリッド</button>
               <button class="tool-btn" onclick="openModal('modal-guide')" data-i18n="viewer.help">使い方</button>
               <button class="tool-btn share-btn-tool" id="share-work-btn" data-i18n="share.shareWork" data-i18n-attr-aria-label="share.shareWork" aria-label="作品を共有">作品を共有</button>
               <div class="zoom-controls">
@@ -239,17 +250,29 @@
 
           <div id="convert-controls" class="hidden">
             <div class="cv-row">
-              <span class="cv-label" data-i18n="view.gridSize">グリッドサイズ</span>
-              <div class="grid-size-buttons">
-                <button class="grid-size-btn"        data-size="16">16</button>
-                <button class="grid-size-btn"        data-size="24">24</button>
-                <button class="grid-size-btn active" data-size="32">32</button>
-                <button class="grid-size-btn"        data-size="48">48</button>
-                <button class="grid-size-btn"        data-size="64">64</button>
-                <button class="grid-size-btn"        data-size="128">128</button>
-                <button class="grid-size-btn"        data-size="192">192</button>
-                <button class="grid-size-btn"        data-size="256">256</button>
+              <span class="cv-label" data-i18n="view.brushSize">ブラシサイズ</span>
+              <div class="brush-mode-tabs">
+                <button class="brush-mode-tab active" data-mode="pp"     data-i18n="view.brushModePP">ゲーム準拠</button>
+                <button class="brush-mode-tab"        data-mode="smooth" data-i18n="view.brushModeSmooth">中間サイズ</button>
               </div>
+            </div>
+            <div class="brush-row" data-mode="pp">
+              <button class="brush-pill"        data-size="64"><span class="brush-dot" style="--d:4px"></span><span class="brush-px">4px</span></button>
+              <button class="brush-pill active" data-size="32"><span class="brush-dot" style="--d:8px"></span><span class="brush-px">8px</span></button>
+              <button class="brush-pill"        data-size="16"><span class="brush-dot" style="--d:14px"></span><span class="brush-px">16px</span></button>
+              <button class="brush-pill"        data-size="8"><span class="brush-dot" style="--d:22px"></span><span class="brush-px">32px</span></button>
+            </div>
+            <div class="brush-row hidden" data-mode="smooth">
+              <button class="brush-pill" data-size="256"><span class="brush-dot" style="--d:2px"></span><span class="brush-px">1px</span></button>
+              <button class="brush-pill" data-size="85"><span class="brush-dot" style="--d:4px"></span><span class="brush-px">3px</span></button>
+              <button class="brush-pill" data-size="37"><span class="brush-dot" style="--d:7px"></span><span class="brush-px">7px</span></button>
+              <button class="brush-pill" data-size="20"><span class="brush-dot" style="--d:12px"></span><span class="brush-px">13px</span></button>
+              <button class="brush-pill" data-size="13"><span class="brush-dot" style="--d:18px"></span><span class="brush-px">19px</span></button>
+              <button class="brush-pill" data-size="9"><span class="brush-dot" style="--d:22px"></span><span class="brush-px">27px</span></button>
+            </div>
+            <div class="brush-info">
+              <span class="brush-info-text" id="brush-status">ブラシ 8px ・ 32×32マス</span>
+              <span class="cv-hint" data-i18n="view.brushHint">小さい＝細かい・大きい＝ざっくり</span>
             </div>
             <div class="cv-row">
               <span class="cv-label" data-i18n="view.ditherLabel">オプション</span>
@@ -267,8 +290,13 @@
 
           <div class="canvas-wrapper" id="canvas-wrapper">
             <div class="canvas-stage" id="canvas-stage">
-              <canvas id="pixel-canvas"></canvas>
-              <canvas id="overlay-canvas" style="pointer-events:none"></canvas>
+              <div class="ruler-corner" id="ruler-corner"></div>
+              <div class="ruler-top"    id="ruler-top"></div>
+              <div class="ruler-left"   id="ruler-left"></div>
+              <div class="canvas-frame" id="canvas-frame">
+                <canvas id="pixel-canvas"></canvas>
+                <canvas id="overlay-canvas" style="pointer-events:none"></canvas>
+              </div>
             </div>
           </div>
 
@@ -277,10 +305,10 @@
           </div>
 
           <div class="image-actions">
-            <button id="download-btn"     class="btn primary hidden" data-i18n="view.savePng">ドット絵を保存</button>
-            <button id="download-pbn-btn" class="btn accent hidden"  data-i18n="view.saveNumbered">番号塗り絵を保存</button>
-            <button id="recrop-btn"       class="btn ghost hidden"   data-i18n="view.recrop">クロップやり直し</button>
-            <button id="reset-btn"        class="btn ghost"          data-i18n="view.reload">別の画像を読み込む</button>
+            <button id="download-btn"     class="btn primary hidden" data-i18n-html="view.savePng">ドット絵を<wbr>保存</button>
+            <button id="download-pbn-btn" class="btn accent hidden"  data-i18n-html="view.saveNumbered">番号塗り絵を<wbr>保存</button>
+            <button id="recrop-btn"       class="btn ghost hidden"   data-i18n-html="view.recrop">クロップ<wbr>やり直し</button>
+            <button id="reset-btn"        class="btn ghost"          data-i18n-html="view.reload">別の画像を<wbr>読み込む</button>
           </div>
         </div>
 
