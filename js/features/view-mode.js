@@ -11,6 +11,29 @@ function _clamp(v, lo, hi) {
   return v < lo ? lo : v > hi ? hi : v;
 }
 
+let _maxSafeCanvasDim = null;
+function _detectSafeCanvasDim() {
+  if (_maxSafeCanvasDim !== null) return _maxSafeCanvasDim;
+  try {
+    const c = document.createElement('canvas');
+    c.width = 5000;
+    c.height = 5000;
+    const ctx = c.getContext('2d');
+    if (!ctx) { _maxSafeCanvasDim = 3800; return _maxSafeCanvasDim; }
+    ctx.fillStyle = '#FF0000';
+    ctx.fillRect(0, 0, 2, 2);
+    ctx.fillRect(4998, 4998, 2, 2);
+    const p1 = ctx.getImageData(0, 0, 1, 1).data;
+    const p2 = ctx.getImageData(4999, 4999, 1, 1).data;
+    const ok = (p1[0] >= 250 && p1[1] < 10 && p1[2] < 10) &&
+               (p2[0] >= 250 && p2[1] < 10 && p2[2] < 10);
+    _maxSafeCanvasDim = ok ? 7000 : 3800;
+  } catch (e) {
+    _maxSafeCanvasDim = 3800;
+  }
+  return _maxSafeCanvasDim;
+}
+
 let _logoImageCache = null;
 let _logoSafeForCanvas = null;
 let _logoLoadPromise = null;
@@ -680,7 +703,7 @@ function composePaintByNumbers(d) {
       const legendCols = Math.min(4, usedList.length);
       const legendRows = Math.ceil(usedList.length / legendCols);
 
-      const SAFE_DIM = 3800;
+      const SAFE_DIM = _detectSafeCanvasDim();
       const _dims = (cp) => {
         const cu = Math.max(48, cp * 1.5);
         const px = Math.round(cu * 0.6);
