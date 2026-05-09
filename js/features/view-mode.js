@@ -497,7 +497,7 @@ function downloadConvertedImage() {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
     })
     .catch(err => {
       console.error('ドット絵生成エラー:', err);
@@ -644,7 +644,7 @@ function downloadPaintByNumbersImage() {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
     })
     .catch(err => {
       console.error('番号塗り絵生成エラー:', err);
@@ -677,6 +677,25 @@ function composePaintByNumbers(d) {
       else if (maxSide <= 128) cellPx = 32;
       else                     cellPx = 28;
 
+      const legendCols = Math.min(4, usedList.length);
+      const legendRows = Math.ceil(usedList.length / legendCols);
+
+      const SAFE_DIM = 3800;
+      const _dims = (cp) => {
+        const cu = Math.max(48, cp * 1.5);
+        const px = Math.round(cu * 0.6);
+        const hh = Math.round(cu * 1.2);
+        const bh = Math.round(cu * 1.6);
+        const lih = Math.round(cu * 0.7);
+        const lh = legendRows * lih + Math.round(cu * 0.3);
+        return { ow: w * cp + px * 2, oh: hh + h * cp + lh + bh };
+      };
+      let _d = _dims(cellPx);
+      while (cellPx > 8 && (_d.ow > SAFE_DIM || _d.oh > SAFE_DIM)) {
+        cellPx--;
+        _d = _dims(cellPx);
+      }
+
       const imgW = w * cellPx;
       const imgH = h * cellPx;
 
@@ -686,8 +705,6 @@ function composePaintByNumbers(d) {
       const headerH = Math.round(chromeUnit * 1.2);
       const bandH   = Math.round(chromeUnit * 1.6);
 
-      const legendCols = Math.min(4, usedList.length);
-      const legendRows = Math.ceil(usedList.length / legendCols);
       const legendItemH = Math.round(chromeUnit * 0.7);
       const legendH = legendRows * legendItemH + Math.round(chromeUnit * 0.3);
 
