@@ -1027,7 +1027,8 @@ function _pbnDrawGridLines(ctx, layout, w, h, options) {
   ctx.setLineDash([]);
 }
 
-// ★ステップ1: 8×8ブロックごとにA1,B2などのラベルを各ブロック中央に薄く描画
+// ★ステップ1+修正版: 8×8ブロックごとにA1,B2などのラベルを各ブロック中央に薄く描画
+//   ラベル文字数(2〜4文字)に応じてフォントサイズを自動縮小し、必ずブロック内に収める
 function _pbnDrawBlockLabels(ctx, layout, w, h) {
   if (!layout.emphasizeGrid) return;
   const { offsetX, offsetY, cellPx } = layout;
@@ -1035,10 +1036,10 @@ function _pbnDrawBlockLabels(ctx, layout, w, h) {
   const cols = Math.ceil(w / blockSize);
   const rows = Math.ceil(h / blockSize);
   const fullBlockPx = blockSize * cellPx;
-  const fontSize = Math.max(10, Math.round(fullBlockPx * 0.55));
+  // ベースのフォントサイズ(2文字想定 例:"A1"のときの基準)
+  const baseFontSize = Math.max(10, Math.round(fullBlockPx * 0.55));
 
   ctx.save();
-  ctx.font = `900 ${fontSize}px "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif`;
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'center';
 
@@ -1046,14 +1047,31 @@ function _pbnDrawBlockLabels(ctx, layout, w, h) {
     for (let bx = 0; bx < cols; bx++) {
       const startX = bx * blockSize;
       const startY = by * blockSize;
+      // 端のブロックは半端なサイズになりうる
       const endX = Math.min(startX + blockSize, w);
       const endY = Math.min(startY + blockSize, h);
+      const blockActualPx = (endX - startX) * cellPx; // このブロックの実際の幅
       const centerX = offsetX + ((startX + endX) / 2) * cellPx;
       const centerY = offsetY + ((startY + endY) / 2) * cellPx;
+      // 列ラベル: 0=A, 25=Z, 26=AA, 27=AB...
       const colLabel = bx < 26
         ? String.fromCharCode(65 + bx)
         : 'A' + String.fromCharCode(65 + bx - 26);
       const label = colLabel + (by + 1);
+
+      // ★追加: ラベルがブロック幅をはみ出さないようフォントサイズを動的調整
+      //   ブロック幅の92%以内に文字列が収まるようにする
+      const availableWidth = blockActualPx * 0.92;
+      let fontSize = baseFontSize;
+      ctx.font = `900 ${fontSize}px "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif`;
+      const measured = ctx.measureText(label).width;
+      if (measured > availableWidth) {
+        // 比例縮小(下限8pxで読めなくならないようにする)
+        fontSize = Math.max(8, Math.floor(fontSize * availableWidth / measured));
+        ctx.font = `900 ${fontSize}px "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif`;
+      }
+
+      // 白アウトライン+黒塗りの2重描画(暗いセル/明るいセルどちらでも薄く読める)
       ctx.lineWidth = Math.max(2, Math.round(fontSize * 0.10));
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
       ctx.strokeText(label, centerX, centerY);
