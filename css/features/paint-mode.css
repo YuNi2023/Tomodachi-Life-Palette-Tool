@@ -178,3 +178,286 @@
     padding: 8px;
   }
 }
+
+/* ===========================================================================
+ * ★段階2追加: 表示モード切替・8×8拡大ナビ・使用色一覧・完成バナー
+ * =========================================================================== */
+
+/* 表示モード切替トグル(全体↔8×8拡大) */
+.paint-view-toggle {
+  display: inline-flex;
+  background: #FFE8CF;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 0;
+}
+
+.paint-view-toggle-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  font-weight: 700;
+  color: #5C3A1A;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.paint-view-toggle-btn.active {
+  background: #FF6B1A;
+  color: #FFFFFF;
+}
+
+.paint-view-toggle-btn:hover:not(.active) {
+  background: rgba(255, 107, 26, 0.15);
+}
+
+/* 完成バナー(100%達成時に表示) */
+.paint-complete-banner {
+  background: linear-gradient(135deg, #2E8B57 0%, #5DBC8B 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 1.25rem;
+  text-align: center;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(46, 139, 87, 0.3);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.paint-complete-banner.hidden {
+  display: none;
+}
+
+/* 進捗バー完成時の色変更 */
+#paint-progress-bar.paint-progress-bar-complete {
+  background: linear-gradient(90deg, #2E8B57 0%, #5DBC8B 100%);
+}
+
+/* 8×8拡大時の現在位置表示 */
+.paint-zoom-position {
+  background: #FFF8EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #5C3A1A;
+  font-weight: 700;
+  text-align: center;
+}
+
+.paint-zoom-position.hidden {
+  display: none;
+}
+
+#paint-zoom-current {
+  font-size: 1.5em;
+  color: #E5530A;
+  font-weight: 800;
+  margin: 0 4px;
+}
+
+.paint-zoom-total {
+  color: #9C7553;
+  font-size: 0.85em;
+  margin-left: 6px;
+}
+
+/* 8×8拡大時のブロック移動ナビ(十字配置) */
+.paint-zoom-nav {
+  display: grid;
+  grid-template-columns: 56px 56px 56px;
+  grid-template-rows: 56px 56px 56px;
+  gap: 6px;
+  justify-content: center;
+  margin: 8px auto 16px;
+}
+
+.paint-zoom-nav.hidden {
+  display: none;
+}
+
+.paint-zoom-nav-btn {
+  font-size: 24px;
+  font-weight: 800;
+  background: #FFE8CF;
+  border: 2px solid #FF6B1A;
+  color: #3A1F0A;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.08s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: sans-serif;
+}
+
+.paint-zoom-nav-btn:hover:not(:disabled) {
+  background: #FF6B1A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 8px rgba(255, 107, 26, 0.35);
+}
+
+.paint-zoom-nav-btn:active:not(:disabled) {
+  background: #E5530A;
+  transform: translateY(1px);
+}
+
+.paint-zoom-nav-btn:disabled {
+  background: #F5F5F5;
+  color: #C0C0C0;
+  border-color: #E0E0E0;
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+#paint-zoom-up-btn    { grid-column: 2; grid-row: 1; }
+#paint-zoom-left-btn  { grid-column: 1; grid-row: 2; }
+#paint-zoom-right-btn { grid-column: 3; grid-row: 2; }
+#paint-zoom-down-btn  { grid-column: 2; grid-row: 3; }
+
+/* 使用色一覧セクション */
+.paint-color-list-section {
+  margin-top: 16px;
+  background: #FFF8EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.paint-color-list-title {
+  margin: 0 0 12px;
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 800;
+  color: #3A1F0A;
+  font-size: 1rem;
+}
+
+.paint-color-list-title::before {
+  content: "🎨 ";
+}
+
+.paint-color-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.paint-color-empty {
+  color: #9C7553;
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 8px 0;
+  text-align: center;
+}
+
+.paint-color-item {
+  display: grid;
+  grid-template-columns: 40px 32px 1fr;
+  gap: 10px;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1px solid #E5C5A0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  transition: opacity 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.paint-color-item.paint-color-complete {
+  background: #E8F5E8;
+  border-color: #5DBC8B;
+}
+
+.paint-color-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #5C3A1A;
+  text-align: center;
+  background: #FFE8CF;
+  border-radius: 4px;
+  padding: 5px 0;
+}
+
+.paint-color-item.paint-color-complete .paint-color-num {
+  background: #C8E8D8;
+  color: #2E5A40;
+}
+
+.paint-color-swatch {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #3A1F0A;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.paint-color-info {
+  min-width: 0;
+}
+
+.paint-color-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: #5C3A1A;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.paint-color-bar-wrap {
+  height: 5px;
+  background: #FFE8CF;
+  border-radius: 2.5px;
+  overflow: hidden;
+}
+
+.paint-color-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B1A 0%, #FFB373 100%);
+  border-radius: 2.5px;
+  transition: width 0.25s ease-out;
+}
+
+.paint-color-complete-label {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-weight: 800;
+  color: #2E8B57;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 600px) {
+  .paint-color-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .paint-color-item {
+    padding: 6px 8px;
+    grid-template-columns: 32px 26px 1fr;
+    gap: 6px;
+  }
+  .paint-color-num {
+    font-size: 0.8rem;
+    padding: 4px 0;
+  }
+  .paint-color-swatch {
+    width: 26px;
+    height: 26px;
+  }
+  .paint-color-count,
+  .paint-color-complete-label {
+    font-size: 0.78rem;
+  }
+  .paint-zoom-nav {
+    grid-template-columns: 48px 48px 48px;
+    grid-template-rows: 48px 48px 48px;
+  }
+  .paint-zoom-nav-btn {
+    font-size: 20px;
+  }
+}

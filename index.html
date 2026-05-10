@@ -803,8 +803,18 @@
         <h2 id="paint-work-name">作品名</h2>
       </div>
       <div class="paint-actions">
+        <!-- ★段階2追加: 表示モード切替(全体↔8×8拡大) -->
+        <div class="paint-view-toggle">
+          <button class="paint-view-toggle-btn active" id="paint-view-full-btn">全体表示</button>
+          <button class="paint-view-toggle-btn" id="paint-view-zoom-btn">8×8拡大</button>
+        </div>
         <button class="btn ghost" id="paint-exit-btn">制作を<wbr>終了</button>
       </div>
+    </div>
+
+    <!-- ★段階2追加: 完成バナー(100%達成時に表示) -->
+    <div id="paint-complete-banner" class="paint-complete-banner hidden">
+      🎉 完成！おめでとうございます！
     </div>
 
     <div class="paint-progress-area">
@@ -818,10 +828,30 @@
       </div>
     </div>
 
+    <!-- ★段階2追加: 8×8拡大時の現在位置表示 -->
+    <div id="paint-zoom-position" class="paint-zoom-position hidden">
+      現在: <span id="paint-zoom-current">A1</span>
+      <span class="paint-zoom-total">/ 全 <span id="paint-zoom-total">0</span> ブロック</span>
+    </div>
+
     <p class="paint-help">マスをクリックすると塗り済みになります(再クリックで解除)。進捗は自動保存されます。</p>
 
     <div class="paint-canvas-wrap">
       <canvas id="paint-canvas"></canvas>
+    </div>
+
+    <!-- ★段階2追加: 8×8拡大時のブロック移動ナビ(矢印キーでも操作可能) -->
+    <div id="paint-zoom-nav" class="paint-zoom-nav hidden">
+      <button class="paint-zoom-nav-btn" id="paint-zoom-up-btn"    aria-label="上のブロックへ">↑</button>
+      <button class="paint-zoom-nav-btn" id="paint-zoom-left-btn"  aria-label="左のブロックへ">←</button>
+      <button class="paint-zoom-nav-btn" id="paint-zoom-right-btn" aria-label="右のブロックへ">→</button>
+      <button class="paint-zoom-nav-btn" id="paint-zoom-down-btn"  aria-label="下のブロックへ">↓</button>
+    </div>
+
+    <!-- ★段階2追加: 使用色一覧(残数表示+Complete!バッジ) -->
+    <div class="paint-color-list-section">
+      <h3 class="paint-color-list-title">使用色一覧</h3>
+      <div id="paint-color-list" class="paint-color-list"></div>
     </div>
   </section>
 
