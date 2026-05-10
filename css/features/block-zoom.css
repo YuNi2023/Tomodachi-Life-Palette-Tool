@@ -52,7 +52,10 @@
   margin-left: 8px;
 }
 
-/* canvas表示エリア */
+/* canvas表示エリア
+   ★修正: overflow:auto を hidden に変更
+     auto だとcanvasがwrap内に収まりきらない瞬間にスクロールバーが出現/消失して
+     wrap.clientWidthが揺らぎ、canvas再描画でズレが起きていた */
 .block-zoom-canvas-wrap {
   display: flex;
   justify-content: center;
@@ -62,18 +65,19 @@
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 16px;
-  overflow: auto; /* canvasが大きい場合スクロール */
+  overflow: hidden;
 }
 
 #block-zoom-canvas {
   display: block;
-  image-rendering: pixelated; /* ぼやけない */
-  image-rendering: -moz-crisp-edges;
   border: 2px solid #3A1F0A;
-  /* ★修正: max-width:100%とheight:autoを削除
-     これらがあるとブラウザがcanvas表示サイズを微妙に縮小し、
-     ピクセル丸めにより一部のグリッド線(1px線)が消えてしまう。
-     JS側で内部解像度=表示解像度を一致させているので、CSSでの再スケーリングは不要。 */
+  /* ★重要修正: max-width:100% / height:auto / image-rendering:pixelated を全て削除
+     これらの組み合わせがブラウザのコンポジタによる canvas 再描画と相性が悪く、
+     グリッド線が部分的にしか描画されない症状を引き起こしていた */
+  /* ★重要修正: 独立したコンポジタレイヤーに昇格させ、
+     周囲のホバーエフェクト等で再合成されてもcanvas内容が壊れないようにする */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 /* 4方向ナビゲーションボタンの3×3グリッドレイアウト */
@@ -94,7 +98,10 @@
   color: #3A1F0A;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, transform 0.1s;
+  /* ★修正: transitionから transform を除外
+     ボタン側のtransform変化で隣接するcanvasのコンポジタが再合成され、
+     グリッド線描画が壊れていた症状を防ぐため、transform効果は使わない */
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   display: flex;
@@ -103,16 +110,17 @@
   padding: 0;
 }
 
-/* ホバー時(無効でない時のみ) */
+/* ホバー時(無効でない時のみ): scaleではなく box-shadow で立体感を出す */
 .block-zoom-nav-btn:hover:not(:disabled) {
   background: #FF6B1A;
   color: #FFFFFF;
-  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(255, 107, 26, 0.35);
 }
 
-/* クリック時 */
+/* クリック時: scaleではなく色を濃くする */
 .block-zoom-nav-btn:active:not(:disabled) {
-  transform: scale(0.95);
+  background: #E5530A;
+  box-shadow: 0 1px 3px rgba(229, 83, 10, 0.5) inset;
 }
 
 /* 端で押せないボタン */
@@ -147,3 +155,4 @@
     padding: 8px;
   }
 }
+

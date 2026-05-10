@@ -1340,32 +1340,34 @@ function renderBlockZoom() {
   const cellsW = endX - startX;
   const cellsH = endY - startY;
 
-  // ★修正: モーダル内の実際の利用可能幅から計算し、内部解像度=表示解像度の1:1にする
-  //   こうしないとCSSスケーリングで一部のグリッド線がピクセル丸めにより消える(バグ修正)
-  const wrap = canvas.parentElement;
-  let wrapAvail = 0;
-  if (wrap) {
-    const wrapStyle = window.getComputedStyle(wrap);
-    const wrapPadding = parseFloat(wrapStyle.paddingLeft || 0)
-                      + parseFloat(wrapStyle.paddingRight || 0);
-    wrapAvail = wrap.clientWidth - wrapPadding;
-  }
-  // モーダル未表示時(clientWidth=0)のフォールバック
-  if (wrapAvail <= 0) {
-    wrapAvail = Math.min(688, window.innerWidth - 80);
-  }
-  const availWidth = Math.max(120, wrapAvail - 4); // canvasのborder(2px両側)分を引く
-  // 高さ方向: ビューポートの60%程度で打ち止め(ナビボタンとヘッダーを残す)
-  const availHeight = Math.min(window.innerHeight * 0.6, 640);
+  // ★重要修正: ビューポート基準で安定計算する
+  //   親要素のclientWidthに依存させると、スクロールバーやflexレイアウトの
+  //   再計算で値が揺らぎ、canvasサイズと表示サイズが微妙にずれて
+  //   グリッド線がピクセル丸めで部分的に消える問題が発生する
+  const viewportW = window.innerWidth;
+  const viewportH = window.innerHeight;
+  // 横方向: ビューポートの〜90% または 640px の小さい方(モーダル外余白を除いた値)
+  const targetW = Math.min(640, Math.max(280, viewportW - 100));
+  // 縦方向: ビューポートの55% (ヘッダーとナビボタンのスペースを残す)
+  const targetH = Math.max(280, viewportH * 0.55);
+  const target = Math.floor(Math.min(targetW, targetH));
   const maxDim = Math.max(cellsW, cellsH);
-  const cellPx = Math.max(8, Math.floor(Math.min(availWidth, availHeight) / maxDim));
+  const cellPx = Math.max(8, Math.floor(target / maxDim));
   const canvasW = cellPx * cellsW;
   const canvasH = cellPx * cellsH;
-  // 内部解像度と表示解像度を完全一致させる(これでCSSスケーリングが起きずグリッド線が綺麗に出る)
+
+  // 内部解像度と表示解像度を完全一致(1:1)にしてCSSスケーリングを発生させない
   canvas.width = canvasW;
   canvas.height = canvasH;
   canvas.style.width = canvasW + 'px';
   canvas.style.height = canvasH + 'px';
+
+  // ★重要修正: canvas.widthによる暗黙のクリアに加え、明示的にもクリアして安全を期す
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  // 線の角を整える(線が部分的に消える描画パスのバグを防ぐ)
+  ctx.lineCap = 'butt';
+  ctx.lineJoin = 'miter';
+  ctx.imageSmoothingEnabled = false;
 
   // 背景クリア
   ctx.fillStyle = '#FFFFFF';
