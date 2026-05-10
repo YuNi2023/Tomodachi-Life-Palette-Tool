@@ -1,0 +1,180 @@
+/* ===========================================================================
+ * 制作モード画面のスタイル
+ * 番号塗り絵風の表示でクリック塗りを行う制作アシスト機能
+ * =========================================================================== */
+
+#paint-section {
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#paint-section.hidden {
+  display: none;
+}
+
+/* ヘッダー(タイトル + アクションボタン) */
+.paint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #FF6B1A;
+}
+
+.paint-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.paint-title-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #FF6B1A;
+  letter-spacing: 0.06em;
+  background: #FFE8CF;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+#paint-work-name {
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 800;
+  color: #3A1F0A;
+  font-size: 1.25rem;
+  margin: 0;
+  word-break: break-word;
+}
+
+.paint-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* 進捗バーエリア */
+.paint-progress-area {
+  margin-bottom: 16px;
+  background: #FFF8EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.paint-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.paint-progress-label {
+  font-weight: 700;
+  color: #5C3A1A;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+#paint-progress-pct {
+  font-family: 'JetBrains Mono', "SF Mono", monospace;
+  font-weight: 800;
+  font-size: 1.7rem;
+  color: #E5530A;
+  transition: color 0.3s;
+}
+
+#paint-progress-pct.paint-progress-complete {
+  color: #2E8B57;
+}
+
+#paint-progress-count {
+  font-family: 'JetBrains Mono', monospace;
+  color: #9C7553;
+  font-size: 0.9rem;
+}
+
+.paint-progress-bar-wrap {
+  height: 12px;
+  background: #FFE8CF;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+#paint-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #FF6B1A 0%, #FFB373 100%);
+  width: 0%;
+  transition: width 0.25s ease-out;
+  border-radius: 6px;
+}
+
+#paint-progress-pct.paint-progress-complete + #paint-progress-count + .paint-progress-bar-wrap #paint-progress-bar,
+.paint-progress-area:has(#paint-progress-pct.paint-progress-complete) #paint-progress-bar {
+  background: linear-gradient(90deg, #2E8B57 0%, #5DBC8B 100%);
+}
+
+/* 操作のヒント */
+.paint-help {
+  text-align: center;
+  color: #8C5A30;
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+  background: #FFF8EE;
+  border: 1px dashed #E5C5A0;
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+/* キャンバスを包むエリア */
+.paint-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: #FAF6EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  overflow: auto;
+  min-height: 320px;
+}
+
+#paint-canvas {
+  display: block;
+  border: 2px solid #3A1F0A;
+  cursor: pointer;
+  /* 8×8拡大モーダルと同じ理由で独立コンポジタレイヤーへ昇格 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+#paint-canvas:hover {
+  /* ホバー時は微妙にカーソルを変えて押せる感を出す */
+  cursor: crosshair;
+}
+
+/* スマートフォン対応 */
+@media (max-width: 600px) {
+  #paint-section {
+    padding: 8px;
+  }
+  .paint-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #paint-work-name {
+    font-size: 1.1rem;
+  }
+  #paint-progress-pct {
+    font-size: 1.4rem;
+  }
+  .paint-canvas-wrap {
+    padding: 8px;
+  }
+}

@@ -504,6 +504,9 @@ function setViewMode(mode) {
   // ★ステップ2追加: 8×8拡大ボタンも変換モード時のみ表示
   const blockZoomBtn = document.getElementById('block-zoom-btn');
   if (blockZoomBtn) blockZoomBtn.classList.toggle('hidden', mode !== 'converted');
+  // ★制作アシスト機能追加: 制作モード開始ボタンも変換モード時のみ表示
+  const paintStartBtn = document.getElementById('paint-start-btn');
+  if (paintStartBtn) paintStartBtn.classList.toggle('hidden', mode !== 'converted');
 
   if (mode === 'converted') {
     if (!convertedData) rebuildConvertedData();
