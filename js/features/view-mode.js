@@ -1285,10 +1285,15 @@ function openBlockZoomModal() {
   const totalEl = document.getElementById('block-zoom-total');
   if (totalEl) totalEl.textContent = String(_blockZoomState.cols * _blockZoomState.rows);
 
-  // 描画してからモーダルを開く
-  renderBlockZoom();
+  // ★修正: モーダルを先に開いてから描画する(描画にはモーダルの実際の幅が必要)
   if (typeof openModal === 'function') {
     openModal('modal-block-zoom');
+  }
+  // 次のフレームで描画(モーダルがDOMに反映されてから幅を計測)
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(() => renderBlockZoom());
+  } else {
+    setTimeout(renderBlockZoom, 0);
   }
 }
 
@@ -1335,11 +1340,28 @@ function renderBlockZoom() {
   const cellsW = endX - startX;
   const cellsH = endY - startY;
 
-  // canvasサイズ: 画面サイズに合わせて自動調整(320〜640pxの範囲)
-  const targetSize = Math.min(640, Math.max(320, window.innerWidth - 80));
-  const cellPx = Math.floor(targetSize / Math.max(cellsW, cellsH));
+  // ★修正: モーダル内の実際の利用可能幅から計算し、内部解像度=表示解像度の1:1にする
+  //   こうしないとCSSスケーリングで一部のグリッド線がピクセル丸めにより消える(バグ修正)
+  const wrap = canvas.parentElement;
+  let wrapAvail = 0;
+  if (wrap) {
+    const wrapStyle = window.getComputedStyle(wrap);
+    const wrapPadding = parseFloat(wrapStyle.paddingLeft || 0)
+                      + parseFloat(wrapStyle.paddingRight || 0);
+    wrapAvail = wrap.clientWidth - wrapPadding;
+  }
+  // モーダル未表示時(clientWidth=0)のフォールバック
+  if (wrapAvail <= 0) {
+    wrapAvail = Math.min(688, window.innerWidth - 80);
+  }
+  const availWidth = Math.max(120, wrapAvail - 4); // canvasのborder(2px両側)分を引く
+  // 高さ方向: ビューポートの60%程度で打ち止め(ナビボタンとヘッダーを残す)
+  const availHeight = Math.min(window.innerHeight * 0.6, 640);
+  const maxDim = Math.max(cellsW, cellsH);
+  const cellPx = Math.max(8, Math.floor(Math.min(availWidth, availHeight) / maxDim));
   const canvasW = cellPx * cellsW;
   const canvasH = cellPx * cellsH;
+  // 内部解像度と表示解像度を完全一致させる(これでCSSスケーリングが起きずグリッド線が綺麗に出る)
   canvas.width = canvasW;
   canvas.height = canvasH;
   canvas.style.width = canvasW + 'px';

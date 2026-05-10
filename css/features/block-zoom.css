@@ -70,8 +70,10 @@
   image-rendering: pixelated; /* ぼやけない */
   image-rendering: -moz-crisp-edges;
   border: 2px solid #3A1F0A;
-  max-width: 100%;
-  height: auto;
+  /* ★修正: max-width:100%とheight:autoを削除
+     これらがあるとブラウザがcanvas表示サイズを微妙に縮小し、
+     ピクセル丸めにより一部のグリッド線(1px線)が消えてしまう。
+     JS側で内部解像度=表示解像度を一致させているので、CSSでの再スケーリングは不要。 */
 }
 
 /* 4方向ナビゲーションボタンの3×3グリッドレイアウト */
