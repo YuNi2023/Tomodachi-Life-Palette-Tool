@@ -1,4 +1,3 @@
-
 let _palRgbCache = null;
 function getPaletteRgb() {
   if (!_palRgbCache) {
@@ -853,7 +852,12 @@ function _pbnComputeUsedList(d) {
   return { usedList: list, idxToNum };
 }
 
-function _pbnComputeLayout(w, h, usedCount) {
+function _pbnComputeLayout(w, h, usedCount, options) {
+  // ★追加: optionsを受け取り、emphasizeGrid(マス目強調)時は
+  //   軸番号(10,20,...)とブロックラベル(A1,B2,...)用に上・左の余白を確保する
+  const opts = options || {};
+  const emphasize = !!opts.emphasizeGrid;
+
   const maxSide = Math.max(w, h);
   let cellPx;
   if (maxSide <= 32)       cellPx = 48;
@@ -867,8 +871,10 @@ function _pbnComputeLayout(w, h, usedCount) {
   const SAFE_DIM = _detectSafeCanvasDim();
   const dimsAt = (cp) => {
     const cu = Math.max(48, cp * 1.5);
-    const px = Math.round(cu * 0.6);
-    const hh = Math.round(cu * 1.2);
+    // ★追加: 軸番号用のマージン(強調ON時のみ)
+    const axisM = emphasize ? Math.round(cu * 0.55) : 0;
+    const px = Math.round(cu * 0.6) + axisM;
+    const hh = Math.round(cu * 1.2) + axisM;
     const bh = Math.round(cu * 1.6);
     const lih = Math.round(cu * 0.7);
     const lh = legendRows * lih + Math.round(cu * 0.3);
@@ -883,8 +889,10 @@ function _pbnComputeLayout(w, h, usedCount) {
   const imgW = w * cellPx;
   const imgH = h * cellPx;
   const chromeUnit = Math.max(48, cellPx * 1.5);
-  const padX    = Math.round(chromeUnit * 0.6);
-  const headerH = Math.round(chromeUnit * 1.2);
+  // ★追加: 軸番号用マージン(強調ON時のみ非ゼロ)
+  const axisMargin = emphasize ? Math.round(chromeUnit * 0.55) : 0;
+  const padX    = Math.round(chromeUnit * 0.6) + axisMargin;
+  const headerH = Math.round(chromeUnit * 1.2) + axisMargin;
   const bandH   = Math.round(chromeUnit * 1.6);
   const legendItemH = Math.round(chromeUnit * 0.7);
   const legendH = legendRows * legendItemH + Math.round(chromeUnit * 0.3);
@@ -897,6 +905,8 @@ function _pbnComputeLayout(w, h, usedCount) {
     outW, outH,
     offsetX: padX,
     offsetY: headerH,
+    axisMargin,                  // ★追加: 軸番号領域のサイズ
+    emphasizeGrid: emphasize,    // ★追加: 強調ON/OFFフラグ
   };
 }
 
@@ -1014,6 +1024,82 @@ function _pbnDrawGridLines(ctx, layout, w, h, options) {
   ctx.setLineDash([]);
 }
 
+// ★新規追加: 8×8ブロックごとに「A1」「B2」などのラベルを各ブロック中央に薄く描画
+//   (どんな背景色でもうっすら読めるよう、白アウトライン+黒塗りの2重描画にしている)
+function _pbnDrawBlockLabels(ctx, layout, w, h) {
+  if (!layout.emphasizeGrid) return; // 強調OFF時は何もしない
+  const { offsetX, offsetY, cellPx } = layout;
+  const blockSize = 8; // 8×8マスごと
+
+  const cols = Math.ceil(w / blockSize);
+  const rows = Math.ceil(h / blockSize);
+  const fullBlockPx = blockSize * cellPx;
+  // 文字サイズ: ブロックの約55%(最小10px)
+  const fontSize = Math.max(10, Math.round(fullBlockPx * 0.55));
+
+  ctx.save();
+  ctx.font = `900 ${fontSize}px "M PLUS Rounded 1c", "Hiragino Sans", "Yu Gothic", sans-serif`;
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+
+  for (let by = 0; by < rows; by++) {
+    for (let bx = 0; bx < cols; bx++) {
+      const startX = bx * blockSize;
+      const startY = by * blockSize;
+      // 端のブロックが半端な時は実際の終端までで中心を計算
+      const endX = Math.min(startX + blockSize, w);
+      const endY = Math.min(startY + blockSize, h);
+      const centerX = offsetX + ((startX + endX) / 2) * cellPx;
+      const centerY = offsetY + ((startY + endY) / 2) * cellPx;
+      // ラベル: 列=A,B,C...(27列以降はAA,AB...) 行=1,2,3...
+      const colLabel = bx < 26
+        ? String.fromCharCode(65 + bx)
+        : 'A' + String.fromCharCode(65 + bx - 26);
+      const label = colLabel + (by + 1);
+      // 白アウトライン+黒塗り: 暗い色のセルでも明るい色のセルでも薄く読める
+      ctx.lineWidth = Math.max(2, Math.round(fontSize * 0.10));
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+      ctx.strokeText(label, centerX, centerY);
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.16)'; // ←濃さを変えたい場合はこの数字
+      ctx.fillText(label, centerX, centerY);
+    }
+  }
+  ctx.restore();
+}
+
+// ★新規追加: 10マスごとに座標番号(10, 20, 30...)を画像の上端・左端の外側に描画
+function _pbnDrawAxisNumbers(ctx, layout, w, h) {
+  if (!layout.emphasizeGrid) return; // 強調OFF時は何もしない
+  const { offsetX, offsetY, cellPx } = layout;
+  const interval = 10; // 10マスごと
+
+  ctx.save();
+  // フォントサイズ: セル幅の0.5倍(最小12px、最大28px)
+  const fontSize = Math.max(12, Math.min(28, Math.round(cellPx * 0.5)));
+  ctx.font = `800 ${fontSize}px "JetBrains Mono", "SF Mono", monospace`;
+  ctx.fillStyle = '#5C3A1A'; // 濃い茶色
+
+  // 上端: 横方向の番号(10, 20, ...)を上余白に描画
+  ctx.textBaseline = 'bottom';
+  ctx.textAlign = 'center';
+  for (let x = interval; x <= w; x += interval) {
+    // x番目のセルの中心の真上に番号を置く
+    const drawX = offsetX + (x - 0.5) * cellPx;
+    const drawY = offsetY - Math.max(4, Math.round(cellPx * 0.2));
+    ctx.fillText(String(x), drawX, drawY);
+  }
+
+  // 左端: 縦方向の番号(10, 20, ...)を左余白に描画
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'right';
+  for (let y = interval; y <= h; y += interval) {
+    const drawX = offsetX - Math.max(4, Math.round(cellPx * 0.2));
+    const drawY = offsetY + (y - 0.5) * cellPx;
+    ctx.fillText(String(y), drawX, drawY);
+  }
+  ctx.restore();
+}
+
 function _pbnDrawLegend(ctx, layout, usedList, idxToNum) {
   const { offsetX, offsetY, imgH, padX, outW, chromeUnit, legendCols, legendItemH } = layout;
   const legendY0 = offsetY + imgH + Math.round(chromeUnit * 0.3);
@@ -1121,7 +1207,8 @@ function composePaintByNumbers(d, options) {
       const w = d.width, h = d.height;
 
       const { usedList, idxToNum } = _pbnComputeUsedList(d);
-      const layout = _pbnComputeLayout(w, h, usedList.length);
+      // ★変更: optsを渡して強調ON時に軸番号用マージンを確保
+      const layout = _pbnComputeLayout(w, h, usedList.length, opts);
 
       const out = document.createElement('canvas');
       out.width = layout.outW;
@@ -1134,6 +1221,10 @@ function composePaintByNumbers(d, options) {
       _pbnDrawHeader(ctx, layout, w, h, usedList.length);
       _pbnDrawCells(ctx, layout, d, idxToNum);
       _pbnDrawGridLines(ctx, layout, w, h, opts);
+      // ★追加: 強調ON時のみブロックラベル(A1,B2...)を上書き描画
+      _pbnDrawBlockLabels(ctx, layout, w, h);
+      // ★追加: 強調ON時のみ10マスごとの軸番号を上端・左端に描画
+      _pbnDrawAxisNumbers(ctx, layout, w, h);
       _pbnDrawLegend(ctx, layout, usedList, idxToNum);
       const footerInfo = _pbnDrawFooterText(ctx, layout);
       _pbnDrawFooterLogo(ctx, footerInfo).then(() => {
