@@ -47,6 +47,41 @@
   box-shadow: 0 2px 0 var(--orange-d);
 }
 
+.grid-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.grid-sub-toggle {
+  display: inline-flex;
+  background: var(--card);
+  padding: 2px;
+  border-radius: 999px;
+  gap: 1px;
+  box-shadow: var(--shadow);
+  border: 1.5px solid var(--line);
+}
+.grid-sub-toggle.hidden { display: none; }
+.grid-sub-btn {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.76rem;
+  padding: 5px 11px;
+  background: transparent;
+  color: var(--ink-2);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.15s;
+  min-width: 30px;
+}
+.grid-sub-btn:hover { color: var(--orange-d); }
+.grid-sub-btn.active {
+  background: var(--orange);
+  color: #fff;
+}
+
 .zoom-controls {
   display: inline-flex;
   align-items: center;

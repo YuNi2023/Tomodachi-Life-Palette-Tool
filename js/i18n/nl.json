@@ -15,7 +15,9 @@
     "drop": "Sleep een afbeelding of klik",
     "noteHtml": "Pixel art, foto's, screenshots — alles werkt.<br>Niet-vierkante afbeeldingen kunnen op het volgende scherm naar 1:1 worden bijgesneden.<br>Accepteert ook <code>.spoito.json</code>-bestanden die op een ander apparaat zijn opgeslagen.",
     "demo": "Probeer met demo-afbeelding",
-    "guide": "Hoe te gebruiken"
+    "guide": "Hoe te gebruiken",
+    "discordTitle": "Discord-server",
+    "discordSub": "Werk delen & feedback"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Genereer een inkleur-PNG van {w}×{h}.\nHet bestand wordt groot (ca. 10–40 MB) en het kan tientallen seconden duren.\nDoorgaan?",
     "numberedHeader2": "Inkleurversie (palet nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} kleuren"
+    "numberedSize": "{w}×{h}  /  {n} kleuren",
+    "brightness": "Helderheid",
+    "saturation": "Verzadiging",
+    "adjustLabel": "Aanpassen",
+    "adjustReset": "Herstel",
+    "pbnGrid": "Raster benadrukken in nummerplaat"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Kleurinfo",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Toepassen",
     "hintHtml": "Klik op een pixel in de afbeelding links,<br>of voer hierboven een HEX-code in.",
     "selected": "Geselecteerde kleur",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX-invoer",
     "convertedPrefix": "Geconverteerd ",
     "rowCol": "rij {row}, kol {col}",
-    "distHint": "  (lager = dichterbij)"
+    "distHint": "  (lager = dichterbij)",
+    "isolateOff": "Kleur isoleren",
+    "isolateOn": "Alles tonen",
+    "markDoneOff": "Markeer als klaar",
+    "markDoneOn": "Opnieuw verven",
+    "doneReset": "Alles resetten",
+    "doneCounter": "Klaar {n}/{m}",
+    "isolateOffShort": "Isoleer",
+    "isolateOnShort": "Alles",
+    "markDoneOffShort": "Klaar",
+    "markDoneOnShort": "Terug"
   },
   "palette": {
     "fullColor": "Volledige kleur",
@@ -92,7 +109,8 @@
     "hint": "De omlijnde cel is de dichtstbijzijnde. Beweeg/tik op een staal om overeenkomende cellen te markeren.",
     "tabPalette": "Palet",
     "tabFullColor": "Volledige kleur",
-    "showNumbers": "Nummers tonen"
+    "showNumbers": "Nummers tonen",
+    "usedOnly": "Alleen gebruikte kleuren"
   },
   "fullcolor": {
     "guide": "Volledige-kleurgids",

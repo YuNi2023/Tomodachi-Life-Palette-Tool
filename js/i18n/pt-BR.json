@@ -15,7 +15,9 @@
     "drop": "Solte uma imagem ou clique",
     "noteHtml": "Pixel art, fotos, capturas de tela — qualquer coisa funciona.<br>Imagens não quadradas podem ser cortadas para 1:1 na tela seguinte.<br>Também aceita arquivos <code>.spoito.json</code> salvos de outro dispositivo.",
     "demo": "Testar com imagem demo",
-    "guide": "Como usar"
+    "guide": "Como usar",
+    "discordTitle": "Servidor do Discord",
+    "discordSub": "Compartilhe obras e feedback"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Gerar um PNG para colorir de {w}×{h}.\nO arquivo será grande (10–40 MB aprox.) e a geração pode levar dezenas de segundos.\nContinuar?",
     "numberedHeader2": "Para colorir (paleta nº 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} cores"
+    "numberedSize": "{w}×{h}  /  {n} cores",
+    "brightness": "Brilho",
+    "saturation": "Saturação",
+    "adjustLabel": "Ajustar",
+    "adjustReset": "Redefinir",
+    "pbnGrid": "Realçar grade no numerado"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Info de cor",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Aplicar",
     "hintHtml": "Clique em um pixel na imagem à esquerda,<br>ou insira um código HEX acima.",
     "selected": "Cor selecionada",
@@ -83,7 +90,17 @@
     "hexInputPos": "Entrada HEX",
     "convertedPrefix": "Convertido ",
     "rowCol": "linha {row}, col {col}",
-    "distHint": "  (menor = mais próximo)"
+    "distHint": "  (menor = mais próximo)",
+    "isolateOff": "Isolar cor",
+    "isolateOn": "Mostrar tudo",
+    "markDoneOff": "Marcar como feito",
+    "markDoneOn": "Pintar de novo",
+    "doneReset": "Limpar tudo",
+    "doneCounter": "Feito {n}/{m}",
+    "isolateOffShort": "Isolar",
+    "isolateOnShort": "Tudo",
+    "markDoneOffShort": "Feito",
+    "markDoneOnShort": "Desfaz"
   },
   "palette": {
     "fullColor": "Cor completa",
@@ -92,7 +109,8 @@
     "hint": "A célula com borda é a mais próxima. Passe o mouse/toque em uma cor para destacar células correspondentes.",
     "tabPalette": "Paleta",
     "tabFullColor": "Cor completa",
-    "showNumbers": "Mostrar números"
+    "showNumbers": "Mostrar números",
+    "usedOnly": "Só cores usadas"
   },
   "fullcolor": {
     "guide": "Guia de cor completa",

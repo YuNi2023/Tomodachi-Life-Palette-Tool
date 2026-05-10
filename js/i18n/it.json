@@ -15,7 +15,9 @@
     "drop": "Trascina un'immagine o clicca",
     "noteHtml": "Pixel art, foto, screenshot — qualsiasi cosa va bene.<br>Le immagini non quadrate possono essere ritagliate a 1:1 nella schermata successiva.<br>Accetta anche file <code>.spoito.json</code> salvati da un altro dispositivo.",
     "demo": "Prova con immagine demo",
-    "guide": "Come usare"
+    "guide": "Come usare",
+    "discordTitle": "Server Discord",
+    "discordSub": "Condividi opere e feedback"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixel",
     "pbnConfirm": "Genera un PNG da colorare di {w}×{h}.\nIl file sarà grande (10–40 MB circa) e la generazione può richiedere decine di secondi.\nContinuare?",
     "numberedHeader2": "Da colorare (palette n. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} colori"
+    "numberedSize": "{w}×{h}  /  {n} colori",
+    "brightness": "Luminosità",
+    "saturation": "Saturazione",
+    "adjustLabel": "Regolazione",
+    "adjustReset": "Reimposta",
+    "pbnGrid": "Evidenzia griglia nei numeri"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Info colore",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Applica",
     "hintHtml": "Clicca un pixel nell'immagine a sinistra,<br>o inserisci un codice HEX sopra.",
     "selected": "Colore selezionato",
@@ -83,7 +90,17 @@
     "hexInputPos": "Inserimento HEX",
     "convertedPrefix": "Convertito ",
     "rowCol": "riga {row}, col {col}",
-    "distHint": "  (più basso = più vicino)"
+    "distHint": "  (più basso = più vicino)",
+    "isolateOff": "Isola colore",
+    "isolateOn": "Mostra tutto",
+    "markDoneOff": "Segna come fatto",
+    "markDoneOn": "Rifai",
+    "doneReset": "Reimposta tutto",
+    "doneCounter": "Fatto {n}/{m}",
+    "isolateOffShort": "Isola",
+    "isolateOnShort": "Tutto",
+    "markDoneOffShort": "Fatto",
+    "markDoneOnShort": "Annulla"
   },
   "palette": {
     "fullColor": "Colore pieno",
@@ -92,7 +109,8 @@
     "hint": "La cella con bordo è la più vicina. Passa il mouse/tocca un colore per evidenziare le celle corrispondenti.",
     "tabPalette": "Palette",
     "tabFullColor": "Colore pieno",
-    "showNumbers": "Mostra numeri"
+    "showNumbers": "Mostra numeri",
+    "usedOnly": "Solo colori usati"
   },
   "fullcolor": {
     "guide": "Guida colore pieno",

@@ -113,6 +113,12 @@ function finalizeImageLoad(canvas, isCropped) {
 
   convertedData = null;
   viewMode = 'original';
+  if (typeof isolateEnabled !== 'undefined') {
+    isolateEnabled = false;
+    isolateTargetIdx = -1;
+  }
+  if (typeof _updateIsolateButtonState === 'function') _updateIsolateButtonState();
+  if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
   document.getElementById('view-original-btn').classList.add('active');
   document.getElementById('view-converted-btn').classList.remove('active');
   document.getElementById('convert-controls').classList.add('hidden');
@@ -244,13 +250,25 @@ function parseHexInput(s) {
   };
 }
 
+function _parsePaletteNumberInput(s) {
+  if (!s) return null;
+  const trimmed = String(s).trim().replace(/^[#№]+/, '');
+  if (!/^\d{1,2}$/.test(trimmed)) return null;
+  const n = parseInt(trimmed, 10);
+  if (n < 1 || n > PALETTE.length) return null;
+  const p = PALETTE[n - 1];
+  if (!p) return null;
+  return hexToRgb(p.h);
+}
+
 function attachHexInput() {
   const input = document.getElementById('hex-input');
   const btn   = document.getElementById('hex-input-btn');
   if (!input || !btn) return;
 
   const submit = () => {
-    const rgb = parseHexInput(input.value);
+    let rgb = _parsePaletteNumberInput(input.value);
+    if (!rgb) rgb = parseHexInput(input.value);
     if (!rgb) {
       input.classList.add('error');
       setTimeout(() => input.classList.remove('error'), 800);

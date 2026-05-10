@@ -15,7 +15,9 @@
     "drop": "이미지를 드롭 또는 클릭",
     "noteHtml": "도트 그림, 사진, 스크린샷 등 무엇이든 불러올 수 있습니다.<br>정사각형이 아닌 이미지는 다음 화면에서 1:1로 잘라낼 수 있습니다.<br>다른 기기에서 저장한 <code>.spoito.json</code> 파일도 불러올 수 있습니다.",
     "demo": "데모 이미지로 시도",
-    "guide": "사용법 보기"
+    "guide": "사용법 보기",
+    "discordTitle": "Discord 서버",
+    "discordSub": "작품 공유 · 피드백"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 픽셀",
     "pbnConfirm": "{w}×{h}의 번호 색칠 PNG를 생성합니다.\n파일이 크고 (10~40MB 기준) 생성에 수십 초가 걸릴 수 있습니다.\n계속하시겠습니까?",
     "numberedHeader2": "번호 색칠 (팔레트 번호 1~84)",
-    "numberedSize": "{w}×{h}  /  {n}색"
+    "numberedSize": "{w}×{h}  /  {n}색",
+    "brightness": "밝기",
+    "saturation": "채도",
+    "adjustLabel": "이미지 조정",
+    "adjustReset": "초기화",
+    "pbnGrid": "번호 도안에 격자 강조"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "색상 정보",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "확인",
     "hintHtml": "왼쪽 이미지의 픽셀을 클릭<br>또는 위에 HEX 코드를 입력해 주세요",
     "selected": "선택한 색상",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX 입력",
     "convertedPrefix": "변환 후 ",
     "rowCol": "{row}행 {col}열",
-    "distHint": "  (낮을수록 가까움)"
+    "distHint": "  (낮을수록 가까움)",
+    "isolateOff": "이 색만 표시",
+    "isolateOn": "모든 색 표시",
+    "markDoneOff": "칠하기 완료",
+    "markDoneOn": "다시 칠하기",
+    "doneReset": "완료 모두 해제",
+    "doneCounter": "완료 {n}/{m}",
+    "isolateOffShort": "이 색만",
+    "isolateOnShort": "전체",
+    "markDoneOffShort": "완료",
+    "markDoneOnShort": "되돌리기"
   },
   "palette": {
     "fullColor": "풀 컬러",
@@ -92,7 +109,8 @@
     "hint": "테두리가 있는 셀이 가장 가까운 색입니다. 색에 호버/탭하면 이미지 내 해당 셀이 강조됩니다.",
     "tabPalette": "팔레트",
     "tabFullColor": "풀 컬러",
-    "showNumbers": "번호 표시"
+    "showNumbers": "번호 표시",
+    "usedOnly": "사용 색상만"
   },
   "fullcolor": {
     "guide": "풀 컬러 가이드",

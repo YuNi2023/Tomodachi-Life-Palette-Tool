@@ -15,7 +15,9 @@
     "drop": "Bild ablegen oder klicken",
     "noteHtml": "Pixel-Art, Fotos, Screenshots — alles funktioniert.<br>Nicht-quadratische Bilder können im nächsten Bildschirm auf 1:1 zugeschnitten werden.<br>Akzeptiert auch <code>.spoito.json</code>-Dateien, die auf einem anderen Gerät gespeichert wurden.",
     "demo": "Mit Demobild ausprobieren",
-    "guide": "Anleitung"
+    "guide": "Anleitung",
+    "discordTitle": "Discord-Server",
+    "discordSub": "Werke teilen & Feedback"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} Pixel",
     "pbnConfirm": "Erstelle ein Malen-nach-Zahlen-PNG mit {w}×{h}.\nDie Datei wird groß (ca. 10–40 MB) und das Erzeugen dauert mehrere Sekunden.\nFortfahren?",
     "numberedHeader2": "Malen nach Zahlen (Palette Nr. 1–84)",
-    "numberedSize": "{w}×{h}  /  {n} Farben"
+    "numberedSize": "{w}×{h}  /  {n} Farben",
+    "brightness": "Helligkeit",
+    "saturation": "Sättigung",
+    "adjustLabel": "Bildanpassung",
+    "adjustReset": "Zurücksetzen",
+    "pbnGrid": "Raster im Malbild hervorheben"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Farbinfo",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Übernehmen",
     "hintHtml": "Klicke einen Pixel im linken Bild,<br>oder gib oben einen HEX-Code ein.",
     "selected": "Ausgewählte Farbe",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX-Eingabe",
     "convertedPrefix": "Konvertiert ",
     "rowCol": "Zeile {row}, Sp. {col}",
-    "distHint": "  (kleiner = näher)"
+    "distHint": "  (kleiner = näher)",
+    "isolateOff": "Farbe isolieren",
+    "isolateOn": "Alle anzeigen",
+    "markDoneOff": "Als fertig markieren",
+    "markDoneOn": "Erneut malen",
+    "doneReset": "Alle zurücksetzen",
+    "doneCounter": "Fertig {n}/{m}",
+    "isolateOffShort": "Isolieren",
+    "isolateOnShort": "Alle",
+    "markDoneOffShort": "Fertig",
+    "markDoneOnShort": "Zurück"
   },
   "palette": {
     "fullColor": "Vollfarbe",
@@ -92,7 +109,8 @@
     "hint": "Die umrandete Zelle ist die nächste Farbe. Hover/tippe ein Farbfeld, um passende Zellen im Bild hervorzuheben.",
     "tabPalette": "Palette",
     "tabFullColor": "Vollfarbe",
-    "showNumbers": "Nummern anzeigen"
+    "showNumbers": "Nummern anzeigen",
+    "usedOnly": "Nur genutzte Farben"
   },
   "fullcolor": {
     "guide": "Vollfarb-Leitfaden",

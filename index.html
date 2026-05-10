@@ -180,6 +180,17 @@
         <p id="history-empty" class="history-empty" data-i18n="history.empty">履歴はまだありません</p>
         <div id="history-list" class="history-list"></div>
       </div>
+
+      <a class="discord-banner" href="https://discord.gg/3tqgcAwVF7" target="_blank" rel="noopener">
+        <span class="discord-banner-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z"/></svg>
+        </span>
+        <span class="discord-banner-text">
+          <span class="discord-banner-title" data-i18n="upload.discordTitle">Discord サーバー</span>
+          <span class="discord-banner-sub" data-i18n="upload.discordSub">作品共有・要望相談はこちら</span>
+        </span>
+        <span class="discord-banner-arrow" aria-hidden="true">→</span>
+      </a>
     </section>
 
     <section id="crop-section" class="hidden">
@@ -232,7 +243,19 @@
                 <button id="mode-move-btn"   class="mode-btn"        onclick="setInteractionMode('move')"   data-i18n="viewer.move">移動</button>
               </div>
               <button id="ruler-btn" class="tool-btn" onclick="toggleRuler()" data-i18n="viewer.ruler">ルーラー</button>
-              <button id="grid-btn"  class="tool-btn" onclick="toggleGrid()"  data-i18n="viewer.grid">グリッド</button>
+              <div class="grid-control">
+                <button id="grid-btn"  class="tool-btn" onclick="toggleGrid()"  data-i18n="viewer.grid">グリッド</button>
+                <div class="grid-sub-toggle hidden" id="grid-sub-toggle">
+                  <button class="grid-sub-btn active" data-sub="8">8</button>
+                  <button class="grid-sub-btn"        data-sub="16">16</button>
+                </div>
+              </div>
+              <button id="isolate-btn-header" class="tool-btn isolate-btn isolate-btn-mobile-only" type="button"
+                      onclick="toggleIsolate()"
+                      data-i18n="color.isolateOffShort">色だけ</button>
+              <button id="done-btn-header" class="tool-btn done-btn done-btn-mobile-only" type="button"
+                      onclick="toggleDoneColor()"
+                      data-i18n="color.markDoneOffShort">塗終</button>
               <button class="tool-btn" onclick="openModal('modal-guide')" data-i18n="viewer.help">使い方</button>
               <button class="tool-btn share-btn-tool" id="share-work-btn" data-i18n="share.shareWork" data-i18n-attr-aria-label="share.shareWork" aria-label="作品を共有">作品を共有</button>
               <div class="zoom-controls">
@@ -264,6 +287,7 @@
             </div>
             <div class="brush-row hidden" data-mode="smooth">
               <button class="brush-pill" data-size="256"><span class="brush-dot" style="--d:2px"></span><span class="brush-px">1px</span></button>
+              <button class="brush-pill" data-size="128"><span class="brush-dot" style="--d:3px"></span><span class="brush-px">2px</span></button>
               <button class="brush-pill" data-size="85"><span class="brush-dot" style="--d:4px"></span><span class="brush-px">3px</span></button>
               <button class="brush-pill" data-size="37"><span class="brush-dot" style="--d:7px"></span><span class="brush-px">7px</span></button>
               <button class="brush-pill" data-size="20"><span class="brush-dot" style="--d:12px"></span><span class="brush-px">13px</span></button>
@@ -280,7 +304,27 @@
                 <input type="checkbox" id="dither-toggle">
                 <span data-i18n="view.dither">ディザ（誤差拡散）</span>
               </label>
+              <label class="cv-toggle">
+                <input type="checkbox" id="pbn-grid-toggle">
+                <span data-i18n="view.pbnGrid">番号塗り絵にマス目強調</span>
+              </label>
               <span class="cv-hint" data-i18n="view.ditherHint">写真やグラデーションは ON 推奨</span>
+            </div>
+            <div class="cv-row hsv-row">
+              <span class="cv-label" data-i18n="view.adjustLabel">画像調整</span>
+              <div class="hsv-group">
+                <label class="hsv-slider">
+                  <span class="hsv-name" data-i18n="view.brightness">明るさ</span>
+                  <input type="range" id="brightness-slider" min="-50" max="50" step="1" value="0">
+                  <span class="hsv-value" id="brightness-value">0</span>
+                </label>
+                <label class="hsv-slider">
+                  <span class="hsv-name" data-i18n="view.saturation">鮮やかさ</span>
+                  <input type="range" id="saturation-slider" min="-50" max="50" step="1" value="0">
+                  <span class="hsv-value" id="saturation-value">0</span>
+                </label>
+                <button id="hsv-reset-btn" class="hsv-reset" data-i18n="view.adjustReset">リセット</button>
+              </div>
             </div>
           </div>
 
@@ -321,8 +365,8 @@
           </div>
 
           <div class="hex-input-bar">
-            <label for="hex-input" data-i18n="color.hex">HEX</label>
-            <input type="text" id="hex-input" placeholder="#FF6B1A" autocomplete="off" spellcheck="false">
+            <label for="hex-input" data-i18n="color.hex">HEX / №</label>
+            <input type="text" id="hex-input" placeholder="#FF6B1A or 1-84" autocomplete="off" spellcheck="false">
             <button id="hex-input-btn" class="btn small primary" data-i18n="color.confirm">確認</button>
           </div>
 
@@ -346,6 +390,15 @@
                   <div class="code-row"><span class="code-key">RGB</span><span id="rgb-val"   class="code-val">---,---,---</span></div>
                   <div class="code-row"><span class="code-key">HSV</span><span id="hsv-val"   class="code-val">---°,---,---</span></div>
                 </div>
+              </div>
+              <div class="selected-color-actions">
+                <button class="btn small isolate-btn" id="isolate-btn-panel" type="button"
+                        onclick="toggleIsolate()"
+                        data-i18n="color.isolateOff"
+                        data-label-off="この色だけ表示" data-label-on="全色を表示">この色だけ表示</button>
+                <button class="btn small done-btn" id="done-btn-panel" type="button"
+                        onclick="toggleDoneColor()"
+                        data-i18n="color.markDoneOff">塗り終わった</button>
               </div>
             </div>
 
@@ -372,6 +425,10 @@
                   <label class="palette-toggle">
                     <input type="checkbox" id="palette-show-numbers">
                     <span data-i18n="palette.showNumbers">番号を表示</span>
+                  </label>
+                  <label class="palette-toggle">
+                    <input type="checkbox" id="palette-used-only">
+                    <span data-i18n="palette.usedOnly">使用色のみ</span>
                   </label>
                 </div>
                 <div id="palette-grid" class="palette-grid"></div>
@@ -435,6 +492,10 @@
               <div class="recipe-header">
                 <div class="info-label" data-i18n="recipe.title">使用色レシピ</div>
                 <span class="recipe-summary" id="recipe-summary"></span>
+                <span class="done-counter hidden" id="done-counter"></span>
+                <button class="btn tiny ghost done-reset-btn hidden" id="done-reset-btn" type="button"
+                        onclick="resetDoneColors()"
+                        data-i18n="color.doneReset">完了を全て戻す</button>
               </div>
               <div class="recipe-list" id="recipe-list"></div>
               <p class="recipe-foot" data-i18n="recipe.hint">行をhover/タップで画像内の該当セルがハイライトされます。</p>

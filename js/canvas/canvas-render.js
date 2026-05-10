@@ -20,6 +20,8 @@ function renderPixelCanvas() {
 
   ctx.drawImage(src.originalCanvas, 0, 0, w * zoom, h * zoom);
 
+  drawColorMaskOverlay(ctx);
+
   if (rulerEnabled) drawRulerCrosshair(ctx, w, h);
 
   zoomLabel.textContent = zoom + '×';
@@ -48,6 +50,7 @@ function drawGridOverlay(ctx) {
   const w = src.width, h = src.height;
   const W = w * zoom;
   const H = h * zoom;
+  const sub = (typeof gridSubdivision === 'number' && (gridSubdivision === 8 || gridSubdivision === 16)) ? gridSubdivision : 8;
 
   ctx.save();
 
@@ -73,13 +76,13 @@ function drawGridOverlay(ctx) {
   ctx.strokeStyle = 'rgba(232, 90, 12, 0.55)';
   ctx.lineWidth = Math.max(1, zoom * 0.18);
   ctx.beginPath();
-  for (let x = 8; x < w; x += 8) {
+  for (let x = sub; x < w; x += sub) {
     if (x === cxIdx) continue;
     const px = Math.round(x * zoom) + 0.5;
     ctx.moveTo(px, 0);
     ctx.lineTo(px, H);
   }
-  for (let y = 8; y < h; y += 8) {
+  for (let y = sub; y < h; y += sub) {
     if (y === cyIdx) continue;
     const py = Math.round(y * zoom) + 0.5;
     ctx.moveTo(0, py);
@@ -255,10 +258,24 @@ function toggleGrid() {
   gridEnabled = !gridEnabled;
   const btn = document.getElementById('grid-btn');
   if (btn) btn.classList.toggle('active', gridEnabled);
+  const sub = document.getElementById('grid-sub-toggle');
+  if (sub) sub.classList.toggle('hidden', !gridEnabled);
   try {
     localStorage.setItem(GRID_STORAGE_KEY, gridEnabled ? '1' : '0');
   } catch (_) {}
   renderPixelCanvas();
+}
+
+function setGridSubdivision(n) {
+  if (n !== 8 && n !== 16) return;
+  gridSubdivision = n;
+  document.querySelectorAll('.grid-sub-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.sub, 10) === n);
+  });
+  try {
+    localStorage.setItem(GRID_SUB_STORAGE_KEY, String(n));
+  } catch (_) {}
+  if (gridEnabled) renderPixelCanvas();
 }
 
 function initGrid() {
@@ -269,4 +286,199 @@ function initGrid() {
   gridEnabled = saved;
   const btn = document.getElementById('grid-btn');
   if (btn) btn.classList.toggle('active', gridEnabled);
+
+  let savedSub = 8;
+  try {
+    const v = parseInt(localStorage.getItem(GRID_SUB_STORAGE_KEY), 10);
+    if (v === 8 || v === 16) savedSub = v;
+  } catch (_) {}
+  gridSubdivision = savedSub;
+  document.querySelectorAll('.grid-sub-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.sub, 10) === savedSub);
+    b.addEventListener('click', () => setGridSubdivision(parseInt(b.dataset.sub, 10)));
+  });
+  const sub = document.getElementById('grid-sub-toggle');
+  if (sub) sub.classList.toggle('hidden', !gridEnabled);
+}
+
+function isDoneColor(idx) {
+  if (idx == null || idx < 0) return false;
+  return typeof recipeCheckState !== 'undefined' && !!recipeCheckState[idx];
+}
+
+function _doneCount() {
+  if (typeof recipeCheckState === 'undefined') return 0;
+  let n = 0;
+  for (const k in recipeCheckState) if (recipeCheckState[k]) n++;
+  return n;
+}
+
+function _hasAnyDone() {
+  if (typeof recipeCheckState === 'undefined') return false;
+  for (const k in recipeCheckState) if (recipeCheckState[k]) return true;
+  return false;
+}
+
+function drawColorMaskOverlay(ctx) {
+  const isolateActive = isolateEnabled && isolateTargetIdx >= 0;
+  const doneActive = _hasAnyDone();
+  if (!isolateActive && !doneActive) return;
+
+  const src = getActiveData();
+  if (!src) return;
+  const w = src.width, h = src.height;
+
+  let map = null;
+  if (viewMode === 'converted' && convertedData) {
+    map = convertedData.paletteMap;
+  } else if (viewMode === 'original' && imgData) {
+    if (typeof _ensureOriginalPaletteMap === 'function') {
+      map = _ensureOriginalPaletteMap();
+    }
+  }
+  if (!map) return;
+
+  ctx.save();
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const idx = map[y * w + x];
+      const isolateBlocks = isolateActive && idx !== isolateTargetIdx;
+      const doneBlocks    = doneActive && isDoneColor(idx);
+      if (isolateBlocks || doneBlocks) {
+        ctx.fillRect(x * zoom, y * zoom, zoom, zoom);
+      }
+    }
+  }
+  ctx.restore();
+}
+
+function drawIsolateOverlay(ctx) {
+  drawColorMaskOverlay(ctx);
+}
+
+function toggleIsolate() {
+  if (!isolateEnabled) {
+    if (typeof closestIdx === 'undefined' || closestIdx < 0) {
+      const btnPanel = document.getElementById('isolate-btn-panel');
+      if (btnPanel) {
+        btnPanel.classList.add('shake');
+        setTimeout(() => btnPanel.classList.remove('shake'), 400);
+      }
+      return;
+    }
+    isolateEnabled = true;
+    isolateTargetIdx = closestIdx;
+  } else {
+    isolateEnabled = false;
+    isolateTargetIdx = -1;
+  }
+  try {
+    localStorage.setItem(ISOLATE_STORAGE_KEY, isolateEnabled ? '1' : '0');
+  } catch (_) {}
+  _updateIsolateButtonState();
+  renderPixelCanvas();
+}
+
+function _updateIsolateButtonState() {
+  const longKey  = isolateEnabled ? 'color.isolateOn'      : 'color.isolateOff';
+  const shortKey = isolateEnabled ? 'color.isolateOnShort' : 'color.isolateOffShort';
+  const longText  = (typeof t === 'function') ? t(longKey)  : '';
+  const shortText = (typeof t === 'function') ? t(shortKey) : '';
+  document.querySelectorAll('.isolate-btn').forEach(btn => {
+    btn.classList.toggle('active', isolateEnabled);
+    const useShort = btn.classList.contains('isolate-btn-mobile-only');
+    const text = useShort ? shortText : longText;
+    const key  = useShort ? shortKey  : longKey;
+    if (text) btn.textContent = text;
+    btn.setAttribute('data-i18n', key);
+    btn.disabled = (typeof closestIdx === 'undefined' || closestIdx < 0) && !isolateEnabled;
+  });
+}
+
+function refreshIsolateOnSelection() {
+  if (isolateEnabled && typeof closestIdx !== 'undefined' && closestIdx >= 0) {
+    isolateTargetIdx = closestIdx;
+    renderPixelCanvas();
+  }
+  _updateIsolateButtonState();
+}
+
+function initIsolate() {
+  let saved = false;
+  try { saved = localStorage.getItem(ISOLATE_STORAGE_KEY) === '1'; } catch (_) {}
+  if (saved && typeof closestIdx !== 'undefined' && closestIdx >= 0) {
+    isolateEnabled = true;
+    isolateTargetIdx = closestIdx;
+  } else {
+    isolateEnabled = false;
+    isolateTargetIdx = -1;
+  }
+  _updateIsolateButtonState();
+}
+
+function toggleDoneColor() {
+  if (typeof closestIdx === 'undefined' || closestIdx < 0) {
+    document.querySelectorAll('.done-btn').forEach(btn => {
+      btn.classList.add('shake');
+      setTimeout(() => btn.classList.remove('shake'), 400);
+    });
+    return;
+  }
+  if (typeof toggleRecipeCheck === 'function') {
+    toggleRecipeCheck(closestIdx);
+  }
+  _updateDoneButtonState();
+  if (typeof applyPaletteUsedFilter === 'function') applyPaletteUsedFilter();
+  renderPixelCanvas();
+}
+
+function resetDoneColors() {
+  if (typeof recipeCheckState === 'undefined' || !_hasAnyDone()) return;
+  for (const k in recipeCheckState) delete recipeCheckState[k];
+  if (typeof _saveCheckState === 'function' && typeof recipeKey !== 'undefined') {
+    _saveCheckState(recipeKey, recipeCheckState);
+  }
+  if (typeof rebuildRecipe === 'function') rebuildRecipe();
+  _updateDoneButtonState();
+  renderPixelCanvas();
+}
+
+function _updateDoneButtonState() {
+  const hasSel = (typeof closestIdx !== 'undefined' && closestIdx >= 0);
+  const isDone = hasSel && isDoneColor(closestIdx);
+  const longKey  = isDone ? 'color.markDoneOn'      : 'color.markDoneOff';
+  const shortKey = isDone ? 'color.markDoneOnShort' : 'color.markDoneOffShort';
+  const longText  = (typeof t === 'function') ? t(longKey)  : '';
+  const shortText = (typeof t === 'function') ? t(shortKey) : '';
+  document.querySelectorAll('.done-btn').forEach(btn => {
+    btn.classList.toggle('active', isDone);
+    const useShort = btn.classList.contains('done-btn-mobile-only');
+    const text = useShort ? shortText : longText;
+    const key  = useShort ? shortKey  : longKey;
+    if (text) btn.textContent = text;
+    btn.setAttribute('data-i18n', key);
+    btn.disabled = !hasSel;
+  });
+
+  const resetBtn = document.getElementById('done-reset-btn');
+  if (resetBtn) resetBtn.classList.toggle('hidden', !_hasAnyDone());
+
+  const counter = document.getElementById('done-counter');
+  if (counter) {
+    if (typeof convertedData !== 'undefined' && convertedData && convertedData.usedSet) {
+      const total = convertedData.usedSet.size;
+      const done = _doneCount();
+      counter.textContent = (typeof t === 'function')
+        ? t('color.doneCounter', { n: done, m: total })
+        : `${done}/${total}`;
+      counter.classList.toggle('hidden', total === 0);
+    } else {
+      counter.classList.add('hidden');
+    }
+  }
+}
+
+function refreshDoneOnSelection() {
+  _updateDoneButtonState();
 }

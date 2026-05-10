@@ -15,7 +15,9 @@
     "drop": "Déposez une image ou cliquez",
     "noteHtml": "Pixel art, photos, captures d'écran — tout fonctionne.<br>Les images non carrées peuvent être recadrées en 1:1 à l'écran suivant.<br>Accepte aussi les fichiers <code>.spoito.json</code> enregistrés depuis un autre appareil.",
     "demo": "Essayer avec une image démo",
-    "guide": "Mode d'emploi"
+    "guide": "Mode d'emploi",
+    "discordTitle": "Serveur Discord",
+    "discordSub": "Partage et retours"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Générer un PNG à colorier de {w}×{h}.\nLe fichier sera volumineux (environ 10 à 40 Mo) et la génération peut prendre plusieurs dizaines de secondes.\nContinuer ?",
     "numberedHeader2": "À colorier (palette n°1–84)",
-    "numberedSize": "{w}×{h}  /  {n} couleurs"
+    "numberedSize": "{w}×{h}  /  {n} couleurs",
+    "brightness": "Luminosité",
+    "saturation": "Saturation",
+    "adjustLabel": "Ajuster",
+    "adjustReset": "Réinitialiser",
+    "pbnGrid": "Quadrillage renforcé sur le numéroté"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Infos couleur",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Valider",
     "hintHtml": "Cliquez un pixel sur l'image à gauche,<br>ou saisissez un code HEX ci-dessus.",
     "selected": "Couleur sélectionnée",
@@ -83,7 +90,17 @@
     "hexInputPos": "Saisie HEX",
     "convertedPrefix": "Convertie ",
     "rowCol": "ligne {row}, col. {col}",
-    "distHint": "  (plus bas = plus proche)"
+    "distHint": "  (plus bas = plus proche)",
+    "isolateOff": "Isoler la couleur",
+    "isolateOn": "Tout afficher",
+    "markDoneOff": "Marquer terminé",
+    "markDoneOn": "Reprendre",
+    "doneReset": "Tout réinitialiser",
+    "doneCounter": "Fini {n}/{m}",
+    "isolateOffShort": "Isoler",
+    "isolateOnShort": "Tout",
+    "markDoneOffShort": "Fait",
+    "markDoneOnShort": "Annuler"
   },
   "palette": {
     "fullColor": "Couleur réelle",
@@ -92,7 +109,8 @@
     "hint": "La case encadrée est la plus proche. Survolez/touchez une couleur pour mettre en évidence les pixels correspondants.",
     "tabPalette": "Palette",
     "tabFullColor": "Couleur réelle",
-    "showNumbers": "Afficher numéros"
+    "showNumbers": "Afficher numéros",
+    "usedOnly": "Couleurs utilisées"
   },
   "fullcolor": {
     "guide": "Guide couleur réelle",

@@ -15,7 +15,9 @@
     "drop": "画像をドロップ または クリック",
     "noteHtml": "ドット絵・写真・スクリーンショットなど何でも読み込めます。<br>正方形でない画像は次の画面で1:1に切り出せます。<br>別端末で保存した <code>.spoito.json</code> も読み込めます。",
     "demo": "デモ画像で試す",
-    "guide": "使い方を見る"
+    "guide": "使い方を見る",
+    "discordTitle": "Discord サーバー",
+    "discordSub": "作品共有・要望相談はこちら"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} ピクセル",
     "pbnConfirm": "{w}×{h} の番号塗り絵PNGを生成します。\nファイルが大きく（10〜40MB目安）、生成に数十秒かかる場合があります。\n続行しますか？",
     "numberedHeader2": "番号塗り絵（パレット番号 1〜84）",
-    "numberedSize": "{w}×{h}  /  {n}色"
+    "numberedSize": "{w}×{h}  /  {n}色",
+    "brightness": "明るさ",
+    "saturation": "鮮やかさ",
+    "adjustLabel": "画像調整",
+    "adjustReset": "リセット",
+    "pbnGrid": "番号塗り絵にマス目強調"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "カラー情報",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "確認",
     "hintHtml": "左の画像のピクセルをクリック<br>または HEXコードを上に入力してください",
     "selected": "選択した色",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX 入力",
     "convertedPrefix": "変換後 ",
     "rowCol": "{row}行目 {col}列目",
-    "distHint": "  (低いほど近い)"
+    "distHint": "  (低いほど近い)",
+    "isolateOff": "この色だけ表示",
+    "isolateOn": "全色を表示",
+    "markDoneOff": "塗り終わった",
+    "markDoneOn": "塗り直す",
+    "doneReset": "完了を全て戻す",
+    "doneCounter": "完了 {n}/{m}",
+    "isolateOffShort": "色だけ",
+    "isolateOnShort": "全色",
+    "markDoneOffShort": "塗終",
+    "markDoneOnShort": "戻す"
   },
   "palette": {
     "fullColor": "フルカラー",
@@ -92,7 +109,8 @@
     "hint": "枠付きが最も近い色。色にhover/タップで該当セルが画像内でハイライト表示されます。",
     "tabPalette": "カラーパレット",
     "tabFullColor": "フルカラー",
-    "showNumbers": "番号を表示"
+    "showNumbers": "番号を表示",
+    "usedOnly": "使用色のみ"
   },
   "fullcolor": {
     "guide": "フルカラー ガイド",

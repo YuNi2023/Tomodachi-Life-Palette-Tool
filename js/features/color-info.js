@@ -45,6 +45,13 @@ function selectColor(r, g, b, px, py) {
 
   noSelectMsg.classList.add('hidden');
   colorInfo.classList.remove('hidden');
+
+  if (typeof refreshIsolateOnSelection === 'function') {
+    refreshIsolateOnSelection();
+  }
+  if (typeof refreshDoneOnSelection === 'function') {
+    refreshDoneOnSelection();
+  }
 }
 
 function _pickTextColorForBg(r, g, b) {
@@ -99,6 +106,43 @@ function attachPaletteNumberToggle() {
   toggle.addEventListener('change', () => {
     grid.classList.toggle('show-numbers', toggle.checked);
     localStorage.setItem(KEY, toggle.checked ? '1' : '0');
+  });
+}
+
+function attachPaletteUsedOnlyToggle() {
+  const toggle = document.getElementById('palette-used-only');
+  const grid = document.getElementById('palette-grid');
+  if (!toggle || !grid) return;
+  let saved = false;
+  try { saved = localStorage.getItem(PALETTE_USED_ONLY_KEY) === '1'; } catch (_) {}
+  toggle.checked = saved;
+  paletteUsedOnly = saved;
+  grid.classList.toggle('used-only', saved);
+  applyPaletteUsedFilter();
+  toggle.addEventListener('change', () => {
+    paletteUsedOnly = toggle.checked;
+    grid.classList.toggle('used-only', toggle.checked);
+    try { localStorage.setItem(PALETTE_USED_ONLY_KEY, toggle.checked ? '1' : '0'); } catch (_) {}
+    applyPaletteUsedFilter();
+  });
+}
+
+function applyPaletteUsedFilter() {
+  const grid = document.getElementById('palette-grid');
+  if (!grid) return;
+  if (!paletteUsedOnly) {
+    grid.querySelectorAll('.palette-cell').forEach(c => c.classList.remove('unused'));
+    return;
+  }
+  const used = new Set();
+  if (typeof convertedData !== 'undefined' && convertedData && convertedData.usedSet) {
+    convertedData.usedSet.forEach(i => used.add(i));
+  } else if (typeof convertedData !== 'undefined' && convertedData && convertedData.indices) {
+    convertedData.indices.forEach(i => { if (i >= 0) used.add(i); });
+  }
+  grid.querySelectorAll('.palette-cell').forEach(c => {
+    const idx = parseInt(c.dataset.idx, 10);
+    c.classList.toggle('unused', !used.has(idx));
   });
 }
 

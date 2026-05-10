@@ -9,6 +9,10 @@ var currentMode = 'palette';
 var closestIdx = -1;
 var rulerEnabled = false;
 var gridEnabled = false;
+var gridSubdivision = 8;
+var paletteUsedOnly = false;
+var isolateEnabled = false;
+var isolateTargetIdx = -1;
 var lastSelPx = -1;
 var lastSelPy = -1;
 var interactionMode = 'select';
@@ -22,6 +26,9 @@ const ZOOM_STEPS = [1, 2, 4, 8, 12, 16];
 const MAX_CANVAS_SIDE = 4096;
 
 const GRID_STORAGE_KEY = 'spoito_grid_enabled';
+const GRID_SUB_STORAGE_KEY = 'spoito_grid_subdivision';
+const PALETTE_USED_ONLY_KEY = 'spoito_palette_used_only';
+const ISOLATE_STORAGE_KEY = 'spoito_isolate_enabled';
 
 var cropBox = { x: 0, y: 0, w: 0, h: 0 };
 var cropAspectId = '1:1';

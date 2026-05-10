@@ -15,7 +15,9 @@
     "drop": "拖放圖片或點擊",
     "noteHtml": "點陣圖、照片、螢幕截圖等都可以載入。<br>非正方形的圖片可在下一個畫面裁切為 1:1。<br>也可載入從其他裝置儲存的 <code>.spoito.json</code> 檔案。",
     "demo": "用範例圖片試試",
-    "guide": "查看使用方法"
+    "guide": "查看使用方法",
+    "discordTitle": "Discord 伺服器",
+    "discordSub": "作品分享與意見"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 像素",
     "pbnConfirm": "將產生 {w}×{h} 的編號著色 PNG。\n檔案較大(約 10〜40MB),產生可能需要數十秒。\n要繼續嗎?",
     "numberedHeader2": "編號著色圖(調色板編號 1〜84)",
-    "numberedSize": "{w}×{h}  /  {n}色"
+    "numberedSize": "{w}×{h}  /  {n}色",
+    "brightness": "亮度",
+    "saturation": "飽和度",
+    "adjustLabel": "影像調整",
+    "adjustReset": "重設",
+    "pbnGrid": "在編號著色圖加強格線"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "色彩資訊",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "確認",
     "hintHtml": "點擊左側圖片的像素<br>或在上方輸入 HEX 代碼",
     "selected": "選擇的顏色",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX 輸入",
     "convertedPrefix": "轉換後 ",
     "rowCol": "第{row}列 第{col}行",
-    "distHint": "  (越低越接近)"
+    "distHint": "  (越低越接近)",
+    "isolateOff": "只顯示此色",
+    "isolateOn": "顯示全部",
+    "markDoneOff": "塗完了",
+    "markDoneOn": "重新塗",
+    "doneReset": "全部重置",
+    "doneCounter": "完成 {n}/{m}",
+    "isolateOffShort": "此色",
+    "isolateOnShort": "全部",
+    "markDoneOffShort": "完成",
+    "markDoneOnShort": "還原"
   },
   "palette": {
     "fullColor": "全彩",
@@ -92,7 +109,8 @@
     "hint": "有外框的是最接近的顏色。將滑鼠移至/點擊顏色,圖片中對應的格子會反白顯示。",
     "tabPalette": "調色板",
     "tabFullColor": "全彩",
-    "showNumbers": "顯示編號"
+    "showNumbers": "顯示編號",
+    "usedOnly": "只顯示使用色"
   },
   "fullcolor": {
     "guide": "全彩指南",

@@ -23,6 +23,14 @@ function refreshDynamicLabels() {
     try { renderFavorites(); } catch (_) {}
   }
 
+  if (typeof _updateIsolateButtonState === 'function') {
+    try { _updateIsolateButtonState(); } catch (_) {}
+  }
+
+  if (typeof _updateDoneButtonState === 'function') {
+    try { _updateDoneButtonState(); } catch (_) {}
+  }
+
 }
 
 async function init() {
@@ -46,11 +54,13 @@ async function init() {
 
   buildPaletteGrid();
   attachPaletteNumberToggle();
+  attachPaletteUsedOnlyToggle();
   attachHistoryControls();
   attachShareControls();
   attachShareWorkControls();
 
   initGrid();
+  if (typeof initIsolate === 'function') initIsolate();
 
   window.addEventListener('i18nchange', refreshDynamicLabels);
 }

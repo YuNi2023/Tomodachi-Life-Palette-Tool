@@ -15,7 +15,9 @@
     "drop": "拖放图片或点击",
     "noteHtml": "点阵图、照片、屏幕截图等都可以加载。<br>非正方形的图片可在下一个画面裁切为 1:1。<br>也可加载从其他设备保存的 <code>.spoito.json</code> 文件。",
     "demo": "用范例图片试试",
-    "guide": "查看使用方法"
+    "guide": "查看使用方法",
+    "discordTitle": "Discord 服务器",
+    "discordSub": "作品分享与反馈"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} 像素",
     "pbnConfirm": "将产生 {w}×{h} 的编号着色 PNG。\n文件较大(约 10〜40MB),产生可能需要数十秒。\n要继续吗?",
     "numberedHeader2": "编号着色图(调色板编号 1〜84)",
-    "numberedSize": "{w}×{h}  /  {n}色"
+    "numberedSize": "{w}×{h}  /  {n}色",
+    "brightness": "亮度",
+    "saturation": "饱和度",
+    "adjustLabel": "图像调整",
+    "adjustReset": "重置",
+    "pbnGrid": "在编号着色图上加强网格"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "色彩信息",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "确认",
     "hintHtml": "点击左侧图片的像素<br>或在上方输入 HEX 代码",
     "selected": "选择的颜色",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX 输入",
     "convertedPrefix": "转换后 ",
     "rowCol": "第{row}列 第{col}行",
-    "distHint": "  (越低越接近)"
+    "distHint": "  (越低越接近)",
+    "isolateOff": "只显示此色",
+    "isolateOn": "显示全部",
+    "markDoneOff": "涂完了",
+    "markDoneOn": "重新涂",
+    "doneReset": "全部重置",
+    "doneCounter": "完成 {n}/{m}",
+    "isolateOffShort": "此色",
+    "isolateOnShort": "全部",
+    "markDoneOffShort": "完成",
+    "markDoneOnShort": "还原"
   },
   "palette": {
     "fullColor": "全彩",
@@ -92,7 +109,8 @@
     "hint": "有外框的是最接近的颜色。将鼠标移至/点击颜色,图片中对应的格子会反白显示。",
     "tabPalette": "调色板",
     "tabFullColor": "全彩",
-    "showNumbers": "显示编号"
+    "showNumbers": "显示编号",
+    "usedOnly": "仅显示使用色"
   },
   "fullcolor": {
     "guide": "全彩指南",

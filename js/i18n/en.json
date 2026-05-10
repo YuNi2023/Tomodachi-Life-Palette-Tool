@@ -15,7 +15,9 @@
     "drop": "Drop an image or click",
     "noteHtml": "Pixel art, photos, screenshots — anything works.<br>Non-square images can be cropped to 1:1 on the next screen.<br>Also accepts <code>.spoito.json</code> files saved from another device.",
     "demo": "Try with demo image",
-    "guide": "How to use"
+    "guide": "How to use",
+    "discordTitle": "Discord server",
+    "discordSub": "Share creations & feedback"
   },
   "crop": {
     "label": "CROP",
@@ -70,12 +72,17 @@
     "imgInfoOriginal": "{w}×{h}px / {total} pixels",
     "pbnConfirm": "Generate a paint-by-number PNG of {w}×{h}.\nThe file will be large (around 10–40 MB) and may take tens of seconds to create.\nContinue?",
     "numberedHeader2": "Paint-by-number (palette #1–84)",
-    "numberedSize": "{w}×{h}  /  {n} colors"
+    "numberedSize": "{w}×{h}  /  {n} colors",
+    "brightness": "Brightness",
+    "saturation": "Saturation",
+    "adjustLabel": "Adjust",
+    "adjustReset": "Reset",
+    "pbnGrid": "Emphasize grid in paint-by-number"
   },
   "color": {
     "labelEn": "color information",
     "labelJa": "Color info",
-    "hex": "HEX",
+    "hex": "HEX / №",
     "confirm": "Apply",
     "hintHtml": "Click a pixel in the image on the left,<br>or enter a HEX code above.",
     "selected": "Selected color",
@@ -83,7 +90,17 @@
     "hexInputPos": "HEX input",
     "convertedPrefix": "Converted ",
     "rowCol": "row {row}, col {col}",
-    "distHint": "  (lower = closer)"
+    "distHint": "  (lower = closer)",
+    "isolateOff": "Isolate color",
+    "isolateOn": "Show all",
+    "markDoneOff": "Mark as done",
+    "markDoneOn": "Mark unfinished",
+    "doneReset": "Reset all done",
+    "doneCounter": "Done {n}/{m}",
+    "isolateOffShort": "Isolate",
+    "isolateOnShort": "All",
+    "markDoneOffShort": "Done",
+    "markDoneOnShort": "Undo"
   },
   "palette": {
     "fullColor": "Full color",
@@ -92,7 +109,8 @@
     "hint": "The outlined cell is the closest match. Hover/tap a swatch to highlight matching cells in the image.",
     "tabPalette": "Palette",
     "tabFullColor": "Full color",
-    "showNumbers": "Show numbers"
+    "showNumbers": "Show numbers",
+    "usedOnly": "Used colors only"
   },
   "fullcolor": {
     "guide": "Full-color guide",

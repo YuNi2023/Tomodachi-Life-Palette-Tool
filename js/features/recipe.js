@@ -72,6 +72,8 @@ function rebuildRecipe() {
   const checkedCount = recipe.filter(it => recipeCheckState[it.idx]).length;
   summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
 
+  if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
+
   listEl.innerHTML = '';
   recipe.forEach(item => {
     const p = PALETTE[item.idx];
@@ -136,6 +138,9 @@ function toggleRecipeCheck(idx) {
     const total = recipe[0].total;
     summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
   }
+
+  if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
+  if (typeof renderPixelCanvas === 'function') renderPixelCanvas();
 }
 
 function blinkPaletteCells(palIdx) {
@@ -287,6 +292,12 @@ function attachPaletteHover() {
     cell.addEventListener('click', () => {
       if (hoverPaletteIdx === idx) setHoverPalette(-1);
       else setHoverPalette(idx);
+
+      const p = PALETTE[idx];
+      if (p && typeof selectColor === 'function') {
+        const c = hexToRgb(p.h);
+        selectColor(c.r, c.g, c.b, -1, -1);
+      }
     });
   });
 }
