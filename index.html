@@ -111,6 +111,8 @@
   <link rel="stylesheet" href="./css/features/share.css">
   <link rel="stylesheet" href="./css/features/notice.css">
   <link rel="stylesheet" href="./css/layout/mobile.css">
+  <!-- ★ステップ2追加: 8×8拡大表示モーダル専用CSS -->
+  <link rel="stylesheet" href="./css/features/block-zoom.css">
 </head>
 <body>
 
@@ -351,6 +353,8 @@
           <div class="image-actions">
             <button id="download-btn"     class="btn primary hidden" data-i18n-html="view.savePng">ドット絵を<wbr>保存</button>
             <button id="download-pbn-btn" class="btn accent hidden"  data-i18n-html="view.saveNumbered">番号塗り絵を<wbr>保存</button>
+            <!-- ★ステップ2追加: 8×8拡大表示モーダルを開くボタン(変換モード時のみ表示) -->
+            <button id="block-zoom-btn"   class="btn accent hidden">8×8<wbr>拡大表示</button>
             <button id="recrop-btn"       class="btn ghost hidden"   data-i18n-html="view.recrop">クロップ<wbr>やり直し</button>
             <button id="reset-btn"        class="btn ghost"          data-i18n-html="view.reload">別の画像を<wbr>読み込む</button>
           </div>
@@ -722,6 +726,31 @@
             <span data-i18n="share.importFile">ファイルから読み込み</span>
           </button>
           <input type="file" id="share-work-import-input" accept=".json,application/json" style="display:none">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ★ステップ2追加: 8×8拡大表示モーダル -->
+  <div class="modal hidden" id="modal-block-zoom">
+    <div class="modal-content modal-content-block-zoom">
+      <button class="close-btn" onclick="closeModal('modal-block-zoom')" aria-label="閉じる">×</button>
+      <div class="modal-body">
+        <div class="block-zoom-header">
+          <h2>8×8 拡大表示</h2>
+          <div class="block-zoom-position">
+            現在: <span id="block-zoom-current">A1</span>
+            <span class="block-zoom-total">/ 全 <span id="block-zoom-total">0</span> ブロック</span>
+          </div>
+        </div>
+        <div class="block-zoom-canvas-wrap">
+          <canvas id="block-zoom-canvas"></canvas>
+        </div>
+        <div class="block-zoom-nav">
+          <button class="block-zoom-nav-btn" id="block-zoom-up"    aria-label="上へ">↑</button>
+          <button class="block-zoom-nav-btn" id="block-zoom-left"  aria-label="左へ">←</button>
+          <button class="block-zoom-nav-btn" id="block-zoom-right" aria-label="右へ">→</button>
+          <button class="block-zoom-nav-btn" id="block-zoom-down"  aria-label="下へ">↓</button>
         </div>
       </div>
     </div>

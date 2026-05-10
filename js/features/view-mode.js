@@ -501,6 +501,9 @@ function setViewMode(mode) {
   if (dlBtn) dlBtn.classList.toggle('hidden', mode !== 'converted');
   const dlPbnBtn = document.getElementById('download-pbn-btn');
   if (dlPbnBtn) dlPbnBtn.classList.toggle('hidden', mode !== 'converted');
+  // ★ステップ2追加: 8×8拡大ボタンも変換モード時のみ表示
+  const blockZoomBtn = document.getElementById('block-zoom-btn');
+  if (blockZoomBtn) blockZoomBtn.classList.toggle('hidden', mode !== 'converted');
 
   if (mode === 'converted') {
     if (!convertedData) rebuildConvertedData();
@@ -652,6 +655,9 @@ function attachConvertControls() {
   if (dlPbnBtn) {
     dlPbnBtn.addEventListener('click', downloadPaintByNumbersImage);
   }
+
+  // ★ステップ2追加: 8×8拡大表示モーダルの初期化
+  attachBlockZoomControls();
 }
 
 function downloadConvertedImage() {
@@ -853,8 +859,7 @@ function _pbnComputeUsedList(d) {
 }
 
 function _pbnComputeLayout(w, h, usedCount, options) {
-  // ★追加: optionsを受け取り、emphasizeGrid(マス目強調)時は
-  //   軸番号(10,20,...)とブロックラベル(A1,B2,...)用に上・左の余白を確保する
+  // ★ステップ1: optionsで強調ON時に上・左のマージンを確保
   const opts = options || {};
   const emphasize = !!opts.emphasizeGrid;
 
@@ -871,7 +876,6 @@ function _pbnComputeLayout(w, h, usedCount, options) {
   const SAFE_DIM = _detectSafeCanvasDim();
   const dimsAt = (cp) => {
     const cu = Math.max(48, cp * 1.5);
-    // ★追加: 軸番号用のマージン(強調ON時のみ)
     const axisM = emphasize ? Math.round(cu * 0.55) : 0;
     const px = Math.round(cu * 0.6) + axisM;
     const hh = Math.round(cu * 1.2) + axisM;
@@ -889,7 +893,6 @@ function _pbnComputeLayout(w, h, usedCount, options) {
   const imgW = w * cellPx;
   const imgH = h * cellPx;
   const chromeUnit = Math.max(48, cellPx * 1.5);
-  // ★追加: 軸番号用マージン(強調ON時のみ非ゼロ)
   const axisMargin = emphasize ? Math.round(chromeUnit * 0.55) : 0;
   const padX    = Math.round(chromeUnit * 0.6) + axisMargin;
   const headerH = Math.round(chromeUnit * 1.2) + axisMargin;
@@ -905,8 +908,8 @@ function _pbnComputeLayout(w, h, usedCount, options) {
     outW, outH,
     offsetX: padX,
     offsetY: headerH,
-    axisMargin,                  // ★追加: 軸番号領域のサイズ
-    emphasizeGrid: emphasize,    // ★追加: 強調ON/OFFフラグ
+    axisMargin,
+    emphasizeGrid: emphasize,
   };
 }
 
@@ -1024,17 +1027,14 @@ function _pbnDrawGridLines(ctx, layout, w, h, options) {
   ctx.setLineDash([]);
 }
 
-// ★新規追加: 8×8ブロックごとに「A1」「B2」などのラベルを各ブロック中央に薄く描画
-//   (どんな背景色でもうっすら読めるよう、白アウトライン+黒塗りの2重描画にしている)
+// ★ステップ1: 8×8ブロックごとにA1,B2などのラベルを各ブロック中央に薄く描画
 function _pbnDrawBlockLabels(ctx, layout, w, h) {
-  if (!layout.emphasizeGrid) return; // 強調OFF時は何もしない
+  if (!layout.emphasizeGrid) return;
   const { offsetX, offsetY, cellPx } = layout;
-  const blockSize = 8; // 8×8マスごと
-
+  const blockSize = 8;
   const cols = Math.ceil(w / blockSize);
   const rows = Math.ceil(h / blockSize);
   const fullBlockPx = blockSize * cellPx;
-  // 文字サイズ: ブロックの約55%(最小10px)
   const fontSize = Math.max(10, Math.round(fullBlockPx * 0.55));
 
   ctx.save();
@@ -1046,50 +1046,43 @@ function _pbnDrawBlockLabels(ctx, layout, w, h) {
     for (let bx = 0; bx < cols; bx++) {
       const startX = bx * blockSize;
       const startY = by * blockSize;
-      // 端のブロックが半端な時は実際の終端までで中心を計算
       const endX = Math.min(startX + blockSize, w);
       const endY = Math.min(startY + blockSize, h);
       const centerX = offsetX + ((startX + endX) / 2) * cellPx;
       const centerY = offsetY + ((startY + endY) / 2) * cellPx;
-      // ラベル: 列=A,B,C...(27列以降はAA,AB...) 行=1,2,3...
       const colLabel = bx < 26
         ? String.fromCharCode(65 + bx)
         : 'A' + String.fromCharCode(65 + bx - 26);
       const label = colLabel + (by + 1);
-      // 白アウトライン+黒塗り: 暗い色のセルでも明るい色のセルでも薄く読める
       ctx.lineWidth = Math.max(2, Math.round(fontSize * 0.10));
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
       ctx.strokeText(label, centerX, centerY);
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.16)'; // ←濃さを変えたい場合はこの数字
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.16)';
       ctx.fillText(label, centerX, centerY);
     }
   }
   ctx.restore();
 }
 
-// ★新規追加: 10マスごとに座標番号(10, 20, 30...)を画像の上端・左端の外側に描画
+// ★ステップ1: 10マスごとに座標番号を画像の上端・左端の外側に描画
 function _pbnDrawAxisNumbers(ctx, layout, w, h) {
-  if (!layout.emphasizeGrid) return; // 強調OFF時は何もしない
+  if (!layout.emphasizeGrid) return;
   const { offsetX, offsetY, cellPx } = layout;
-  const interval = 10; // 10マスごと
+  const interval = 10;
 
   ctx.save();
-  // フォントサイズ: セル幅の0.5倍(最小12px、最大28px)
   const fontSize = Math.max(12, Math.min(28, Math.round(cellPx * 0.5)));
   ctx.font = `800 ${fontSize}px "JetBrains Mono", "SF Mono", monospace`;
-  ctx.fillStyle = '#5C3A1A'; // 濃い茶色
+  ctx.fillStyle = '#5C3A1A';
 
-  // 上端: 横方向の番号(10, 20, ...)を上余白に描画
   ctx.textBaseline = 'bottom';
   ctx.textAlign = 'center';
   for (let x = interval; x <= w; x += interval) {
-    // x番目のセルの中心の真上に番号を置く
     const drawX = offsetX + (x - 0.5) * cellPx;
     const drawY = offsetY - Math.max(4, Math.round(cellPx * 0.2));
     ctx.fillText(String(x), drawX, drawY);
   }
 
-  // 左端: 縦方向の番号(10, 20, ...)を左余白に描画
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'right';
   for (let y = interval; y <= h; y += interval) {
@@ -1207,7 +1200,6 @@ function composePaintByNumbers(d, options) {
       const w = d.width, h = d.height;
 
       const { usedList, idxToNum } = _pbnComputeUsedList(d);
-      // ★変更: optsを渡して強調ON時に軸番号用マージンを確保
       const layout = _pbnComputeLayout(w, h, usedList.length, opts);
 
       const out = document.createElement('canvas');
@@ -1221,9 +1213,7 @@ function composePaintByNumbers(d, options) {
       _pbnDrawHeader(ctx, layout, w, h, usedList.length);
       _pbnDrawCells(ctx, layout, d, idxToNum);
       _pbnDrawGridLines(ctx, layout, w, h, opts);
-      // ★追加: 強調ON時のみブロックラベル(A1,B2...)を上書き描画
       _pbnDrawBlockLabels(ctx, layout, w, h);
-      // ★追加: 強調ON時のみ10マスごとの軸番号を上端・左端に描画
       _pbnDrawAxisNumbers(ctx, layout, w, h);
       _pbnDrawLegend(ctx, layout, usedList, idxToNum);
       const footerInfo = _pbnDrawFooterText(ctx, layout);
@@ -1232,6 +1222,210 @@ function composePaintByNumbers(d, options) {
       });
     } catch (e) {
       reject(e);
+    }
+  });
+}
+
+// ===========================================================================
+// ★★★ ステップ2追加: 8×8 拡大表示モーダル機能 ★★★
+// 番号塗り絵を1ブロック(8×8マス)単位で拡大表示し、4方向ボタンで隣接ブロックへ移動
+// ===========================================================================
+
+const BLOCK_ZOOM_SIZE = 8; // 1ブロックのサイズ(マス単位)
+
+// 8×8拡大表示の状態管理
+let _blockZoomState = {
+  blockX: 0, // 現在表示中のブロック列(0始まり)
+  blockY: 0, // 現在表示中のブロック行(0始まり)
+  cols: 0,   // 全体のブロック列数(横方向)
+  rows: 0,   // 全体のブロック行数(縦方向)
+};
+
+// 列インデックス→ラベル文字列(0=A, 1=B,..., 25=Z, 26=AA, 27=AB...)
+function _blockColLabel(col) {
+  if (col < 26) return String.fromCharCode(65 + col);
+  return 'A' + String.fromCharCode(65 + col - 26);
+}
+
+// 8×8拡大モーダルを開く(現在の変換データから(0,0)ブロックを表示)
+function openBlockZoomModal() {
+  // 安全チェック: 変換データが存在しない場合はエラー
+  if (viewMode !== 'converted' || !convertedData) {
+    alert('先に「ゲームパレット変換」タブを開いてください');
+    return;
+  }
+  const w = convertedData.width;
+  const h = convertedData.height;
+  // ブロック数を計算(端は半端あり)
+  _blockZoomState.cols = Math.ceil(w / BLOCK_ZOOM_SIZE);
+  _blockZoomState.rows = Math.ceil(h / BLOCK_ZOOM_SIZE);
+  // 開いた直後は左上ブロック(A1)から
+  _blockZoomState.blockX = 0;
+  _blockZoomState.blockY = 0;
+
+  // 全ブロック数を表示
+  const totalEl = document.getElementById('block-zoom-total');
+  if (totalEl) totalEl.textContent = String(_blockZoomState.cols * _blockZoomState.rows);
+
+  // 描画してからモーダルを開く
+  renderBlockZoom();
+  if (typeof openModal === 'function') {
+    openModal('modal-block-zoom');
+  }
+}
+
+// 指定方向にブロック移動(端では何もしない)
+// dx,dy: -1, 0, +1 のいずれか
+function moveBlockZoom(dx, dy) {
+  const nx = _blockZoomState.blockX + dx;
+  const ny = _blockZoomState.blockY + dy;
+  // 範囲外なら何もしない
+  if (nx < 0 || nx >= _blockZoomState.cols) return;
+  if (ny < 0 || ny >= _blockZoomState.rows) return;
+  _blockZoomState.blockX = nx;
+  _blockZoomState.blockY = ny;
+  renderBlockZoom();
+}
+
+// 端のブロック判定で4方向ボタンの有効/無効を更新
+function _updateBlockZoomNavState() {
+  const { blockX, blockY, cols, rows } = _blockZoomState;
+  const setDisabled = (id, disabled) => {
+    const el = document.getElementById(id);
+    if (el) el.disabled = disabled;
+  };
+  setDisabled('block-zoom-up',    blockY <= 0);
+  setDisabled('block-zoom-down',  blockY >= rows - 1);
+  setDisabled('block-zoom-left',  blockX <= 0);
+  setDisabled('block-zoom-right', blockX >= cols - 1);
+}
+
+// 現在のブロックをcanvasに描画
+function renderBlockZoom() {
+  const canvas = document.getElementById('block-zoom-canvas');
+  if (!canvas || !convertedData) return;
+  const ctx = canvas.getContext('2d');
+  const w = convertedData.width;
+  const h = convertedData.height;
+  const map = convertedData.paletteMap;
+
+  // 表示するセルの範囲(端のブロックは半端あり)
+  const startX = _blockZoomState.blockX * BLOCK_ZOOM_SIZE;
+  const startY = _blockZoomState.blockY * BLOCK_ZOOM_SIZE;
+  const endX = Math.min(startX + BLOCK_ZOOM_SIZE, w);
+  const endY = Math.min(startY + BLOCK_ZOOM_SIZE, h);
+  const cellsW = endX - startX;
+  const cellsH = endY - startY;
+
+  // canvasサイズ: 画面サイズに合わせて自動調整(320〜640pxの範囲)
+  const targetSize = Math.min(640, Math.max(320, window.innerWidth - 80));
+  const cellPx = Math.floor(targetSize / Math.max(cellsW, cellsH));
+  const canvasW = cellPx * cellsW;
+  const canvasH = cellPx * cellsH;
+  canvas.width = canvasW;
+  canvas.height = canvasH;
+  canvas.style.width = canvasW + 'px';
+  canvas.style.height = canvasH + 'px';
+
+  // 背景クリア
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, canvasW, canvasH);
+
+  // パレット番号を計算(全画像に対する番号付与)
+  const { idxToNum } = _pbnComputeUsedList(convertedData);
+
+  // 各セル描画(色+番号)
+  const numFontSize = Math.round(cellPx * 0.42);
+  ctx.textBaseline = 'middle';
+  ctx.textAlign = 'center';
+  ctx.font = `800 ${numFontSize}px "JetBrains Mono", monospace`;
+
+  for (let y = 0; y < cellsH; y++) {
+    for (let x = 0; x < cellsW; x++) {
+      const srcX = startX + x;
+      const srcY = startY + y;
+      const idx = map[srcY * w + srcX];
+      const cx = x * cellPx;
+      const cy = y * cellPx;
+
+      if (idx < 0) {
+        // 透明セル: 薄いグレーで塗る
+        ctx.fillStyle = '#F5F5F5';
+        ctx.fillRect(cx, cy, cellPx, cellPx);
+        continue;
+      }
+      // パレットの色で塗る
+      const palHex = PALETTE[idx].h;
+      ctx.fillStyle = palHex;
+      ctx.fillRect(cx, cy, cellPx, cellPx);
+
+      // パレット番号(2桁0埋め)を中央に描画
+      const num = idxToNum.get(idx);
+      const numStr = String(num).padStart(2, '0');
+      // セルの明暗で文字色を切り替え
+      const rgb = hexToRgb(palHex);
+      const luma = 0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b;
+      const textColor = luma < 140 ? '#FFFFFF' : '#1A0F05';
+      const haloColor = luma < 140 ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.85)';
+      ctx.lineWidth = Math.max(2, Math.round(numFontSize * 0.18));
+      ctx.strokeStyle = haloColor;
+      ctx.strokeText(numStr, cx + cellPx / 2, cy + cellPx / 2 + 1);
+      ctx.fillStyle = textColor;
+      ctx.fillText(numStr, cx + cellPx / 2, cy + cellPx / 2 + 1);
+    }
+  }
+
+  // グリッド線
+  ctx.strokeStyle = 'rgba(58, 31, 10, 0.55)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= cellsW; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * cellPx + 0.5, 0);
+    ctx.lineTo(i * cellPx + 0.5, canvasH);
+    ctx.stroke();
+  }
+  for (let i = 0; i <= cellsH; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, i * cellPx + 0.5);
+    ctx.lineTo(canvasW, i * cellPx + 0.5);
+    ctx.stroke();
+  }
+
+  // 現在位置表示更新(A1, B2など)
+  const posEl = document.getElementById('block-zoom-current');
+  if (posEl) {
+    posEl.textContent = _blockColLabel(_blockZoomState.blockX) + (_blockZoomState.blockY + 1);
+  }
+
+  // 各方向ボタンの有効/無効を更新
+  _updateBlockZoomNavState();
+}
+
+// 8×8拡大表示モーダル関連のイベントを初期化(attachConvertControlsから呼ばれる)
+function attachBlockZoomControls() {
+  // 拡大表示ボタン
+  const openBtn = document.getElementById('block-zoom-btn');
+  if (openBtn) openBtn.addEventListener('click', openBlockZoomModal);
+
+  // 4方向ナビゲーションボタン
+  const upBtn = document.getElementById('block-zoom-up');
+  const dnBtn = document.getElementById('block-zoom-down');
+  const lfBtn = document.getElementById('block-zoom-left');
+  const rtBtn = document.getElementById('block-zoom-right');
+  if (upBtn) upBtn.addEventListener('click', () => moveBlockZoom(0, -1));
+  if (dnBtn) dnBtn.addEventListener('click', () => moveBlockZoom(0, 1));
+  if (lfBtn) lfBtn.addEventListener('click', () => moveBlockZoom(-1, 0));
+  if (rtBtn) rtBtn.addEventListener('click', () => moveBlockZoom(1, 0));
+
+  // キーボードの矢印キーでも操作可能(モーダル表示中のみ)
+  document.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('modal-block-zoom');
+    if (!modal || modal.classList.contains('hidden')) return;
+    switch (e.key) {
+      case 'ArrowUp':    e.preventDefault(); moveBlockZoom(0, -1); break;
+      case 'ArrowDown':  e.preventDefault(); moveBlockZoom(0, 1);  break;
+      case 'ArrowLeft':  e.preventDefault(); moveBlockZoom(-1, 0); break;
+      case 'ArrowRight': e.preventDefault(); moveBlockZoom(1, 0);  break;
     }
   });
 }

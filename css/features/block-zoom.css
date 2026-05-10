@@ -1,0 +1,147 @@
+/* ===========================================================================
+ * 8×8 拡大表示モーダル専用スタイル
+ * 番号塗り絵を1ブロック単位で拡大表示するためのモーダルUI
+ * =========================================================================== */
+
+/* モーダル本体: 横幅を少し広めに */
+.modal-content-block-zoom {
+  max-width: 720px;
+  width: calc(100vw - 32px);
+}
+
+/* ヘッダー: タイトルと現在位置表示 */
+.block-zoom-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #FF6B1A;
+}
+
+.block-zoom-header h2 {
+  margin: 0;
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 800;
+  color: #3A1F0A;
+  font-size: 1.25rem;
+}
+
+/* 現在位置(A1, B2など)の表示 */
+.block-zoom-position {
+  font-family: 'JetBrains Mono', "SF Mono", monospace;
+  font-weight: 700;
+  color: #5C3A1A;
+  font-size: 0.95rem;
+}
+
+#block-zoom-current {
+  font-size: 1.4em;
+  color: #E5530A;
+  font-weight: 800;
+  margin-right: 4px;
+  display: inline-block;
+  min-width: 2.2em;
+}
+
+.block-zoom-total {
+  color: #9C7553;
+  font-size: 0.85em;
+  margin-left: 8px;
+}
+
+/* canvas表示エリア */
+.block-zoom-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #FAF6EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  overflow: auto; /* canvasが大きい場合スクロール */
+}
+
+#block-zoom-canvas {
+  display: block;
+  image-rendering: pixelated; /* ぼやけない */
+  image-rendering: -moz-crisp-edges;
+  border: 2px solid #3A1F0A;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 4方向ナビゲーションボタンの3×3グリッドレイアウト */
+.block-zoom-nav {
+  display: grid;
+  grid-template-columns: 64px 64px 64px;
+  grid-template-rows: 64px 64px 64px;
+  gap: 8px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.block-zoom-nav-btn {
+  font-size: 28px;
+  font-weight: 800;
+  background: #FFE8CF;
+  border: 2px solid #FF6B1A;
+  color: #3A1F0A;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* ホバー時(無効でない時のみ) */
+.block-zoom-nav-btn:hover:not(:disabled) {
+  background: #FF6B1A;
+  color: #FFFFFF;
+  transform: scale(1.05);
+}
+
+/* クリック時 */
+.block-zoom-nav-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* 端で押せないボタン */
+.block-zoom-nav-btn:disabled {
+  background: #F5F5F5;
+  color: #C0C0C0;
+  border-color: #E0E0E0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* 各方向ボタンを3×3グリッドの十字配置に */
+#block-zoom-up    { grid-column: 2; grid-row: 1; }
+#block-zoom-left  { grid-column: 1; grid-row: 2; }
+#block-zoom-right { grid-column: 3; grid-row: 2; }
+#block-zoom-down  { grid-column: 2; grid-row: 3; }
+
+/* スマートフォン対応(画面幅480px以下) */
+@media (max-width: 480px) {
+  .block-zoom-nav {
+    grid-template-columns: 56px 56px 56px;
+    grid-template-rows: 56px 56px 56px;
+    gap: 6px;
+  }
+  .block-zoom-nav-btn {
+    font-size: 24px;
+  }
+  .block-zoom-header h2 {
+    font-size: 1.1rem;
+  }
+  .block-zoom-canvas-wrap {
+    padding: 8px;
+  }
+}
