@@ -149,3 +149,73 @@
     height: 60px;
   }
 }
+
+/* ===========================================================================
+ * ★段階4追加: 進捗ファイルの保存/読込バルク操作セクション
+ * =========================================================================== */
+
+/* 作品0件時の空状態メッセージ */
+.works-list-empty {
+  margin: 0;
+  padding: 20px 16px;
+  text-align: center;
+  color: #9C7553;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  background: #FFFFFF;
+  border: 1px dashed #E5C5A0;
+  border-radius: 8px;
+}
+
+.works-list-bulk-actions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #E5C5A0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.works-list-bulk-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.works-list-bulk-actions .btn {
+  font-size: 0.85rem;
+}
+
+.works-list-bulk-hint {
+  font-size: 0.78rem;
+  color: #9C7553;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 200px;
+}
+
+/* インポート用file inputは画面に表示しない(プログラム的にクリック) */
+.works-list-file-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 480px) {
+  .works-list-bulk-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .works-list-bulk-buttons {
+    justify-content: center;
+  }
+}

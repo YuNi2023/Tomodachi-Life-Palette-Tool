@@ -183,6 +183,18 @@
           <h2 class="works-list-title">進行中の作品</h2>
         </div>
         <div id="works-list" class="works-list"></div>
+
+        <!-- ★段階4追加: 進捗ファイルの保存/読込ボタン -->
+        <div class="works-list-bulk-actions">
+          <p class="works-list-bulk-hint">
+            別の端末に作品を移動したり、バックアップとして残せます (.spoito.json 形式)
+          </p>
+          <div class="works-list-bulk-buttons">
+            <button class="btn small ghost" id="works-export-all-btn" title="進行中の全作品を1つのファイルにまとめて保存">全部エクスポート</button>
+            <button class="btn small primary" id="works-import-btn" title=".spoito.json ファイルから作品を読み込む">インポート</button>
+            <input type="file" id="works-import-file" class="works-list-file-hidden" accept=".json,.spoito.json,application/json">
+          </div>
+        </div>
       </section>
 
       <div id="history-section" class="history-section history-empty-state">
