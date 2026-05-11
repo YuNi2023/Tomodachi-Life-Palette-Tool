@@ -848,12 +848,71 @@
       <button class="paint-zoom-nav-btn" id="paint-zoom-down-btn"  aria-label="下のブロックへ">↓</button>
     </div>
 
+    <!-- ★段階3追加: 8×8ブロック一括塗りつぶしボタン(8×8拡大時のみ表示) -->
+    <button id="paint-fill-block-btn" class="hidden">このブロックを全部塗る</button>
+
     <!-- ★段階2追加: 使用色一覧(残数表示+Complete!バッジ) -->
     <div class="paint-color-list-section">
       <h3 class="paint-color-list-title">使用色一覧</h3>
       <div id="paint-color-list" class="paint-color-list"></div>
     </div>
   </section>
+
+  <!-- ★段階3追加: 色詳細モーダル(カラーパレット/フルカラーガイド切替) -->
+  <div id="paint-color-detail-modal" class="paint-color-detail-modal hidden" role="dialog" aria-modal="true" aria-labelledby="paint-detail-hex-head">
+    <div class="paint-detail-card">
+      <div class="paint-detail-header">
+        <span id="paint-detail-num">00</span>
+        <div id="paint-detail-swatch"></div>
+        <span id="paint-detail-hex-head">#000000</span>
+        <button id="paint-detail-close-btn" class="paint-detail-close-btn" aria-label="閉じる">×</button>
+      </div>
+
+      <div class="paint-detail-tabs">
+        <button class="paint-detail-tab-btn active" id="paint-detail-tab-palette">カラーパレット</button>
+        <button class="paint-detail-tab-btn"        id="paint-detail-tab-fullcolor">フルカラー</button>
+      </div>
+
+      <!-- カラーパレットタブ -->
+      <div class="paint-detail-pane" id="paint-detail-pane-palette">
+        <div class="paint-detail-row">
+          <span class="paint-detail-row-label">パレット位置</span>
+          <span class="paint-detail-row-value" id="paint-detail-rowcol">-</span>
+        </div>
+        <div class="paint-detail-row">
+          <span class="paint-detail-row-label">HEX</span>
+          <span class="paint-detail-row-value" id="paint-detail-hex">-</span>
+        </div>
+        <div class="paint-detail-row">
+          <span class="paint-detail-row-label">RGB</span>
+          <span class="paint-detail-row-value" id="paint-detail-rgb">-</span>
+        </div>
+        <div class="paint-detail-row">
+          <span class="paint-detail-row-label">HSV</span>
+          <span class="paint-detail-row-value" id="paint-detail-hsv">-</span>
+        </div>
+      </div>
+
+      <!-- フルカラータブ -->
+      <div class="paint-detail-pane hidden" id="paint-detail-pane-fullcolor">
+        <div class="paint-detail-fc-hsv">
+          <div class="paint-detail-fc-hsv-item">
+            <div class="paint-detail-fc-hsv-label">色相 H</div>
+            <div class="paint-detail-fc-hsv-value" id="paint-detail-fc-hue">-</div>
+          </div>
+          <div class="paint-detail-fc-hsv-item">
+            <div class="paint-detail-fc-hsv-label">彩度 S</div>
+            <div class="paint-detail-fc-hsv-value" id="paint-detail-fc-sat">-</div>
+          </div>
+          <div class="paint-detail-fc-hsv-item">
+            <div class="paint-detail-fc-hsv-label">明度 V</div>
+            <div class="paint-detail-fc-hsv-value" id="paint-detail-fc-val">-</div>
+          </div>
+        </div>
+        <div class="paint-detail-fc-steps" id="paint-detail-fc-steps"></div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

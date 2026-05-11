@@ -106,6 +106,9 @@ function paintModeOpen(work) {
 
 // 制作モード終了(進捗はクリックごとに保存済みなので追加保存不要)
 function paintModeExit() {
+  // ★段階3追加: モーダルが開いていれば閉じる
+  paintColorDetailClose();
+
   const returnTo = _paintState.returnTo;
   _paintState.work = null;
   _paintState.paletteMap = null;
@@ -447,12 +450,16 @@ function paintModeSetViewMode(mode) {
   if (zoomNav) zoomNav.classList.toggle('hidden', mode !== 'zoom');
   const zoomPos = document.getElementById('paint-zoom-position');
   if (zoomPos) zoomPos.classList.toggle('hidden', mode !== 'zoom');
+  // ★段階3追加: 一括塗りつぶしボタンの表示切替
+  const fillBtn = document.getElementById('paint-fill-block-btn');
+  if (fillBtn) fillBtn.classList.toggle('hidden', mode !== 'zoom');
 
   // 再描画
   paintModeRender();
   if (mode === 'zoom') {
     _paintModeUpdateZoomPositionDisplay();
     _paintModeUpdateZoomNavButtons();
+    _paintModeUpdateFillButtonLabel();   // ★段階3追加
   }
 }
 
@@ -467,6 +474,7 @@ function paintModeMoveZoom(dx, dy) {
   paintModeRenderZoom();
   _paintModeUpdateZoomPositionDisplay();
   _paintModeUpdateZoomNavButtons();
+  _paintModeUpdateFillButtonLabel();   // ★段階3追加
 }
 
 // 現在ブロック位置(A1, B2など)の表示更新
@@ -499,6 +507,94 @@ function _paintModeBlockLabel(bx, by) {
     if (n < 0) break;
   }
   return col + (by + 1);
+}
+
+// ★段階3追加: 8×8ブロックの一括塗りつぶし(トグル)
+// ブロック内の塗れるセル(透明以外)に未塗りがあれば全部塗る、全塗りなら全解除
+function paintModeFillBlockToggle() {
+  if (!_paintState.work || _paintState.viewMode !== 'zoom') return;
+  const work = _paintState.work;
+  const w = work.convertedWidth;
+  const h = work.convertedHeight;
+  const startX = _paintState.zoomBlockX * PAINT_BLOCK_SIZE;
+  const startY = _paintState.zoomBlockY * PAINT_BLOCK_SIZE;
+  const endX = Math.min(startX + PAINT_BLOCK_SIZE, w);
+  const endY = Math.min(startY + PAINT_BLOCK_SIZE, h);
+  const paletteMap = _paintState.paletteMap;
+  const paintedMap = _paintState.paintedMap;
+
+  // ブロック内の塗れるセルを収集し、未塗りが1つでもあるか判定
+  const targetIndices = [];
+  let hasUnpainted = false;
+  for (let y = startY; y < endY; y++) {
+    for (let x = startX; x < endX; x++) {
+      const i = y * w + x;
+      if (paletteMap[i] < 0) continue; // 透明セルはスキップ
+      targetIndices.push(i);
+      if (!paintedMap[i]) hasUnpainted = true;
+    }
+  }
+
+  if (targetIndices.length === 0) return; // ブロックが全て透明の時は何もしない
+
+  // 未塗りがあれば全部塗る、全塗りなら全解除
+  const fillValue = hasUnpainted ? 1 : 0;
+  for (const i of targetIndices) {
+    paintedMap[i] = fillValue;
+  }
+
+  // 統計と保存
+  work.paintedCells = _countPaintedCells(paintedMap, paletteMap);
+  work.progressPct = work.totalCells > 0
+    ? Math.round(100 * work.paintedCells / work.totalCells) : 0;
+  work.paintedMap = workProgressPackPaintedMap(paintedMap);
+  workProgressUpsert(work);
+
+  // UI更新
+  paintModeRender();
+  paintModeUpdateProgress();
+  paintModeRenderColorList();
+  paintModeUpdateCompletion();
+  _paintModeUpdateFillButtonLabel();
+}
+
+// ★段階3追加: 一括塗りつぶしボタンのラベル更新(現在の状態を見て「全部塗る」「全部解除」を切替)
+function _paintModeUpdateFillButtonLabel() {
+  const btn = document.getElementById('paint-fill-block-btn');
+  if (!btn || !_paintState.work || _paintState.viewMode !== 'zoom') return;
+
+  const work = _paintState.work;
+  const w = work.convertedWidth;
+  const h = work.convertedHeight;
+  const startX = _paintState.zoomBlockX * PAINT_BLOCK_SIZE;
+  const startY = _paintState.zoomBlockY * PAINT_BLOCK_SIZE;
+  const endX = Math.min(startX + PAINT_BLOCK_SIZE, w);
+  const endY = Math.min(startY + PAINT_BLOCK_SIZE, h);
+  const paletteMap = _paintState.paletteMap;
+  const paintedMap = _paintState.paintedMap;
+
+  let hasUnpainted = false;
+  let hasPaintable = false;
+  for (let y = startY; y < endY; y++) {
+    for (let x = startX; x < endX; x++) {
+      const i = y * w + x;
+      if (paletteMap[i] < 0) continue;
+      hasPaintable = true;
+      if (!paintedMap[i]) { hasUnpainted = true; break; }
+    }
+    if (hasUnpainted) break;
+  }
+
+  if (!hasPaintable) {
+    btn.disabled = true;
+    btn.textContent = 'このブロックは空';
+  } else if (hasUnpainted) {
+    btn.disabled = false;
+    btn.textContent = 'このブロックを全部塗る';
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'このブロックを全部解除';
+  }
 }
 
 // 進捗表示の更新
@@ -553,6 +649,19 @@ function paintModeRenderColorList() {
     const isComplete = stat.painted >= stat.total;
     if (isComplete) item.classList.add('paint-color-complete');
 
+    // ★段階3追加: クリックで詳細モーダル表示
+    item.style.cursor = 'pointer';
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.title = 'クリックで色の詳細(カラーパレット/フルカラーガイド)を表示';
+    item.addEventListener('click', () => paintColorDetailOpen(idx));
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        paintColorDetailOpen(idx);
+      }
+    });
+
     // 番号バッジ
     const num = document.createElement('span');
     num.className = 'paint-color-num';
@@ -568,6 +677,12 @@ function paintModeRenderColorList() {
     // 情報部(残数 + バー or Complete!)
     const info = document.createElement('div');
     info.className = 'paint-color-info';
+
+    // ★段階3追加: ○行目○列目を最上部に表示
+    const rowCol = document.createElement('div');
+    rowCol.className = 'paint-color-rowcol';
+    rowCol.textContent = `${PALETTE[idx].row + 1}行目 ${PALETTE[idx].col + 1}列目`;
+    info.appendChild(rowCol);
 
     if (isComplete) {
       const completeMark = document.createElement('div');
@@ -679,6 +794,98 @@ function paintModeOnCanvasClick(e) {
   paintModeUpdateProgress();
   paintModeRenderColorList();   // ★段階2追加
   paintModeUpdateCompletion();  // ★段階2追加
+  if (_paintState.viewMode === 'zoom') {
+    _paintModeUpdateFillButtonLabel();   // ★段階3追加
+  }
+}
+
+// ===== ★段階3追加: 色詳細モーダル(カラーパレット/フルカラーガイド) =====
+
+// 詳細モーダルを開く
+function paintColorDetailOpen(idx) {
+  if (idx == null || idx < 0 || !PALETTE[idx]) return;
+  const modal = document.getElementById('paint-color-detail-modal');
+  if (!modal) return;
+
+  const pal = PALETTE[idx];
+  const rgb = hexToRgb(pal.h);
+  const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+  const displayNum = pal.row * 12 + pal.col + 1;
+
+  // ヘッダー(番号 + 色見本 + HEX)
+  const numEl = document.getElementById('paint-detail-num');
+  if (numEl) numEl.textContent = String(displayNum).padStart(2, '0');
+  const swatchEl = document.getElementById('paint-detail-swatch');
+  if (swatchEl) swatchEl.style.background = pal.h;
+  const hexHeadEl = document.getElementById('paint-detail-hex-head');
+  if (hexHeadEl) hexHeadEl.textContent = pal.h.toUpperCase();
+
+  // カラーパレットタブの中身
+  const rowColEl = document.getElementById('paint-detail-rowcol');
+  if (rowColEl) rowColEl.textContent = `${pal.row + 1}行目 ${pal.col + 1}列目`;
+  const hexEl = document.getElementById('paint-detail-hex');
+  if (hexEl) hexEl.textContent = pal.h.toUpperCase();
+  const rgbEl = document.getElementById('paint-detail-rgb');
+  if (rgbEl) rgbEl.textContent = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+  const hsvEl = document.getElementById('paint-detail-hsv');
+  if (hsvEl) hsvEl.textContent = `${hsv.h}°, ${hsv.s}%, ${hsv.v}%`;
+
+  // フルカラータブの中身(本家のhueToPresses/saturationToPresses/valueToPressesを呼ぶ)
+  const huePresses = (typeof hueToPresses === 'function')        ? hueToPresses(hsv.h)        : 0;
+  const satPresses = (typeof saturationToPresses === 'function') ? saturationToPresses(hsv.s) : 0;
+  const valPresses = (typeof valueToPresses === 'function')      ? valueToPresses(hsv.v)      : 0;
+
+  const fcHueEl = document.getElementById('paint-detail-fc-hue');
+  if (fcHueEl) fcHueEl.textContent = hsv.h + '°';
+  const fcSatEl = document.getElementById('paint-detail-fc-sat');
+  if (fcSatEl) fcSatEl.textContent = hsv.s + '%';
+  const fcValEl = document.getElementById('paint-detail-fc-val');
+  if (fcValEl) fcValEl.textContent = hsv.v + '%';
+
+  // フルカラーガイド手順
+  const stepsEl = document.getElementById('paint-detail-fc-steps');
+  if (stepsEl) {
+    stepsEl.innerHTML = `
+      <ol>
+        <li>「フルカラー」タブを選択する</li>
+        <li>カラー正方形を一番<strong>左上(白)</strong>に戻す</li>
+        <li>そこから右へ <strong>約 ${satPresses} 回</strong>、下へ <strong>約 ${valPresses} 回</strong> 動かす</li>
+        <li>色相スライダーを一番<strong>左(ZL)</strong>まで戻す</li>
+        <li>そこから右(ZR)へ <strong>約 ${huePresses} 回</strong> 動かす<br>
+            (一番右から左(ZL)へ ${200 - huePresses} 回でもOK)</li>
+      </ol>
+      <p class="paint-detail-fc-note">※操作回数は本家「すぽいと帳」と同じ予測値です。</p>
+    `;
+  }
+
+  // タブ初期化(前回開いた時のタブを引き継ぐ)
+  paintColorDetailSwitchTab(_paintState.detailTab || 'palette');
+
+  // モーダル表示
+  modal.classList.remove('hidden');
+  document.body.classList.add('paint-modal-open');
+}
+
+// モーダルを閉じる
+function paintColorDetailClose() {
+  const modal = document.getElementById('paint-color-detail-modal');
+  if (modal) modal.classList.add('hidden');
+  document.body.classList.remove('paint-modal-open');
+}
+
+// モーダル内のタブ切替
+function paintColorDetailSwitchTab(tab) {
+  if (tab !== 'palette' && tab !== 'fullcolor') return;
+  _paintState.detailTab = tab;
+
+  const tabPal = document.getElementById('paint-detail-tab-palette');
+  const tabFc  = document.getElementById('paint-detail-tab-fullcolor');
+  const panPal = document.getElementById('paint-detail-pane-palette');
+  const panFc  = document.getElementById('paint-detail-pane-fullcolor');
+  if (tabPal) tabPal.classList.toggle('active', tab === 'palette');
+  if (tabFc)  tabFc.classList.toggle('active',  tab === 'fullcolor');
+  if (panPal) panPal.classList.toggle('hidden', tab !== 'palette');
+  if (panFc)  panFc.classList.toggle('hidden',  tab !== 'fullcolor');
 }
 
 // 塗り済みセル数のカウント(透明セルは除外)
@@ -723,18 +930,49 @@ function attachPaintModeControls() {
 
   // ★段階2追加: キーボードの矢印キーでもブロック移動可能(8×8拡大時のみ)
   document.addEventListener('keydown', _paintModeOnKeyDown);
+
+  // ★段階3追加: 一括塗りつぶしボタン
+  const fillBtn = document.getElementById('paint-fill-block-btn');
+  if (fillBtn) fillBtn.addEventListener('click', paintModeFillBlockToggle);
+
+  // ★段階3追加: 詳細モーダルの操作
+  const closeBtn = document.getElementById('paint-detail-close-btn');
+  if (closeBtn) closeBtn.addEventListener('click', paintColorDetailClose);
+  // 背景クリックで閉じる
+  const modal = document.getElementById('paint-color-detail-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) paintColorDetailClose();
+    });
+  }
+  // タブ切替
+  const tabPal = document.getElementById('paint-detail-tab-palette');
+  const tabFc  = document.getElementById('paint-detail-tab-fullcolor');
+  if (tabPal) tabPal.addEventListener('click', () => paintColorDetailSwitchTab('palette'));
+  if (tabFc)  tabFc.addEventListener('click',  () => paintColorDetailSwitchTab('fullcolor'));
 }
 
 // ★段階2追加: 矢印キーハンドラ
 function _paintModeOnKeyDown(e) {
   if (!_paintState.work) return;                  // 制作モードに入っていない時は無視
-  if (_paintState.viewMode !== 'zoom') return;    // 8×8拡大時のみ反応
-  // 入力欄にフォーカスがある時は無視(入力を妨げない)
-  const a = document.activeElement;
-  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable)) return;
   // paint-sectionが見えていない時(他のモーダル等)は無視
   const paintSec = document.getElementById('paint-section');
   if (!paintSec || paintSec.classList.contains('hidden')) return;
+
+  // ★段階3追加: モーダル表示中はEscでモーダルを閉じる(他キーはスルー)
+  const modal = document.getElementById('paint-color-detail-modal');
+  if (modal && !modal.classList.contains('hidden')) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      paintColorDetailClose();
+    }
+    return;
+  }
+
+  if (_paintState.viewMode !== 'zoom') return;    // 8×8拡大時のみ矢印キー反応
+  // 入力欄にフォーカスがある時は無視(入力を妨げない)
+  const a = document.activeElement;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.isContentEditable)) return;
 
   let dx = 0, dy = 0;
   switch (e.key) {

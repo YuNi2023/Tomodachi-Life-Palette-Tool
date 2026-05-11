@@ -461,3 +461,357 @@
     font-size: 20px;
   }
 }
+
+/* ===========================================================================
+ * ★段階3追加: 一括塗りつぶしボタン・○行○列表示・詳細モーダル
+ * =========================================================================== */
+
+/* 8×8ブロック一括塗りつぶしボタン(8×8拡大時のみ表示) */
+#paint-fill-block-btn {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 12px;
+  padding: 10px 16px;
+  background: #FFE8CF;
+  color: #3A1F0A;
+  border: 2px solid #FF6B1A;
+  border-radius: 8px;
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.08s;
+}
+
+#paint-fill-block-btn:hover:not(:disabled) {
+  background: #FF6B1A;
+  color: #FFFFFF;
+  box-shadow: 0 3px 8px rgba(255, 107, 26, 0.3);
+}
+
+#paint-fill-block-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+#paint-fill-block-btn:disabled {
+  background: #F5F5F5;
+  color: #C0C0C0;
+  border-color: #E0E0E0;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+#paint-fill-block-btn.hidden {
+  display: none;
+}
+
+/* 使用色一覧の各色に表示する「N行目 M列目」 */
+.paint-color-rowcol {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: #9C7553;
+  margin-bottom: 3px;
+  letter-spacing: 0.02em;
+}
+
+.paint-color-item.paint-color-complete .paint-color-rowcol {
+  color: #5C8870;
+}
+
+/* 各色項目のホバーで「クリック可能」感を出す */
+.paint-color-item[role="button"]:hover {
+  border-color: #FF8F4D;
+  box-shadow: 0 2px 8px rgba(255, 107, 26, 0.18);
+  transform: translateY(-1px);
+}
+
+.paint-color-item[role="button"]:focus {
+  outline: 2px solid #FF6B1A;
+  outline-offset: 2px;
+}
+
+/* ===== 詳細モーダル(カラーパレット/フルカラーガイド) ===== */
+
+.paint-color-detail-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.paint-color-detail-modal.hidden {
+  display: none;
+}
+
+/* モーダル表示中は背景スクロールをロック */
+body.paint-modal-open {
+  overflow: hidden;
+}
+
+.paint-detail-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+}
+
+/* モーダルヘッダー */
+.paint-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 2px solid #FF6B1A;
+  background: #FFF8EE;
+  border-radius: 12px 12px 0 0;
+  flex-wrap: wrap;
+}
+
+#paint-detail-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #5C3A1A;
+  background: #FFE8CF;
+  border-radius: 6px;
+  padding: 6px 12px;
+  min-width: 48px;
+  text-align: center;
+}
+
+#paint-detail-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  border: 2px solid #3A1F0A;
+}
+
+#paint-detail-hex-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #3A1F0A;
+  letter-spacing: 0.04em;
+  flex: 1;
+}
+
+.paint-detail-close-btn {
+  background: transparent;
+  border: 2px solid #9C7553;
+  color: #5C3A1A;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paint-detail-close-btn:hover {
+  background: #FF6B1A;
+  color: #FFFFFF;
+  border-color: #FF6B1A;
+}
+
+/* タブバー */
+.paint-detail-tabs {
+  display: flex;
+  background: #FFF8EE;
+  border-bottom: 1px solid #E5C5A0;
+}
+
+.paint-detail-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 14px;
+  font-family: 'M PLUS Rounded 1c', "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #9C7553;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.paint-detail-tab-btn:hover:not(.active) {
+  background: rgba(255, 107, 26, 0.08);
+  color: #5C3A1A;
+}
+
+.paint-detail-tab-btn.active {
+  color: #FF6B1A;
+  border-bottom-color: #FF6B1A;
+  background: #FFFFFF;
+}
+
+/* タブの中身共通 */
+.paint-detail-pane {
+  padding: 18px;
+}
+
+.paint-detail-pane.hidden {
+  display: none;
+}
+
+/* カラーパレットタブ: 情報リスト */
+.paint-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px dashed #E5C5A0;
+  gap: 12px;
+}
+
+.paint-detail-row:last-child {
+  border-bottom: none;
+}
+
+.paint-detail-row-label {
+  font-weight: 700;
+  color: #5C3A1A;
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 0.95rem;
+  min-width: 100px;
+}
+
+.paint-detail-row-value {
+  font-family: 'JetBrains Mono', monospace;
+  color: #3A1F0A;
+  font-weight: 700;
+  text-align: right;
+}
+
+#paint-detail-rowcol {
+  color: #E5530A;
+  font-size: 1.05rem;
+}
+
+/* フルカラータブ */
+.paint-detail-fc-hsv {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  margin-bottom: 16px;
+  background: #FFF8EE;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.paint-detail-fc-hsv-item {
+  text-align: center;
+  flex: 1;
+}
+
+.paint-detail-fc-hsv-label {
+  font-size: 0.78rem;
+  color: #9C7553;
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+
+.paint-detail-fc-hsv-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: #E5530A;
+}
+
+.paint-detail-fc-steps {
+  background: #FFF8EE;
+  border: 1px solid #E5C5A0;
+  border-radius: 8px;
+  padding: 14px 16px 14px 32px;
+}
+
+.paint-detail-fc-steps ol {
+  margin: 0;
+  padding: 0 0 0 4px;
+}
+
+.paint-detail-fc-steps li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  color: #3A1F0A;
+  font-size: 0.92rem;
+}
+
+.paint-detail-fc-steps li:last-child {
+  margin-bottom: 0;
+}
+
+.paint-detail-fc-steps strong {
+  color: #E5530A;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 800;
+  background: #FFE8CF;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.paint-detail-fc-note {
+  margin: 10px 0 0;
+  color: #9C7553;
+  font-size: 0.8rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* モバイル対応 */
+@media (max-width: 600px) {
+  .paint-color-detail-modal {
+    padding: 8px;
+  }
+  .paint-detail-header {
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  #paint-detail-num {
+    font-size: 1.1rem;
+    padding: 5px 10px;
+  }
+  #paint-detail-swatch {
+    width: 40px;
+    height: 40px;
+  }
+  #paint-detail-hex-head {
+    font-size: 0.95rem;
+  }
+  .paint-detail-tab-btn {
+    padding: 10px 8px;
+    font-size: 0.88rem;
+  }
+  .paint-detail-pane {
+    padding: 14px;
+  }
+  .paint-detail-row-label {
+    min-width: 80px;
+    font-size: 0.88rem;
+  }
+  .paint-detail-fc-steps {
+    padding: 12px 12px 12px 28px;
+  }
+  .paint-detail-fc-steps li {
+    font-size: 0.85rem;
+  }
+  .paint-detail-fc-hsv-value {
+    font-size: 1rem;
+  }
+}
