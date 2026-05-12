@@ -39,6 +39,10 @@ async function init() {
     await initI18n();
   }
 
+  if (typeof loadBgPresets === 'function') {
+    try { await loadBgPresets(); } catch (_) {}
+  }
+
   cacheDomRefs();
 
   attachUploadHandlers();
@@ -52,6 +56,10 @@ async function init() {
   attachModalHandlers();
   attachResizeHandler();
 
+  if (typeof attachBgPresetHandlers === 'function') {
+    try { attachBgPresetHandlers(); } catch (_) {}
+  }
+
   buildPaletteGrid();
   attachPaletteNumberToggle();
   attachPaletteUsedOnlyToggle();
@@ -61,6 +69,14 @@ async function init() {
 
   initGrid();
   if (typeof initIsolate === 'function') initIsolate();
+  if (typeof initMirror === 'function') initMirror();
+
+  document.querySelectorAll('.grid-sub-btn').forEach(b => {
+    b.addEventListener('click', () => setGridSubdivision(parseInt(b.dataset.sub, 10)));
+  });
+  document.querySelectorAll('.mirror-sub-btn').forEach(b => {
+    b.addEventListener('click', () => setMirrorAxis(b.dataset.mirror));
+  });
 
   window.addEventListener('i18nchange', refreshDynamicLabels);
 }

@@ -122,7 +122,9 @@ function drawCropCanvas() {
     ctx.stroke();
   }
 
-  const handleSize = 14;
+  const isTouchDevice = (typeof window !== 'undefined' && window.matchMedia &&
+                          window.matchMedia('(pointer: coarse)').matches);
+  const handleSize = isTouchDevice ? 18 : 14;
   const corners = getHandlePositions(bx, by, bw, bh);
   ctx.fillStyle = '#E85A0C';
   ctx.strokeStyle = '#fff';
@@ -170,7 +172,9 @@ function hitHandle(px, py) {
   const bw = cropBox.w * cropScale;
   const bh = cropBox.h * cropScale;
   const handles = getHandlePositions(bx, by, bw, bh);
-  const tol = 18;
+  const isTouchDevice = (typeof window !== 'undefined' && window.matchMedia &&
+                          window.matchMedia('(pointer: coarse)').matches);
+  const tol = isTouchDevice ? 26 : 18;
   for (const key of CROP_HANDLE_KEYS) {
     const [hx, hy] = handles[key];
     if (Math.abs(px - hx) <= tol && Math.abs(py - hy) <= tol) {
@@ -306,6 +310,56 @@ function resizeCropBox(handle, startBox, dx, dy, sw, sh) {
   cropBox.h = Math.round(newH);
 }
 
+var _cropCallbackOnApply = null;
+var _cropCallbackOnCancel = null;
+var _cropPrevAspectId = null;
+
+function openCropToolForCallback(srcCanvas, aspectW, aspectH, onApply, onCancel) {
+  _cropCallbackOnApply  = onApply  || function(){};
+  _cropCallbackOnCancel = onCancel || function(){};
+  _cropPrevAspectId = cropAspectId;
+
+  CROP_ASPECT_PRESETS['__region__'] = { id: '__region__', w: aspectW, h: aspectH, labelKey: '' };
+  cropAspectId = '__region__';
+
+  cropSrcCanvas = srcCanvas;
+  cropBox = fitAspectRect(srcCanvas.width, srcCanvas.height, aspectW, aspectH);
+
+  const sec = document.getElementById('crop-section');
+  if (sec) sec.classList.remove('hidden');
+
+  const aspectBar = document.querySelector('.crop-aspect-bar');
+  if (aspectBar) aspectBar.style.display = 'none';
+
+  fitCropDisplay();
+  drawCropCanvas();
+  updateCropInfo();
+
+  setTimeout(() => {
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function _cropExitCallback(applied, out) {
+  const onApply  = _cropCallbackOnApply;
+  const onCancel = _cropCallbackOnCancel;
+  _cropCallbackOnApply  = null;
+  _cropCallbackOnCancel = null;
+
+  const aspectBar = document.querySelector('.crop-aspect-bar');
+  if (aspectBar) aspectBar.style.display = '';
+  if (_cropPrevAspectId) {
+    cropAspectId = _cropPrevAspectId;
+    _cropPrevAspectId = null;
+  }
+  delete CROP_ASPECT_PRESETS['__region__'];
+
+  closeCropTool();
+
+  if (applied) onApply(out);
+  else onCancel();
+}
+
 function applyCrop() {
   if (!cropSrcCanvas) return;
 
@@ -320,10 +374,19 @@ function applyCrop() {
     0, 0, cropBox.w, cropBox.h
   );
 
+  if (_cropCallbackOnApply) {
+    _cropExitCallback(true, out);
+    return;
+  }
+
   finalizeImageLoad(out, true);
 }
 
 function cancelCrop() {
+  if (_cropCallbackOnApply || _cropCallbackOnCancel) {
+    _cropExitCallback(false, null);
+    return;
+  }
   if (!cropSrcCanvas) return;
   finalizeImageLoad(cropSrcCanvas, false);
 }

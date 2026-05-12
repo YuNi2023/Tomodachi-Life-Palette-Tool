@@ -15,7 +15,7 @@ function renderPixelCanvas() {
   overlayCanvas.height = h * zoom;
 
   const ctx = pixelCanvas.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = (zoom < 1);
   ctx.clearRect(0, 0, pixelCanvas.width, pixelCanvas.height);
 
   ctx.drawImage(src.originalCanvas, 0, 0, w * zoom, h * zoom);
@@ -24,7 +24,7 @@ function renderPixelCanvas() {
 
   if (rulerEnabled) drawRulerCrosshair(ctx, w, h);
 
-  zoomLabel.textContent = zoom + '×';
+  zoomLabel.textContent = (zoom < 1) ? Math.round(zoom * 100) + '%' : zoom + '×';
 
   rebuildRuler();
 
@@ -34,6 +34,12 @@ function renderPixelCanvas() {
     drawSelectionOverlay(lastSelPx, lastSelPy);
   } else {
     clearOverlayWithGrid();
+  }
+
+  if (mirrorMode !== 'off') {
+    const ctx2 = overlayCanvas.getContext('2d');
+    drawMirrorAxes(ctx2);
+    if (lastSelPx >= 0) drawMirrorHighlight(lastSelPx, lastSelPy);
   }
 }
 
@@ -47,59 +53,77 @@ function clearOverlayWithGrid() {
 function drawGridOverlay(ctx) {
   const src = getActiveData();
   if (!src) return;
-  const w = src.width, h = src.height;
-  const W = w * zoom;
-  const H = h * zoom;
+  const W = src.width * zoom;
+  const H = src.height * zoom;
   const sub = (typeof gridSubdivision === 'number' && (gridSubdivision === 8 || gridSubdivision === 16)) ? gridSubdivision : 8;
+
+  let gridW, gridH;
+  if (viewMode === 'original' && imgData && typeof gridSize === 'number') {
+    const aspect = imgData.width / imgData.height;
+    if (aspect >= 1) {
+      gridW = gridSize;
+      gridH = Math.max(1, Math.round(gridSize / aspect));
+    } else {
+      gridH = gridSize;
+      gridW = Math.max(1, Math.round(gridSize * aspect));
+    }
+  } else {
+    gridW = src.width;
+    gridH = src.height;
+  }
+
+  const cellW = W / gridW;
+  const cellH = H / gridH;
 
   ctx.save();
 
-  if (zoom >= 2) {
+  if (cellW >= 4 && cellH >= 4) {
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)';
     ctx.lineWidth = 0.5;
     ctx.beginPath();
-    for (let x = 1; x < w; x++) {
-      const px = Math.round(x * zoom) + 0.5;
+    for (let x = 1; x < gridW; x++) {
+      const px = Math.round(x * cellW) + 0.5;
       ctx.moveTo(px, 0);
       ctx.lineTo(px, H);
     }
-    for (let y = 1; y < h; y++) {
-      const py = Math.round(y * zoom) + 0.5;
+    for (let y = 1; y < gridH; y++) {
+      const py = Math.round(y * cellH) + 0.5;
       ctx.moveTo(0, py);
       ctx.lineTo(W, py);
     }
     ctx.stroke();
   }
 
-  const cxIdx = w / 2;
-  const cyIdx = h / 2;
+  const cxIdx = gridW / 2;
+  const cyIdx = gridH / 2;
+  const baseLine = Math.max(cellW, cellH);
   ctx.strokeStyle = 'rgba(232, 90, 12, 0.55)';
-  ctx.lineWidth = Math.max(1, zoom * 0.18);
+  ctx.lineWidth = Math.max(1, baseLine * 0.18);
   ctx.beginPath();
-  for (let x = sub; x < w; x += sub) {
+  for (let x = sub; x < gridW; x += sub) {
     if (x === cxIdx) continue;
-    const px = Math.round(x * zoom) + 0.5;
+    const px = Math.round(x * cellW) + 0.5;
     ctx.moveTo(px, 0);
     ctx.lineTo(px, H);
   }
-  for (let y = sub; y < h; y += sub) {
+  for (let y = sub; y < gridH; y += sub) {
     if (y === cyIdx) continue;
-    const py = Math.round(y * zoom) + 0.5;
+    const py = Math.round(y * cellH) + 0.5;
     ctx.moveTo(0, py);
     ctx.lineTo(W, py);
   }
   ctx.stroke();
 
   ctx.strokeStyle = 'rgba(214, 64, 4, 0.92)';
-  ctx.lineWidth = Math.max(2, zoom * 0.32);
+  ctx.lineWidth = Math.max(2, baseLine * 0.32);
   ctx.beginPath();
-  const cxPx = Math.round(cxIdx * zoom) + 0.5;
-  const cyPx = Math.round(cyIdx * zoom) + 0.5;
-  if (w >= 2) {
+  const cxPx = Math.round(cxIdx * cellW) + 0.5;
+  const cyPx = Math.round(cyIdx * cellH) + 0.5;
+  if (gridW >= 2) {
     ctx.moveTo(cxPx, 0);
     ctx.lineTo(cxPx, H);
   }
-  if (h >= 2) {
+  if (gridH >= 2) {
     ctx.moveTo(0, cyPx);
     ctx.lineTo(W, cyPx);
   }
@@ -301,27 +325,9 @@ function initGrid() {
   if (sub) sub.classList.toggle('hidden', !gridEnabled);
 }
 
-function isDoneColor(idx) {
-  if (idx == null || idx < 0) return false;
-  return typeof recipeCheckState !== 'undefined' && !!recipeCheckState[idx];
-}
-
-function _doneCount() {
-  if (typeof recipeCheckState === 'undefined') return 0;
-  let n = 0;
-  for (const k in recipeCheckState) if (recipeCheckState[k]) n++;
-  return n;
-}
-
-function _hasAnyDone() {
-  if (typeof recipeCheckState === 'undefined') return false;
-  for (const k in recipeCheckState) if (recipeCheckState[k]) return true;
-  return false;
-}
-
 function drawColorMaskOverlay(ctx) {
   const isolateActive = isolateEnabled && isolateTargetIdx >= 0;
-  const doneActive = _hasAnyDone();
+  const doneActive = doneState.any();
   if (!isolateActive && !doneActive) return;
 
   const src = getActiveData();
@@ -344,7 +350,7 @@ function drawColorMaskOverlay(ctx) {
     for (let x = 0; x < w; x++) {
       const idx = map[y * w + x];
       const isolateBlocks = isolateActive && idx !== isolateTargetIdx;
-      const doneBlocks    = doneActive && isDoneColor(idx);
+      const doneBlocks    = doneActive && doneState.isDone(idx);
       if (isolateBlocks || doneBlocks) {
         ctx.fillRect(x * zoom, y * zoom, zoom, zoom);
       }
@@ -425,28 +431,16 @@ function toggleDoneColor() {
     });
     return;
   }
-  if (typeof toggleRecipeCheck === 'function') {
-    toggleRecipeCheck(closestIdx);
-  }
-  _updateDoneButtonState();
-  if (typeof applyPaletteUsedFilter === 'function') applyPaletteUsedFilter();
-  renderPixelCanvas();
+  doneState.toggle(closestIdx);
 }
 
 function resetDoneColors() {
-  if (typeof recipeCheckState === 'undefined' || !_hasAnyDone()) return;
-  for (const k in recipeCheckState) delete recipeCheckState[k];
-  if (typeof _saveCheckState === 'function' && typeof recipeKey !== 'undefined') {
-    _saveCheckState(recipeKey, recipeCheckState);
-  }
-  if (typeof rebuildRecipe === 'function') rebuildRecipe();
-  _updateDoneButtonState();
-  renderPixelCanvas();
+  doneState.reset();
 }
 
 function _updateDoneButtonState() {
   const hasSel = (typeof closestIdx !== 'undefined' && closestIdx >= 0);
-  const isDone = hasSel && isDoneColor(closestIdx);
+  const isDone = hasSel && doneState.isDone(closestIdx);
   const longKey  = isDone ? 'color.markDoneOn'      : 'color.markDoneOff';
   const shortKey = isDone ? 'color.markDoneOnShort' : 'color.markDoneOffShort';
   const longText  = (typeof t === 'function') ? t(longKey)  : '';
@@ -462,13 +456,13 @@ function _updateDoneButtonState() {
   });
 
   const resetBtn = document.getElementById('done-reset-btn');
-  if (resetBtn) resetBtn.classList.toggle('hidden', !_hasAnyDone());
+  if (resetBtn) resetBtn.classList.toggle('hidden', !doneState.any());
 
   const counter = document.getElementById('done-counter');
   if (counter) {
     if (typeof convertedData !== 'undefined' && convertedData && convertedData.usedSet) {
       const total = convertedData.usedSet.size;
-      const done = _doneCount();
+      const done = doneState.count();
       counter.textContent = (typeof t === 'function')
         ? t('color.doneCounter', { n: done, m: total })
         : `${done}/${total}`;
@@ -481,4 +475,93 @@ function _updateDoneButtonState() {
 
 function refreshDoneOnSelection() {
   _updateDoneButtonState();
+}
+
+const MIRROR_STORAGE_KEY = 'spoito_mirror_mode';
+const MIRROR_MODES = ['off', 'v', 'h', 'both'];
+
+function toggleMirror() {
+  mirrorMode = (mirrorMode === 'off') ? 'v' : 'off';
+  _updateMirrorButtonState();
+  try { localStorage.setItem(MIRROR_STORAGE_KEY, mirrorMode); } catch (_) {}
+  renderPixelCanvas();
+}
+
+function setMirrorAxis(axis) {
+  if (!MIRROR_MODES.includes(axis) || axis === 'off') return;
+  mirrorMode = axis;
+  _updateMirrorButtonState();
+  try { localStorage.setItem(MIRROR_STORAGE_KEY, mirrorMode); } catch (_) {}
+  renderPixelCanvas();
+}
+
+function _updateMirrorButtonState() {
+  const btn = document.getElementById('mirror-btn');
+  if (btn) btn.classList.toggle('active', mirrorMode !== 'off');
+  const sub = document.getElementById('mirror-sub-toggle');
+  if (sub) sub.classList.toggle('hidden', mirrorMode === 'off');
+  document.querySelectorAll('.mirror-sub-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mirror === mirrorMode);
+  });
+}
+
+function initMirror() {
+  let saved = 'off';
+  try { saved = localStorage.getItem(MIRROR_STORAGE_KEY) || 'off'; } catch (_) {}
+  if (!MIRROR_MODES.includes(saved)) saved = 'off';
+  mirrorMode = saved;
+  _updateMirrorButtonState();
+}
+
+function _getMirroredPoints(px, py, w, h) {
+  if (mirrorMode === 'off') return [];
+  const mx = w - 1 - px;
+  const my = h - 1 - py;
+  const out = [];
+  if (mirrorMode === 'v')    out.push([mx, py]);
+  if (mirrorMode === 'h')    out.push([px, my]);
+  if (mirrorMode === 'both') { out.push([mx, py], [px, my], [mx, my]); }
+  return out.filter(([x, y]) => !(x === px && y === py));
+}
+
+function drawMirrorAxes(ctx) {
+  if (mirrorMode === 'off') return;
+  const src = getActiveData();
+  if (!src) return;
+  const W = src.width * zoom, H = src.height * zoom;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(214, 64, 4, 0.55)';
+  ctx.lineWidth = Math.max(1, zoom * 0.18);
+  ctx.setLineDash([Math.max(6, zoom * 0.6), Math.max(4, zoom * 0.4)]);
+  ctx.beginPath();
+  if (mirrorMode === 'v' || mirrorMode === 'both') {
+    const x = Math.round(W / 2) + 0.5;
+    ctx.moveTo(x, 0); ctx.lineTo(x, H);
+  }
+  if (mirrorMode === 'h' || mirrorMode === 'both') {
+    const y = Math.round(H / 2) + 0.5;
+    ctx.moveTo(0, y); ctx.lineTo(W, y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function drawMirrorHighlight(px, py) {
+  if (mirrorMode === 'off') return;
+  const src = getActiveData();
+  if (!src) return;
+  const pts = _getMirroredPoints(px, py, src.width, src.height);
+  if (!pts.length) return;
+  const ctx = overlayCanvas.getContext('2d');
+  ctx.save();
+  ctx.strokeStyle = 'rgba(214, 64, 4, 0.85)';
+  ctx.lineWidth = Math.max(2, zoom * 0.18);
+  ctx.fillStyle = 'rgba(255, 201, 60, 0.30)';
+  for (const [mx, my] of pts) {
+    const x = mx * zoom, y = my * zoom;
+    ctx.fillRect(x, y, zoom, zoom);
+    ctx.strokeRect(x + 0.5, y + 0.5, zoom - 1, zoom - 1);
+  }
+  ctx.restore();
 }

@@ -13,6 +13,7 @@ var gridSubdivision = 8;
 var paletteUsedOnly = false;
 var isolateEnabled = false;
 var isolateTargetIdx = -1;
+var mirrorMode = 'off';
 var lastSelPx = -1;
 var lastSelPy = -1;
 var interactionMode = 'select';
@@ -22,8 +23,9 @@ var ditherEnabled = false;
 
 var hoverPaletteIdx = -1;
 
-const ZOOM_STEPS = [1, 2, 4, 8, 12, 16];
+const ZOOM_STEPS = [0.1, 0.25, 0.5, 0.75, 1, 2, 4, 8, 12, 16];
 const MAX_CANVAS_SIDE = 4096;
+const MIN_CANVAS_SIDE = 64;
 
 const GRID_STORAGE_KEY = 'spoito_grid_enabled';
 const GRID_SUB_STORAGE_KEY = 'spoito_grid_subdivision';

@@ -6,6 +6,50 @@ let recipeBlinkRAF = null;
 let recipeBlinkStart = 0;
 let recipeBlinkActive = false;
 
+const doneState = {
+  isDone(idx) {
+    return idx != null && idx >= 0 && !!recipeCheckState[idx];
+  },
+  any() {
+    for (const k in recipeCheckState) if (recipeCheckState[k]) return true;
+    return false;
+  },
+  count() {
+    let n = 0;
+    for (const k in recipeCheckState) if (recipeCheckState[k]) n++;
+    return n;
+  },
+  set(idx, value) {
+    if (idx == null || idx < 0) return;
+    if (value) recipeCheckState[idx] = true;
+    else       delete recipeCheckState[idx];
+    if (recipeKey) _saveCheckState(recipeKey, recipeCheckState);
+    doneState._notify();
+  },
+  toggle(idx) {
+    if (idx == null || idx < 0) return;
+    doneState.set(idx, !recipeCheckState[idx]);
+  },
+  reset() {
+    if (!doneState.any()) return;
+    for (const k in recipeCheckState) delete recipeCheckState[k];
+    if (recipeKey) _saveCheckState(recipeKey, recipeCheckState);
+    doneState._notify();
+  },
+  _notify() {
+    if (typeof updateRecipeRowChecks === 'function') updateRecipeRowChecks();
+    if (typeof updateRecipeSummary === 'function') updateRecipeSummary();
+    if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
+    if (typeof applyPaletteUsedFilter === 'function') applyPaletteUsedFilter();
+    if (typeof renderPixelCanvas === 'function') renderPixelCanvas();
+  },
+  _refreshAfterRebuild() {
+    doneState._notify();
+  },
+};
+
+function isDoneColor(idx) { return doneState.isDone(idx); }
+
 function _hashConvertedData(d) {
   if (!d) return '';
   let h = 5381;
@@ -53,7 +97,7 @@ function rebuildRecipe() {
   const summaryEl = document.getElementById('recipe-summary');
   if (!wrap || !listEl) return;
 
-  if (viewMode !== 'converted' || !convertedData) {
+  if (!convertedData) {
     wrap.classList.add('hidden');
     return;
   }
@@ -121,26 +165,30 @@ function rebuildRecipe() {
 
     listEl.appendChild(row);
   });
+
+  doneState._refreshAfterRebuild();
+  if (typeof updateDifficultyDisplay === 'function') updateDifficultyDisplay();
+}
+
+function updateRecipeRowChecks() {
+  document.querySelectorAll('.recipe-row[data-idx]').forEach(row => {
+    const idx = parseInt(row.dataset.idx, 10);
+    row.classList.toggle('checked', doneState.isDone(idx));
+  });
+}
+
+function updateRecipeSummary() {
+  const summaryEl = document.getElementById('recipe-summary');
+  if (!summaryEl) return;
+  const recipe = computeRecipe();
+  if (!recipe.length) { summaryEl.innerHTML = ''; return; }
+  const total = recipe[0].total;
+  const checkedCount = recipe.filter(it => doneState.isDone(it.idx)).length;
+  summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
 }
 
 function toggleRecipeCheck(idx) {
-  if (recipeCheckState[idx]) delete recipeCheckState[idx];
-  else recipeCheckState[idx] = true;
-  _saveCheckState(recipeKey, recipeCheckState);
-
-  const row = document.querySelector(`.recipe-row[data-idx="${idx}"]`);
-  if (row) row.classList.toggle('checked', !!recipeCheckState[idx]);
-
-  const recipe = computeRecipe();
-  const checkedCount = recipe.filter(it => recipeCheckState[it.idx]).length;
-  const summaryEl = document.getElementById('recipe-summary');
-  if (summaryEl && recipe.length) {
-    const total = recipe[0].total;
-    summaryEl.innerHTML = t('recipe.summaryHtml', { colors: recipe.length, cells: total, done: checkedCount });
-  }
-
-  if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
-  if (typeof renderPixelCanvas === 'function') renderPixelCanvas();
+  doneState.toggle(idx);
 }
 
 function blinkPaletteCells(palIdx) {
@@ -300,4 +348,71 @@ function attachPaletteHover() {
       }
     });
   });
+}
+
+function computeDifficulty() {
+  if (!convertedData) return null;
+  const colors = convertedData.usedSet ? convertedData.usedSet.size : 0;
+  if (!colors) return null;
+
+  const W = convertedData.width, H = convertedData.height;
+  const map = convertedData.paletteMap;
+  const bounds = new Map();
+  const counts = new Map();
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const idx = map[y * W + x];
+      if (idx < 0) continue;
+      counts.set(idx, (counts.get(idx) || 0) + 1);
+      const b = bounds.get(idx);
+      if (!b) bounds.set(idx, { x0: x, y0: y, x1: x, y1: y });
+      else {
+        if (x < b.x0) b.x0 = x; if (x > b.x1) b.x1 = x;
+        if (y < b.y0) b.y0 = y; if (y > b.y1) b.y1 = y;
+      }
+    }
+  }
+
+  let scatterSum = 0, n = 0;
+  bounds.forEach((b, idx) => {
+    const c = counts.get(idx) || 0;
+    if (c < 2) return;
+    const area = (b.x1 - b.x0 + 1) * (b.y1 - b.y0 + 1);
+    const density = c / area;
+    scatterSum += (1 - density);
+    n++;
+  });
+  const scatter = n > 0 ? scatterSum / n : 0;
+
+  const colorFactor = Math.min(50, Math.round(50 * Math.log2(colors + 1) / Math.log2(85)));
+  const scatterFactor = Math.round(50 * scatter);
+  const score = Math.max(1, Math.min(100, colorFactor + scatterFactor));
+
+  let label, tier;
+  if (score < 20)       { label = 'easy';   tier = 1; }
+  else if (score < 40)  { label = 'normal'; tier = 2; }
+  else if (score < 60)  { label = 'medium'; tier = 3; }
+  else if (score < 80)  { label = 'hard';   tier = 4; }
+  else                  { label = 'expert'; tier = 5; }
+
+  return { score, label, tier, colors, scatter };
+}
+
+function updateDifficultyDisplay() {
+  const el = document.getElementById('difficulty-badge');
+  if (!el) return;
+  const d = computeDifficulty();
+  if (!d) { el.classList.add('hidden'); return; }
+  el.classList.remove('hidden');
+  el.className = `difficulty-badge diff-tier-${d.tier}`;
+  el.classList.remove('hidden');
+  const labelTxt = (typeof t === 'function') ? t('difficulty.' + d.label) : d.label;
+  const aria = (typeof t === 'function')
+    ? t('difficulty.aria', { score: d.score, label: labelTxt })
+    : `Difficulty ${d.score} (${labelTxt})`;
+  el.setAttribute('aria-label', aria);
+  el.innerHTML =
+    `<span class="diff-score">${d.score}</span>` +
+    `<span class="diff-label">${labelTxt}</span>` +
+    `<button class="diff-help-btn" type="button" onclick="openModal('modal-difficulty')" aria-label="?"><span aria-hidden="true">?</span></button>`;
 }

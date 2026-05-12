@@ -121,7 +121,7 @@ function finalizeImageLoad(canvas, isCropped) {
   if (typeof _updateDoneButtonState === 'function') _updateDoneButtonState();
   document.getElementById('view-original-btn').classList.add('active');
   document.getElementById('view-converted-btn').classList.remove('active');
-  document.getElementById('convert-controls').classList.add('hidden');
+  document.getElementById('convert-controls').classList.remove('hidden');
   const dlBtnInit = document.getElementById('download-btn');
   if (dlBtnInit) dlBtnInit.classList.add('hidden');
   const dlPbnInit = document.getElementById('download-pbn-btn');
@@ -136,13 +136,16 @@ function finalizeImageLoad(canvas, isCropped) {
   updateImgInfo();
   setupCanvases();
   buildPaletteGrid();
-  rebuildRecipe();
+  if (typeof rebuildConvertedData === 'function') rebuildConvertedData();
+  else rebuildRecipe();
 
   lastSelPx = -1;
   lastSelPy = -1;
   hoverPaletteIdx = -1;
   noSelectMsg.classList.remove('hidden');
   colorInfo.classList.add('hidden');
+  const pill = document.getElementById('canvas-selection-pill');
+  if (pill) pill.classList.add('hidden');
 
   uploadSec.classList.add('hidden');
   closeCropTool();
